@@ -28,7 +28,7 @@ sudo: required
 
 deploy:
   provider: script
-  before_install: docker build -t aeternas/swadeshness:latest .
+  before_install: docker build -t 'swadeshness:latest' .
   script: bash docker_push
   on:
     branch: development
