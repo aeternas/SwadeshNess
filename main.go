@@ -2,12 +2,14 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -17,26 +19,42 @@ type TranslationResult struct {
 	Text []string
 }
 
-func main() {
-	apiKey := os.Getenv("YANDEX_API_KEY")
-	helloHandler := func(w http.ResponseWriter, r *http.Request) {
+type appHandler func(http.ResponseWriter, *http.Request) error
 
-		translationRequestValues, ok := r.URL.Query()["tr"]
-		if !ok || len(translationRequestValues[0]) < 1 {
-			log.Println("Invalid request")
-		}
-		translationRequestValue := translationRequestValues[0]
-		response := getRequest(translationRequestValue, apiKey)
-		if _, err := io.WriteString(w, response); err != nil {
-			log.Println("Response output error")
-		}
+func (fn appHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if err := fn(w, r); err != nil {
+		http.Error(w, err.Error(), 500)
+	}
+}
+
+func TranslationHandler(w http.ResponseWriter, r *http.Request) error {
+	apiKey := os.Getenv("YANDEX_API_KEY")
+
+	translationRequestValues, ok := r.URL.Query()["tr"]
+	if !ok || len(translationRequestValues[0]) < 1 {
+		log.Println("Invalid request")
+	}
+	translationRequestValue := translationRequestValues[0]
+	response, code, err := getRequest(translationRequestValue, apiKey)
+	if err != nil || code != 200 {
+		fmt.Println("Error: ", err)
+		return errors.New(strconv.Itoa(code))
+	}
+	if _, err := io.WriteString(w, response); err != nil {
+		log.Println("Response output error")
+		return errors.New("Response output error")
 	}
 
-	http.HandleFunc("/", helloHandler)
+	return nil
+}
+
+func main() {
+
+	http.Handle("/", appHandler(TranslationHandler))
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
-func getRequest(w, apiKey string) string {
+func getRequest(w, apiKey string) (string, int, error) {
 	client := &http.Client{Timeout: 10 * time.Second}
 
 	urlString := fmt.Sprintf("https://translate.yandex.net/api/v1.5/tr.json/translate?key=%s&lang=en-ja&text=", apiKey)
@@ -46,6 +64,7 @@ func getRequest(w, apiKey string) string {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		log.Println("Request initialization error")
+		return "", 500, err
 	}
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -53,18 +72,21 @@ func getRequest(w, apiKey string) string {
 
 	if err != nil {
 		log.Println("Request execution error")
+		return "", 500, err
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 
 	if err != nil {
 		log.Println("I/O Read Error")
+		return "", 500, err
 	}
 
 	var data TranslationResult
 
 	if err := json.Unmarshal(body, &data); err != nil {
 		log.Println("Unmarshalling error: ", err)
+		return "", 500, err
 	}
 
 	defer resp.Body.Close()
@@ -78,5 +100,5 @@ func getRequest(w, apiKey string) string {
 		}
 	}
 
-	return strings.Join(data.Text, ",")
+	return strings.Join(data.Text, ","), data.Code, nil
 }
