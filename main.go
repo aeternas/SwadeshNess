@@ -48,11 +48,11 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request) error {
 	response, code, err := getRequest(translationRequestValue, apiKey)
 	if err != nil || code != 200 {
 		fmt.Println("Error: ", err)
-		return error.New("Error is: ", err)
+		return errors.New("Error is: ", err)
 	}
 	if _, err := io.WriteString(w, response); err != nil {
 		log.Println("Response output error")
-		return error.New("Error is: ", err)
+		return errors.New("Error is: ", err)
 	}
 
 	return nil
