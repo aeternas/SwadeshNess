@@ -30,7 +30,9 @@ func main() {
 		}
 		request := url.QueryEscape(reqValue)
 		response := make_response(request, apiKey)
-		io.WriteString(w, response)
+		if _, err := io.WriteString(w, response); err != nil {
+			fmt.Println("Response output error")
+		}
 	}
 
 	http.HandleFunc("/", helloHandler)
@@ -45,11 +47,19 @@ func make_response(w, apiKey string) string {
 	url := urlString + w
 
 	resp, err := client.Get(url)
+	if err != nil {
+		fmt.Println("Response initialization error")
+	}
+
 	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		fmt.Println("Request initialization error")
+	}
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	resp, err = client.Do(req)
-
-	defer resp.Body.Close()
+	if err != nil {
+		fmt.Println("Request execution error")
+	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 
@@ -60,6 +70,9 @@ func make_response(w, apiKey string) string {
 	if err := json.Unmarshal(body, &data); err != nil {
 		fmt.Println("Unmarshalling error: ", err)
 	}
+
+	defer resp.Body.Close()
+
 	if data.Code != 200 {
 		fmt.Printf("Error – code is %d", data.Code)
 	}
