@@ -8,7 +8,7 @@ import (
 )
 
 func TestTranslationHandler(t *testing.T) {
-	req, err := http.NewRequest("GET", "/?tr=man", nil)
+	req, err := http.NewRequest("GET", "/dev/?tr=man", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
