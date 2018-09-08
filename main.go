@@ -26,9 +26,9 @@ func main() {
 			log.Println("Invalid request")
 		}
 		translationRequestValue := translationRequestValues[0]
-		response := make_response(translationRequestValue, apiKey)
+		response := getRequest(translationRequestValue, apiKey)
 		if _, err := io.WriteString(w, response); err != nil {
-			fmt.Println("Response output error")
+			log.Println("Response output error")
 		}
 	}
 
@@ -36,7 +36,7 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
-func make_response(w, apiKey string) string {
+func getRequest(w, apiKey string) string {
 	client := &http.Client{Timeout: 10 * time.Second}
 
 	urlString := fmt.Sprintf("https://translate.yandex.net/api/v1.5/tr.json/translate?key=%s&lang=en-ja&text=", apiKey)
@@ -45,26 +45,26 @@ func make_response(w, apiKey string) string {
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		fmt.Println("Request initialization error")
+		log.Println("Request initialization error")
 	}
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	resp, err := client.Do(req)
 
 	if err != nil {
-		fmt.Println("Request execution error")
+		log.Println("Request execution error")
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 
 	if err != nil {
-		fmt.Println("I/O Read Error")
+		log.Println("I/O Read Error")
 	}
 
 	var data TranslationResult
 
 	if err := json.Unmarshal(body, &data); err != nil {
-		fmt.Println("Unmarshalling error: ", err)
+		log.Println("Unmarshalling error: ", err)
 	}
 
 	defer resp.Body.Close()
@@ -72,9 +72,9 @@ func make_response(w, apiKey string) string {
 	if data.Code != 200 {
 		switch data.Code {
 		case 401:
-			fmt.Println("Invalid API Key")
+			log.Println("Invalid API Key")
 		default:
-			fmt.Printf("Error – code is %d", data.Code)
+			log.Printf("Error – code is %d", data.Code)
 		}
 	}
 
