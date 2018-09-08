@@ -19,7 +19,7 @@ type TranslationResult struct {
 }
 
 func main() {
-	apiKey := os.Getenv("YANDEX-API-KEY")
+	apiKey := os.Getenv("YANDEX_API_KEY")
 	helloHandler := func(w http.ResponseWriter, r *http.Request) {
 
 		var reqValue string
