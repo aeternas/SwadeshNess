@@ -17,22 +17,23 @@ type TranslationResult struct {
 	Text []string
 }
 
-func main() {
+func TranslationHandler(w http.ResponseWriter, r *http.Request) {
 	apiKey := os.Getenv("YANDEX_API_KEY")
-	helloHandler := func(w http.ResponseWriter, r *http.Request) {
 
-		translationRequestValues, ok := r.URL.Query()["tr"]
-		if !ok || len(translationRequestValues[0]) < 1 {
-			log.Println("Invalid request")
-		}
-		translationRequestValue := translationRequestValues[0]
-		response := getRequest(translationRequestValue, apiKey)
-		if _, err := io.WriteString(w, response); err != nil {
-			log.Println("Response output error")
-		}
+	translationRequestValues, ok := r.URL.Query()["tr"]
+	if !ok || len(translationRequestValues[0]) < 1 {
+		log.Println("Invalid request")
 	}
+	translationRequestValue := translationRequestValues[0]
+	response := getRequest(translationRequestValue, apiKey)
+	if _, err := io.WriteString(w, response); err != nil {
+		log.Println("Response output error")
+	}
+}
 
-	http.HandleFunc("/", helloHandler)
+func main() {
+
+	http.HandleFunc("/", TranslationHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
