@@ -74,7 +74,7 @@ func make_response(w, apiKey string) string {
 		case 401:
 			fmt.Println("Invalid API Key")
 		default:
-			fmt.Printf("Error – code is %d", data.Code, data)
+			fmt.Printf("Error – code is %d", data.Code)
 		}
 	}
 
