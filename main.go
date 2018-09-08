@@ -50,8 +50,8 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request) error {
 
 func main() {
 
-	http.Handle("/dev", appHandler(TranslationHandler))
-	log.Fatal(http.ListenAndServe(":8081", nil))
+	http.Handle("/dev/", appHandler(TranslationHandler))
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
 func getRequest(w, apiKey string) (string, int, error) {
