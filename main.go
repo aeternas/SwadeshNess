@@ -21,16 +21,8 @@ type TranslationResult struct {
 
 type appHandler func(http.ResponseWriter, *http.Request) error
 
-type errorString struct {
-	s string
-}
-
 func (e *errorString) Error() string {
 	return e.s
-}
-
-func New(text string) error {
-	return &errorString{text}
 }
 
 func (fn appHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
