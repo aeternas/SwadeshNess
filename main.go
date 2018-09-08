@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -49,11 +50,11 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request) error {
 	response, code, err := getRequest(translationRequestValue, apiKey)
 	if err != nil || code != 200 {
 		fmt.Println("Error: ", err)
-		return errors.New("Error is: ", err)
+		return errors.New(strconv.Itoa(code))
 	}
 	if _, err := io.WriteString(w, response); err != nil {
 		log.Println("Response output error")
-		return errors.New("Error is: ", err)
+		return errors.New("Response output error")
 	}
 
 	return nil
