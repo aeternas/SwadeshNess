@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"net/url"
 	"os"
 	"strings"
 	"time"
@@ -22,14 +21,12 @@ func main() {
 	apiKey := os.Getenv("YANDEX_API_KEY")
 	helloHandler := func(w http.ResponseWriter, r *http.Request) {
 
-		var reqValue string
-		for k, v := range r.Form {
-			if k == "tr" {
-				reqValue = strings.Join(v, "")
-			}
+		translationRequestValues, ok := r.URL.Query()["tr"]
+		if !ok || len(translationRequestValues[0]) < 1 {
+			log.Println("Invalid request")
 		}
-		request := url.QueryEscape(reqValue)
-		response := make_response(request, apiKey)
+		translationRequestValue := translationRequestValues[0]
+		response := make_response(translationRequestValue, apiKey)
 		if _, err := io.WriteString(w, response); err != nil {
 			fmt.Println("Response output error")
 		}
@@ -46,17 +43,14 @@ func make_response(w, apiKey string) string {
 
 	url := urlString + w
 
-	resp, err := client.Get(url)
-	if err != nil {
-		fmt.Println("Response initialization error")
-	}
-
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		fmt.Println("Request initialization error")
 	}
+
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	resp, err = client.Do(req)
+	resp, err := client.Do(req)
+
 	if err != nil {
 		fmt.Println("Request execution error")
 	}
@@ -66,7 +60,9 @@ func make_response(w, apiKey string) string {
 	if err != nil {
 		fmt.Println("I/O Read Error")
 	}
+
 	var data TranslationResult
+
 	if err := json.Unmarshal(body, &data); err != nil {
 		fmt.Println("Unmarshalling error: ", err)
 	}
@@ -74,7 +70,13 @@ func make_response(w, apiKey string) string {
 	defer resp.Body.Close()
 
 	if data.Code != 200 {
-		fmt.Printf("Error – code is %d", data.Code)
+		switch data.Code {
+		case 401:
+			fmt.Println("Invalid API Key")
+		default:
+			fmt.Printf("Error – code is %d", data.Code, data)
+		}
 	}
+
 	return strings.Join(data.Text, ",")
 }
