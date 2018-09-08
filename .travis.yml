@@ -28,6 +28,8 @@ sudo: required
 
 deploy:
   provider: script
+  before_script:
+          docker build -t swadeshness .
   script: bash docker_push
   on:
     branch: development
