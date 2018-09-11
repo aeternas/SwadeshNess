@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
-func parseUserRequest(reqString string) error {
-
-}
+/*func parseUserRequest(reqString string) int {
+	return http.StatusInternalServerError
+}*/
