@@ -2,14 +2,12 @@ package main
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -33,23 +31,20 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request) error {
 	translationRequestValues, ok := r.URL.Query()["tr"]
 	if !ok || len(translationRequestValues[0]) < 1 {
 		log.Println("Invalid request")
+		http.Error(w, "Bad Request", http.StatusBadRequest)
 	}
 	translationRequestValue := translationRequestValues[0]
 	response, code, err := getRequest(translationRequestValue, apiKey)
 	if err != nil || code != 200 {
-		fmt.Println("Error: ", err)
-		return errors.New(strconv.Itoa(code))
+		http.Error(w, "Bad Request", http.StatusBadRequest)
 	}
 	if _, err := io.WriteString(w, response); err != nil {
-		log.Println("Response output error")
-		return errors.New("Response output error")
+		http.Error(w, "Response output error", http.StatusInternalServerError)
 	}
-
 	return nil
 }
 
 func main() {
-
 	http.Handle("/", appHandler(TranslationHandler))
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
