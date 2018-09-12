@@ -7,10 +7,9 @@ ENV YANDEX_API_KEY=${YANDEX_API_KEY}
 WORKDIR /go/src/github.com/aeternas/SwadeshNess
 COPY . .
 
-RUN mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
 RUN go get -d -v ./...
 RUN go install -v ./...
-RUN go build
+RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build
 
 FROM alpine:latest
 
