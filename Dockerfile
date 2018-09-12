@@ -15,4 +15,6 @@ FROM alpine:latest
 
 COPY --from=0 /go/src/github.com/aeternas/SwadeshNess .
 
+EXPOSE 8080
+
 CMD ["./SwadeshNess"]
