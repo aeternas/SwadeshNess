@@ -1,6 +1,7 @@
 package main
 
 import (
+	l "./language"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -50,6 +51,14 @@ func main() {
 }
 
 func getRequest(w, apiKey string) (string, int, error) {
+	tatarLanguage := l.Language{FullName: "Tatar", Code: "tt"}
+
+	turkicLanguages := []l.Language{tatarLanguage}
+
+	turkicLanguagesGroup := l.LanguageGroup{Name: "turkic", Languages: turkicLanguages}
+
+	fmt.Println(turkicLanguagesGroup)
+
 	client := &http.Client{Timeout: 10 * time.Second}
 
 	urlString := fmt.Sprintf("https://translate.yandex.net/api/v1.5/tr.json/translate?key=%s&lang=en-ja&text=", apiKey)
