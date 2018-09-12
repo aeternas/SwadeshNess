@@ -1,9 +1,9 @@
 package main
 
 import (
-	l "SwadeshNess/language"
 	"encoding/json"
 	"fmt"
+	l "github.com/aeternas/SwadeshNess/language"
 	"io"
 	"io/ioutil"
 	"log"
