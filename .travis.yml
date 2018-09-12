@@ -27,7 +27,6 @@ script:
 sudo: required
 
 deploy:
-  skip_cleanup: true
   provider: script
   script: bash docker_push
   on:
