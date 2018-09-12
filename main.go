@@ -1,7 +1,7 @@
 package main
 
 import (
-	l "./language"
+	l "SwadeshNess/language"
 	"encoding/json"
 	"fmt"
 	"io"
