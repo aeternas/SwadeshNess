@@ -11,8 +11,8 @@ RUN go get -d -v ./...
 RUN go install -v ./...
 RUN go build
 
-FROM alpine:latest
+FROM golang:alpine
 
 COPY --from=0 /go/src/github.com/aeternas/SwadeshNess .
 
-CMD ["SwadeshNess"]
+CMD ["./SwadeshNess"]
