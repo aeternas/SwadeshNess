@@ -75,7 +75,7 @@ func getRequest(w, apiKey string) (string, int, error) {
 	resp, err := client.Do(req)
 
 	if err != nil {
-		log.Println("Request execution error")
+		log.Println("Request execution error: ", err)
 		return "", 500, err
 	}
 
