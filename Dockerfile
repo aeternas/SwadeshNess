@@ -4,15 +4,15 @@ ARG YANDEX_API_KEY=foo
 
 ENV YANDEX_API_KEY=${YANDEX_API_KEY}
 
-WORKDIR /go/src/github.com/aeternas/SwadeshNess
-COPY . .
-
+RUN mkdir /app 
+ADD . /app/ 
+WORKDIR /app 
 RUN go get -d -v ./...
 RUN go install -v ./...
-RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build
+RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o main
 
 FROM alpine:latest
 
-COPY --from=0 /go/src/github.com/aeternas/SwadeshNess .
+COPY --from=0 /app .
 
-CMD ["./SwadeshNess"]
+CMD ["/app/main"]
