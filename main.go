@@ -67,7 +67,7 @@ func getRequest(w, apiKey string) (string, int, error) {
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		log.Println("Request initialization error")
+		log.Println("Request initialization error: ", err)
 		return "", 500, err
 	}
 
@@ -82,7 +82,7 @@ func getRequest(w, apiKey string) (string, int, error) {
 	body, err := ioutil.ReadAll(resp.Body)
 
 	if err != nil {
-		log.Println("I/O Read Error")
+		log.Println("I/O Read Error: ", err)
 		return "", 500, err
 	}
 
