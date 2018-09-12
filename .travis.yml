@@ -15,6 +15,7 @@ notifications:
   email: false
 
 before_script:
+  - go get -v -t -d ./...
   - go install ./vendor/github.com/golangci/golangci-lint/cmd/golangci-lint
 
 # script always runs to completion (set +e). If we have linter issues AND a
