@@ -10,4 +10,8 @@ COPY . .
 RUN go get -d -v ./...
 RUN go install -v ./...
 
+FROM alpine:latest
+
+COPY --from=0 /go/src/github.com/centrypoint/regrigerator/back/go/main/main .
+
 CMD ["SwadeshNess"]
