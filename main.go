@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	l "github.com/aeternas/SwadeshNess/language"
 	"io"
 	"io/ioutil"
 	"log"
@@ -50,6 +51,14 @@ func main() {
 }
 
 func getRequest(w, apiKey string) (string, int, error) {
+	tatarLanguage := l.Language{FullName: "Tatar", Code: "tt"}
+
+	turkicLanguages := []l.Language{tatarLanguage}
+
+	turkicLanguagesGroup := l.LanguageGroup{Name: "turkic", Languages: turkicLanguages}
+
+	fmt.Println(turkicLanguagesGroup)
+
 	client := &http.Client{Timeout: 10 * time.Second}
 
 	urlString := fmt.Sprintf("https://translate.yandex.net/api/v1.5/tr.json/translate?key=%s&lang=en-ja&text=", apiKey)
@@ -66,7 +75,7 @@ func getRequest(w, apiKey string) (string, int, error) {
 	resp, err := client.Do(req)
 
 	if err != nil {
-		log.Println("Request execution error")
+		log.Println("Request execution error: ", err)
 		return "", 500, err
 	}
 
