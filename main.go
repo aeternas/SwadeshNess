@@ -35,6 +35,11 @@ func (fn appHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func MakeRequest(w string, apiKey string, l l.Language, ch chan<- string) {
+	req, _, _ := getRequest(w, l.Code, apiKey)
+	ch <- req
+}
+
 func TranslationHandler(w http.ResponseWriter, r *http.Request) error {
 	apiKey := os.Getenv("YANDEX_API_KEY")
 
@@ -44,10 +49,20 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request) error {
 		http.Error(w, "Bad Request", http.StatusBadRequest)
 	}
 	translationRequestValue := translationRequestValues[0]
-	response, code, err := getRequest(translationRequestValue, apiKey)
-	if err != nil || code != 200 {
-		http.Error(w, "Bad Request", http.StatusBadRequest)
+
+	ch := make(chan string)
+
+	for _, lang := range turkicLanguages {
+		go MakeRequest(translationRequestValue, apiKey, lang, ch)
 	}
+
+	s := []string{}
+	for range turkicLanguages {
+		s = append(s, <-ch)
+	}
+
+	response := strings.Join(s, "\n")
+
 	if _, err := io.WriteString(w, response); err != nil {
 		http.Error(w, "Response output error", http.StatusInternalServerError)
 	}
@@ -77,13 +92,13 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
-func getRequest(w, apiKey string) (string, int, error) {
+func getRequest(w, targetLang, apiKey string) (result string, errorCode int, resultErr error) {
 
 	client := &http.Client{Timeout: 10 * time.Second}
 
 	queryString := url.QueryEscape(w)
 
-	urlString := fmt.Sprintf("https://translate.yandex.net/api/v1.5/tr.json/translate?key=%s&lang=en-ja&text=%s", apiKey, queryString)
+	urlString := fmt.Sprintf("https://translate.yandex.net/api/v1.5/tr.json/translate?key=%s&lang=en-%s&text=%s", apiKey, targetLang, queryString)
 
 	req, err := http.NewRequest("GET", urlString, nil)
 	if err != nil {
