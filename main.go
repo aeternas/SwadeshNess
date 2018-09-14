@@ -21,6 +21,14 @@ type TranslationResult struct {
 
 type appHandler func(http.ResponseWriter, *http.Request) error
 
+var (
+	turkicLanguages      = []l.Language{{FullName: "Tatar", Code: "tt"}, {FullName: "Bashkort", Code: "ba"}, {FullName: "Azerbaijanian", Code: "az"}, {FullName: "Turkish", Code: "tr"}}
+	turkicLanguagesGroup = l.LanguageGroup{Name: "turkic", Languages: turkicLanguages}
+
+	romanianLanguages      = []l.Language{{FullName: "French", Code: "fr"}, {FullName: "Spanish", Code: "es"}}
+	romanianLanguagesGroup = l.LanguageGroup{Name: "Romanian", Languages: romanianLanguages}
+)
+
 func (fn appHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if err := fn(w, r); err != nil {
 		http.Error(w, err.Error(), 500)
@@ -47,13 +55,9 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request) error {
 }
 
 func GroupListHandler(w http.ResponseWriter, r *http.Request) error {
-	tatarLanguage := l.Language{FullName: "Tatar", Code: "tt"}
-	turkicLanguages := []l.Language{tatarLanguage}
-	turkicLanguagesGroup := l.LanguageGroup{Name: "turkic", Languages: turkicLanguages}
-
-	fmt.Println(turkicLanguagesGroup)
 	var buf bytes.Buffer
-	if err := json.NewEncoder(&buf).Encode(turkicLanguagesGroup); err != nil {
+	groups := []l.LanguageGroup{turkicLanguagesGroup, romanianLanguagesGroup}
+	if err := json.NewEncoder(&buf).Encode(groups); err != nil {
 		http.Error(w, "Encoding Error", http.StatusInternalServerError)
 		return err
 	}
