@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	l "github.com/aeternas/SwadeshNess/language"
@@ -55,18 +54,19 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request) error {
 }
 
 func GroupListHandler(w http.ResponseWriter, r *http.Request) error {
-	var buf bytes.Buffer
 	groups := []l.LanguageGroup{turkicLanguagesGroup, romanianLanguagesGroup}
-	if err := json.NewEncoder(&buf).Encode(groups); err != nil {
-		http.Error(w, "Encoding Error", http.StatusInternalServerError)
+
+	bytes, err := json.Marshal(groups)
+	if err != nil {
+		http.Error(w, "Marshalling error", http.StatusInternalServerError)
 		return err
 	}
 
-	_, err := buf.WriteTo(w)
-	if err != nil {
-		http.Error(w, "Response Write Error", http.StatusInternalServerError)
+	if _, err := w.Write(bytes); err != nil {
+		http.Error(w, "Response write error", http.StatusInternalServerError)
 		return err
 	}
+
 	return nil
 }
 
