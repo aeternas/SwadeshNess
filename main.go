@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	l "github.com/aeternas/SwadeshNess/language"
@@ -45,19 +46,33 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
+func GroupListHandler(w http.ResponseWriter, r *http.Request) error {
+	tatarLanguage := l.Language{FullName: "Tatar", Code: "tt"}
+	turkicLanguages := []l.Language{tatarLanguage}
+	turkicLanguagesGroup := l.LanguageGroup{Name: "turkic", Languages: turkicLanguages}
+
+	fmt.Println(turkicLanguagesGroup)
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(turkicLanguagesGroup); err != nil {
+		http.Error(w, "Encoding Error", http.StatusInternalServerError)
+		return err
+	}
+
+	_, err := buf.WriteTo(w)
+	if err != nil {
+		http.Error(w, "Response Write Error", http.StatusInternalServerError)
+		return err
+	}
+	return nil
+}
+
 func main() {
+	http.Handle("/groups", appHandler(GroupListHandler))
 	http.Handle("/", appHandler(TranslationHandler))
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
 func getRequest(w, apiKey string) (string, int, error) {
-	tatarLanguage := l.Language{FullName: "Tatar", Code: "tt"}
-
-	turkicLanguages := []l.Language{tatarLanguage}
-
-	turkicLanguagesGroup := l.LanguageGroup{Name: "turkic", Languages: turkicLanguages}
-
-	fmt.Println(turkicLanguagesGroup)
 
 	client := &http.Client{Timeout: 10 * time.Second}
 
