@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"strings"
 	"time"
@@ -80,11 +81,11 @@ func getRequest(w, apiKey string) (string, int, error) {
 
 	client := &http.Client{Timeout: 10 * time.Second}
 
-	urlString := fmt.Sprintf("https://translate.yandex.net/api/v1.5/tr.json/translate?key=%s&lang=en-ja&text=", apiKey)
+	queryString := url.QueryEscape(w)
 
-	url := urlString + w
+	urlString := fmt.Sprintf("https://translate.yandex.net/api/v1.5/tr.json/translate?key=%s&lang=en-ja&text=%s", apiKey, queryString)
 
-	req, err := http.NewRequest("GET", url, nil)
+	req, err := http.NewRequest("GET", urlString, nil)
 	if err != nil {
 		log.Println("Request initialization error: ", err)
 		return "", 500, err
