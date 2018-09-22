@@ -63,6 +63,10 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request) error {
 		}
 	}
 
+	if desiredGroup == nil {
+		http.Error(w, "No such language group found", http.StatusInternalServerError)
+	}
+
 	ch := make(chan string)
 
 	for _, lang := range desiredGroup.Languages {
