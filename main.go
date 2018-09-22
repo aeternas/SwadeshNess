@@ -63,7 +63,7 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request) error {
 		}
 	}
 
-	if desiredGroup == nil {
+	if &desiredGroup == nil {
 		http.Error(w, "No such language group found", http.StatusInternalServerError)
 	}
 
