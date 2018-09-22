@@ -61,7 +61,7 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request) error {
 	var desiredGroup l.LanguageGroup
 
 	for i := range languageGroups {
-		if languageGroups[i].Name == translationRequestGroupValue {
+		if strings.ToLower(languageGroups[i].Name) == strings.ToLower(translationRequestGroupValue) {
 			desiredGroup = languageGroups[i]
 			break
 		}
