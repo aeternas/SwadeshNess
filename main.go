@@ -15,10 +15,12 @@ type appHandler func(http.ResponseWriter, *http.Request) error
 
 var (
 	turkicLanguages      = []l.Language{{FullName: "Tatar", Code: "tt"}, {FullName: "Bashkort", Code: "ba"}, {FullName: "Azerbaijanian", Code: "az"}, {FullName: "Turkish", Code: "tr"}}
-	turkicLanguagesGroup = l.LanguageGroup{Name: "turkic", Languages: turkicLanguages}
+	turkicLanguagesGroup = l.LanguageGroup{Name: "Turkic", Languages: turkicLanguages}
 
 	romanianLanguages      = []l.Language{{FullName: "French", Code: "fr"}, {FullName: "Spanish", Code: "es"}}
 	romanianLanguagesGroup = l.LanguageGroup{Name: "Romanian", Languages: romanianLanguages}
+
+	languageGroups = []l.LanguageGroup{turkicLanguagesGroup, romanianLanguagesGroup}
 )
 
 func (fn appHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -43,14 +45,36 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request) error {
 	}
 	translationRequestValue := translationRequestValues[0]
 
+	var translationRequestGroupValue string
+
+	translationRequestGroupValues, ok := r.URL.Query()["gr"]
+	if !ok || len(translationRequestValues[0]) < 1 {
+		translationRequestGroupValue = "Turkic"
+	} else {
+		translationRequestGroupValue = translationRequestGroupValues[0]
+	}
+
+	var desiredGroup l.LanguageGroup
+
+	for i := range languageGroups {
+		if languageGroups[i].Name == translationRequestGroupValue {
+			desiredGroup = languageGroups[i]
+			break
+		}
+	}
+
+	if &desiredGroup == nil {
+		http.Error(w, "No such language group found", http.StatusInternalServerError)
+	}
+
 	ch := make(chan string)
 
-	for _, lang := range turkicLanguages {
+	for _, lang := range desiredGroup.Languages {
 		go api.MakeRequest(translationRequestValue, apiKey, lang, ch)
 	}
 
 	s := []string{}
-	for range turkicLanguages {
+	for range desiredGroup.Languages {
 		s = append(s, <-ch)
 	}
 
