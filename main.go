@@ -2,22 +2,14 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	api "github.com/aeternas/SwadeshNess/apiClient"
 	l "github.com/aeternas/SwadeshNess/language"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
-	"net/url"
 	"os"
 	"strings"
-	"time"
 )
-
-type TranslationResult struct {
-	Code int
-	Text []string
-}
 
 type appHandler func(http.ResponseWriter, *http.Request) error
 
@@ -35,6 +27,12 @@ func (fn appHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func main() {
+	http.Handle("/groups", appHandler(GroupListHandler))
+	http.Handle("/", appHandler(TranslationHandler))
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
 func TranslationHandler(w http.ResponseWriter, r *http.Request) error {
 	apiKey := os.Getenv("YANDEX_API_KEY")
 
@@ -44,10 +42,20 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request) error {
 		http.Error(w, "Bad Request", http.StatusBadRequest)
 	}
 	translationRequestValue := translationRequestValues[0]
-	response, code, err := getRequest(translationRequestValue, apiKey)
-	if err != nil || code != 200 {
-		http.Error(w, "Bad Request", http.StatusBadRequest)
+
+	ch := make(chan string)
+
+	for _, lang := range turkicLanguages {
+		go api.MakeRequest(translationRequestValue, apiKey, lang, ch)
 	}
+
+	s := []string{}
+	for range turkicLanguages {
+		s = append(s, <-ch)
+	}
+
+	response := strings.Join(s, "\n")
+
 	if _, err := io.WriteString(w, response); err != nil {
 		http.Error(w, "Response output error", http.StatusInternalServerError)
 	}
@@ -69,60 +77,4 @@ func GroupListHandler(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	return nil
-}
-
-func main() {
-	http.Handle("/groups", appHandler(GroupListHandler))
-	http.Handle("/", appHandler(TranslationHandler))
-	log.Fatal(http.ListenAndServe(":8080", nil))
-}
-
-func getRequest(w, apiKey string) (string, int, error) {
-
-	client := &http.Client{Timeout: 10 * time.Second}
-
-	queryString := url.QueryEscape(w)
-
-	urlString := fmt.Sprintf("https://translate.yandex.net/api/v1.5/tr.json/translate?key=%s&lang=en-ja&text=%s", apiKey, queryString)
-
-	req, err := http.NewRequest("GET", urlString, nil)
-	if err != nil {
-		log.Println("Request initialization error: ", err)
-		return "", 500, err
-	}
-
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	resp, err := client.Do(req)
-
-	if err != nil {
-		log.Println("Request execution error: ", err)
-		return "", 500, err
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
-
-	if err != nil {
-		log.Println("I/O Read Error: ", err)
-		return "", 500, err
-	}
-
-	var data TranslationResult
-
-	if err := json.Unmarshal(body, &data); err != nil {
-		log.Println("Unmarshalling error: ", err)
-		return "", 500, err
-	}
-
-	defer resp.Body.Close()
-
-	if data.Code != 200 {
-		switch data.Code {
-		case 401:
-			log.Println("Invalid API Key")
-		default:
-			log.Printf("Error – code is %d", data.Code)
-		}
-	}
-
-	return strings.Join(data.Text, ","), data.Code, nil
 }
