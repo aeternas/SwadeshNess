@@ -20,7 +20,11 @@ var (
 	romanianLanguages      = []l.Language{{FullName: "French", Code: "fr"}, {FullName: "Spanish", Code: "es"}, {FullName: "Italian", Code: "it"}, {FullName: "Romanian", Code: "ro"}}
 	romanianLanguagesGroup = l.LanguageGroup{Name: "Romanian", Languages: romanianLanguages}
 
-	languageGroups = []l.LanguageGroup{turkicLanguagesGroup, romanianLanguagesGroup}
+	cjkvLanguages = []l.Language{{FullName: "Mandarin", Code: "zh"}, {FullName: "Japanese", Code: "ja"}, {FullName: "Vietnamese", Code: "vi"}}
+
+	cjkvLanguagesGroup = l.LanguageGroup{Name: "CJKV Family", Languages: cjkvLanguages}
+
+	languageGroups = []l.LanguageGroup{turkicLanguagesGroup, romanianLanguagesGroup, cjkvLanguagesGroup}
 )
 
 func (fn appHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -57,7 +61,7 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request) error {
 	var desiredGroup l.LanguageGroup
 
 	for i := range languageGroups {
-		if languageGroups[i].Name == translationRequestGroupValue {
+		if strings.ToLower(languageGroups[i].Name) == strings.ToLower(translationRequestGroupValue) {
 			desiredGroup = languageGroups[i]
 			break
 		}
