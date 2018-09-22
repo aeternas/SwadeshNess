@@ -47,7 +47,7 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request) error {
 
 	var translationRequestGroupValue string
 
-	translationRequestGroupValues, ok := r.URL.Query()["tr"]
+	translationRequestGroupValues, ok := r.URL.Query()["gr"]
 	if !ok || len(translationRequestValues[0]) < 1 {
 		translationRequestGroupValue = "Turkic"
 	} else {
