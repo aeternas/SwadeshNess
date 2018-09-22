@@ -15,7 +15,7 @@ type appHandler func(http.ResponseWriter, *http.Request) error
 
 var (
 	turkicLanguages      = []l.Language{{FullName: "Tatar", Code: "tt"}, {FullName: "Bashkort", Code: "ba"}, {FullName: "Azerbaijanian", Code: "az"}, {FullName: "Turkish", Code: "tr"}}
-	turkicLanguagesGroup = l.LanguageGroup{Name: "turkic", Languages: turkicLanguages}
+	turkicLanguagesGroup = l.LanguageGroup{Name: "Turkic", Languages: turkicLanguages}
 
 	romanianLanguages      = []l.Language{{FullName: "French", Code: "fr"}, {FullName: "Spanish", Code: "es"}}
 	romanianLanguagesGroup = l.LanguageGroup{Name: "Romanian", Languages: romanianLanguages}
