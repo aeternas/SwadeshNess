@@ -74,7 +74,7 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	s := []string{}
-	for range turkicLanguages {
+	for range desiredGroup.Languages {
 		s = append(s, <-ch)
 	}
 
