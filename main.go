@@ -42,7 +42,7 @@ func main() {
 func TranslationHandler(w http.ResponseWriter, r *http.Request) error {
 	apiKey := os.Getenv("YANDEX_API_KEY")
 
-	translationRequestValues, ok := r.URL.Query()["tr"]
+	translationRequestValues, ok := r.URL.Query()["translate"]
 	if !ok || len(translationRequestValues[0]) < 1 {
 		log.Println("Invalid request")
 		http.Error(w, "Bad Request", http.StatusBadRequest)
@@ -51,7 +51,7 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request) error {
 
 	var translationRequestGroupValue string
 
-	translationRequestGroupValues, ok := r.URL.Query()["gr"]
+	translationRequestGroupValues, ok := r.URL.Query()["group"]
 	if !ok || len(translationRequestValues[0]) < 1 {
 		translationRequestGroupValue = "Turkic"
 	} else {
