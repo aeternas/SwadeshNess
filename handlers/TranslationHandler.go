@@ -79,12 +79,14 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 func getRearrangedResults(res []TranslationResult, langs []Language) []TranslationResult {
 	arrangedResults := []TranslationResult{}
 
-	for i, lang := range langs {
-		currentResult := res[i]
-		currentResultLanguageCode := strings.Split(currentResult.Lang, "-")[1]
-		if lang.Code == currentResultLanguageCode {
-			arrangedResults = append(arrangedResults, currentResult)
-			continue
+	for _, desiredLang := range langs {
+		for _, resultLang := range res {
+			resultLangCode := strings.Split(resultLang.Lang, "-")[1]
+			if desiredLang.Code == resultLangCode {
+				arrangedResults = append(arrangedResults, resultLang)
+				continue
+			}
+
 		}
 	}
 	return arrangedResults
