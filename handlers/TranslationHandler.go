@@ -29,6 +29,15 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 		translationRequestGroupValue = translationRequestGroupValues[0]
 	}
 
+	var sourceLanguage string
+
+	sourceLanguageValues, ok := r.URL.Query()["source"]
+	if !ok || len(sourceLanguageValues[0]) < 1 {
+		sourceLanguage = "en"
+	} else {
+		sourceLanguage = sourceLanguageValues[0]
+	}
+
 	var desiredGroup LanguageGroup
 
 	for i := range languageGroups {
@@ -46,7 +55,7 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 	ch := make(chan TranslationResult)
 
 	for _, lang := range desiredGroup.Languages {
-		go api.MakeRequest(translationRequestValue, apiKey, lang, ch)
+		go api.MakeRequest(translationRequestValue, apiKey, sourceLanguage, lang, ch)
 	}
 
 	results := []TranslationResult{}

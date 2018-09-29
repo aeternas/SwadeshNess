@@ -14,7 +14,7 @@ func TestMakeRequest(t *testing.T) {
 
 	turkishLanguage := l.Language{FullName: "Turkish", Code: "tr"}
 
-	go MakeRequest("man", apiKey, turkishLanguage, ch)
+	go MakeRequest("man", apiKey, "en", turkishLanguage, ch)
 
 	s := []TranslationResult{}
 

@@ -12,18 +12,18 @@ import (
 	"time"
 )
 
-func MakeRequest(w string, apiKey string, lang Language, ch chan<- TranslationResult) {
-	res := getRequest(w, lang.Code, apiKey)
+func MakeRequest(w, apiKey, sourceLang string, targetLang Language, ch chan<- TranslationResult) {
+	res := getRequest(w, sourceLang, targetLang.Code, apiKey)
 	ch <- res
 }
 
-func getRequest(w, targetLang, apiKey string) TranslationResult {
+func getRequest(w, sourceLang, targetLang, apiKey string) TranslationResult {
 
 	client := &http.Client{Timeout: 10 * time.Second}
 
 	queryString := url.QueryEscape(w)
 
-	urlString := fmt.Sprintf("https://translate.yandex.net/api/v1.5/tr.json/translate?key=%s&lang=en-%s&text=%s", apiKey, targetLang, queryString)
+	urlString := fmt.Sprintf("https://translate.yandex.net/api/v1.5/tr.json/translate?key=%s&lang=%s-%s&text=%s", apiKey, sourceLang, targetLang, queryString)
 
 	req, err := http.NewRequest("GET", urlString, nil)
 	if err != nil {
