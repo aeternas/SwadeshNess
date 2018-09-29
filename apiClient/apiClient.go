@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	d "github.com/aeternas/SwadeshNess/dto"
-	l "github.com/aeternas/SwadeshNess/language"
+	. "github.com/aeternas/SwadeshNess/dto"
+	. "github.com/aeternas/SwadeshNess/language"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -14,8 +14,8 @@ import (
 	"time"
 )
 
-func MakeRequest(w string, apiKey string, l l.Language, ch chan<- string) {
-	req, _, err := getRequest(w, l.Code, apiKey)
+func MakeRequest(w string, apiKey string, lang Language, ch chan<- string) {
+	req, _, err := getRequest(w, lang.Code, apiKey)
 	if err != nil {
 		log.Println("fail")
 	}
@@ -51,7 +51,7 @@ func getRequest(w, targetLang, apiKey string) (result string, errorCode int, res
 		return "", 500, err
 	}
 
-	var data d.TranslationResult
+	var data TranslationResult
 
 	if err := json.Unmarshal(body, &data); err != nil {
 		log.Println("Unmarshalling error: ", err)

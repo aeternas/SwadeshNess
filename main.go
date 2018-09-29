@@ -2,24 +2,24 @@ package main
 
 import (
 	. "github.com/aeternas/SwadeshNess/handlers"
-	l "github.com/aeternas/SwadeshNess/language"
+	. "github.com/aeternas/SwadeshNess/language"
 	"log"
 	"net/http"
 	"os"
 )
 
 var (
-	turkicLanguages      = []l.Language{{FullName: "Tatar", Code: "tt"}, {FullName: "Bashkort", Code: "ba"}, {FullName: "Azerbaijanian", Code: "az"}, {FullName: "Turkish", Code: "tr"}}
-	turkicLanguagesGroup = l.LanguageGroup{Name: "Turkic", Languages: turkicLanguages}
+	turkicLanguages      = []Language{{FullName: "Tatar", Code: "tt"}, {FullName: "Bashkort", Code: "ba"}, {FullName: "Azerbaijanian", Code: "az"}, {FullName: "Turkish", Code: "tr"}}
+	turkicLanguagesGroup = LanguageGroup{Name: "Turkic", Languages: turkicLanguages}
 
-	romanianLanguages      = []l.Language{{FullName: "French", Code: "fr"}, {FullName: "Spanish", Code: "es"}, {FullName: "Italian", Code: "it"}, {FullName: "Romanian", Code: "ro"}}
-	romanianLanguagesGroup = l.LanguageGroup{Name: "Romanian", Languages: romanianLanguages}
+	romanianLanguages      = []Language{{FullName: "French", Code: "fr"}, {FullName: "Spanish", Code: "es"}, {FullName: "Italian", Code: "it"}, {FullName: "Romanian", Code: "ro"}}
+	romanianLanguagesGroup = LanguageGroup{Name: "Romanian", Languages: romanianLanguages}
 
-	cjkvLanguages = []l.Language{{FullName: "Mandarin", Code: "zh"}, {FullName: "Japanese", Code: "ja"}, {FullName: "Vietnamese", Code: "vi"}}
+	cjkvLanguages = []Language{{FullName: "Mandarin", Code: "zh"}, {FullName: "Japanese", Code: "ja"}, {FullName: "Vietnamese", Code: "vi"}}
 
-	cjkvLanguagesGroup = l.LanguageGroup{Name: "CJKV Family", Languages: cjkvLanguages}
+	cjkvLanguagesGroup = LanguageGroup{Name: "CJKV Family", Languages: cjkvLanguages}
 
-	languageGroups = []l.LanguageGroup{turkicLanguagesGroup, romanianLanguagesGroup, cjkvLanguagesGroup}
+	languageGroups = []LanguageGroup{turkicLanguagesGroup, romanianLanguagesGroup, cjkvLanguagesGroup}
 )
 
 func main() {
