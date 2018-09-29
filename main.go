@@ -1,8 +1,8 @@
 package main
 
 import (
-	"encoding/json"
 	api "github.com/aeternas/SwadeshNess/apiClient"
+	. "github.com/aeternas/SwadeshNess/handlers"
 	l "github.com/aeternas/SwadeshNess/language"
 	"io"
 	"log"
@@ -10,8 +10,6 @@ import (
 	"os"
 	"strings"
 )
-
-type appHandler func(http.ResponseWriter, *http.Request) error
 
 var (
 	turkicLanguages      = []l.Language{{FullName: "Tatar", Code: "tt"}, {FullName: "Bashkort", Code: "ba"}, {FullName: "Azerbaijanian", Code: "az"}, {FullName: "Turkish", Code: "tr"}}
@@ -27,19 +25,17 @@ var (
 	languageGroups = []l.LanguageGroup{turkicLanguagesGroup, romanianLanguagesGroup, cjkvLanguagesGroup}
 )
 
-func (fn appHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if err := fn(w, r); err != nil {
-		http.Error(w, err.Error(), 500)
-	}
-}
-
 func main() {
-	http.Handle("/dev/groups", appHandler(GroupListHandler))
-	http.Handle("/dev/", appHandler(TranslationHandler))
+	http.HandleFunc("/dev/groups", func(w http.ResponseWriter, r *http.Request) {
+		GroupListHandler(w, r, languageGroups)
+	})
+	http.HandleFunc("/dev/", func(w http.ResponseWriter, r *http.Request) {
+		TranslationHandler(w, r)
+	})
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
-func TranslationHandler(w http.ResponseWriter, r *http.Request) error {
+func TranslationHandler(w http.ResponseWriter, r *http.Request) {
 	apiKey := os.Getenv("YANDEX_API_KEY")
 
 	translationRequestValues, ok := r.URL.Query()["translate"]
@@ -87,22 +83,4 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request) error {
 	if _, err := io.WriteString(w, response); err != nil {
 		http.Error(w, "Response output error", http.StatusInternalServerError)
 	}
-	return nil
-}
-
-func GroupListHandler(w http.ResponseWriter, r *http.Request) error {
-	groups := []l.LanguageGroup{turkicLanguagesGroup, romanianLanguagesGroup}
-
-	bytes, err := json.Marshal(groups)
-	if err != nil {
-		http.Error(w, "Marshalling error", http.StatusInternalServerError)
-		return err
-	}
-
-	if _, err := w.Write(bytes); err != nil {
-		http.Error(w, "Response write error", http.StatusInternalServerError)
-		return err
-	}
-
-	return nil
 }
