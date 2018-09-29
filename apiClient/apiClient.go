@@ -28,7 +28,7 @@ func getRequest(w, targetLang, apiKey string) TranslationResult {
 	req, err := http.NewRequest("GET", urlString, nil)
 	if err != nil {
 		log.Println("Request initialization error: ", err)
-		return TranslationResult{Code: http.StatusInternalServerError, Message: "Request Initialization Error", Text: []string{""}}
+		return getTranslationResultErrorString("Request initialization error")
 	}
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -36,21 +36,21 @@ func getRequest(w, targetLang, apiKey string) TranslationResult {
 
 	if err != nil {
 		log.Println("Request execution error: ", err)
-		return TranslationResult{Code: http.StatusInternalServerError, Message: "Request Execution Error", Text: []string{""}}
+		return getTranslationResultErrorString("Request execution error")
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 
 	if err != nil {
 		log.Println("I/O Read Error: ", err)
-		return TranslationResult{Code: http.StatusInternalServerError, Message: "I/O Read Error", Text: []string{""}}
+		return getTranslationResultErrorString("I/O Read Error")
 	}
 
 	var data TranslationResult
 
 	if err := json.Unmarshal(body, &data); err != nil {
 		log.Println("Unmarshalling error: ", err)
-		return TranslationResult{Code: http.StatusInternalServerError, Message: "Unmarshalling Error", Text: []string{""}}
+		return getTranslationResultErrorString("Unmarshalling error")
 	}
 
 	defer resp.Body.Close()
@@ -59,11 +59,15 @@ func getRequest(w, targetLang, apiKey string) TranslationResult {
 		switch data.Code {
 		case 401:
 			log.Println("Invalid API Key")
-			return TranslationResult{Code: http.StatusInternalServerError, Message: "Invalid API Key", Text: []string{""}}
+			return getTranslationResultErrorString("Invalid API Key")
 		default:
 			log.Printf("Error – code is %d", data.Code)
 		}
 	}
 
 	return data
+}
+
+func getTranslationResultErrorString(err string) TranslationResult {
+	return TranslationResult{Code: http.StatusInternalServerError, Lang: "", Message: err, Text: []string{""}}
 }

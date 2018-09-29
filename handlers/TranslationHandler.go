@@ -54,6 +54,8 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 		results = append(results, <-ch)
 	}
 
+	results = getRearrangedResults(results, desiredGroup.Languages)
+
 	translatedStrings := []string{}
 
 	for i := range results {
@@ -72,4 +74,18 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 	if _, err := io.WriteString(w, text); err != nil {
 		http.Error(w, "Response output error", http.StatusInternalServerError)
 	}
+}
+
+func getRearrangedResults(res []TranslationResult, langs []Language) []TranslationResult {
+	arrangedResults := []TranslationResult{}
+
+	for i, lang := range langs {
+		currentResult := res[i]
+		currentResultLanguageCode := strings.Split(currentResult.Lang, "-")[1]
+		if lang.Code == currentResultLanguageCode {
+			arrangedResults = append(arrangedResults, currentResult)
+			continue
+		}
+	}
+	return arrangedResults
 }
