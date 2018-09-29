@@ -14,6 +14,7 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 	if !ok || len(translationRequestValues[0]) < 1 {
 		log.Println("Invalid request")
 		http.Error(w, "Bad Request", http.StatusBadRequest)
+		return
 	}
 	translationRequestValue := translationRequestValues[0]
 
@@ -26,16 +27,16 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 		translationRequestGroupValue = translationRequestGroupValues[0]
 	}
 
-	var desiredGroup LanguageGroup
+	var desiredGroup *LanguageGroup
 
 	for i := range languageGroups {
 		if strings.ToLower(languageGroups[i].Name) == strings.ToLower(translationRequestGroupValue) {
-			desiredGroup = languageGroups[i]
+			*desiredGroup = languageGroups[i]
 			break
 		}
 	}
 
-	if &desiredGroup == nil {
+	if desiredGroup == nil {
 		http.Error(w, "No such language group found", http.StatusInternalServerError)
 	}
 
