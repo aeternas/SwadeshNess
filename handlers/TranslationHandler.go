@@ -38,6 +38,7 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 
 	if desiredGroup == nil {
 		http.Error(w, "No such language group found", http.StatusInternalServerError)
+		return
 	}
 
 	ch := make(chan string)
