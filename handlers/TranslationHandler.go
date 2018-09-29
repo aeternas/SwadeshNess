@@ -24,6 +24,7 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 	translationRequestGroupValues, ok := r.URL.Query()["group"]
 	if !ok || len(translationRequestValues[0]) < 1 {
 		http.Error(w, "Please provide `group` key e.g. \"Romanic\", \"Turkic\", \"CJKV Family\"", http.StatusBadRequest)
+		return
 	} else {
 		translationRequestGroupValue = translationRequestGroupValues[0]
 	}
