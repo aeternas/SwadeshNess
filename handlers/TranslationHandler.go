@@ -2,6 +2,7 @@ package handlers
 
 import (
 	api "github.com/aeternas/SwadeshNess/apiClient"
+	. "github.com/aeternas/SwadeshNess/dto"
 	. "github.com/aeternas/SwadeshNess/language"
 	"io"
 	"log"
@@ -14,6 +15,7 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 	if !ok || len(translationRequestValues[0]) < 1 {
 		log.Println("Invalid request")
 		http.Error(w, "Bad Request", http.StatusBadRequest)
+		return
 	}
 	translationRequestValue := translationRequestValues[0]
 
@@ -35,24 +37,38 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 		}
 	}
 
-	if &desiredGroup == nil {
-		http.Error(w, "No such language group found", http.StatusInternalServerError)
+	if desiredGroup.Name == "" {
+		http.Error(w, "No such language group found", http.StatusBadRequest)
+		return
 	}
 
-	ch := make(chan string)
+	ch := make(chan TranslationResult)
 
 	for _, lang := range desiredGroup.Languages {
 		go api.MakeRequest(translationRequestValue, apiKey, lang, ch)
 	}
 
-	s := []string{}
+	results := []TranslationResult{}
 	for range desiredGroup.Languages {
-		s = append(s, <-ch)
+		results = append(results, <-ch)
 	}
 
-	response := strings.Join(s, "\n")
+	translatedStrings := []string{}
 
-	if _, err := io.WriteString(w, response); err != nil {
+	for i := range results {
+		result := results[i]
+		if result.Code != 200 {
+			http.Error(w, result.Message, result.Code)
+			return
+		}
+
+		translatedString := strings.Join(result.Text, ",")
+		translatedStrings = append(translatedStrings, translatedString)
+	}
+
+	text := strings.Join(translatedStrings, "\n")
+
+	if _, err := io.WriteString(w, text); err != nil {
 		http.Error(w, "Response output error", http.StatusInternalServerError)
 	}
 }

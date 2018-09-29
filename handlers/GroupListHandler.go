@@ -10,9 +10,11 @@ func GroupListHandler(w http.ResponseWriter, r *http.Request, groups []LanguageG
 	bytes, err := json.Marshal(groups)
 	if err != nil {
 		http.Error(w, "Marshalling error", http.StatusInternalServerError)
+		return
 	}
 
 	if _, err := w.Write(bytes); err != nil {
 		http.Error(w, "Response write error", http.StatusInternalServerError)
+		return
 	}
 }

@@ -2,7 +2,6 @@ package apiClient
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	. "github.com/aeternas/SwadeshNess/dto"
 	. "github.com/aeternas/SwadeshNess/language"
@@ -10,19 +9,15 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"strings"
 	"time"
 )
 
-func MakeRequest(w string, apiKey string, lang Language, ch chan<- string) {
-	req, _, err := getRequest(w, lang.Code, apiKey)
-	if err != nil {
-		log.Println("fail")
-	}
-	ch <- req
+func MakeRequest(w string, apiKey string, lang Language, ch chan<- TranslationResult) {
+	res := getRequest(w, lang.Code, apiKey)
+	ch <- res
 }
 
-func getRequest(w, targetLang, apiKey string) (result string, errorCode int, resultErr error) {
+func getRequest(w, targetLang, apiKey string) TranslationResult {
 
 	client := &http.Client{Timeout: 10 * time.Second}
 
@@ -33,7 +28,7 @@ func getRequest(w, targetLang, apiKey string) (result string, errorCode int, res
 	req, err := http.NewRequest("GET", urlString, nil)
 	if err != nil {
 		log.Println("Request initialization error: ", err)
-		return "", 500, err
+		return TranslationResult{Code: http.StatusInternalServerError, Message: "Request Initialization Error", Text: []string{""}}
 	}
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -41,21 +36,21 @@ func getRequest(w, targetLang, apiKey string) (result string, errorCode int, res
 
 	if err != nil {
 		log.Println("Request execution error: ", err)
-		return "", 500, err
+		return TranslationResult{Code: http.StatusInternalServerError, Message: "Request Execution Error", Text: []string{""}}
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 
 	if err != nil {
 		log.Println("I/O Read Error: ", err)
-		return "", 500, err
+		return TranslationResult{Code: http.StatusInternalServerError, Message: "I/O Read Error", Text: []string{""}}
 	}
 
 	var data TranslationResult
 
 	if err := json.Unmarshal(body, &data); err != nil {
 		log.Println("Unmarshalling error: ", err)
-		return "", 500, err
+		return TranslationResult{Code: http.StatusInternalServerError, Message: "Unmarshalling Error", Text: []string{""}}
 	}
 
 	defer resp.Body.Close()
@@ -64,11 +59,11 @@ func getRequest(w, targetLang, apiKey string) (result string, errorCode int, res
 		switch data.Code {
 		case 401:
 			log.Println("Invalid API Key")
-			return "InvalidApiKey", data.Code, errors.New("InvalidApiKey")
+			return TranslationResult{Code: http.StatusInternalServerError, Message: "Invalid API Key", Text: []string{""}}
 		default:
 			log.Printf("Error – code is %d", data.Code)
 		}
 	}
 
-	return strings.Join(data.Text, ","), data.Code, nil
+	return data
 }
