@@ -31,3 +31,5 @@ Merhaba Dünya
 Full list of languages group could be retrieved on `/groups` endpoint
 
 P.S.: Yep, I am aware that CJKV is about characters not language :)
+
+P.P.S: Powered by [«Яндекс.Переводчик»](http://translate.yandex.ru/)
