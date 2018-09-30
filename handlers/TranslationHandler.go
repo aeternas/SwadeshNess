@@ -21,14 +21,10 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 	}
 	translationRequestValue := translationRequestValues[0]
 
-	var translationRequestGroupValue []string
-
 	translationRequestGroupValues, ok := r.URL.Query()["group"]
 	if !ok || len(translationRequestValues[0]) < 1 {
 		http.Error(w, "Please provide `group` key e.g. \"Romanic\", \"Turkic\", \"CJKV Family\"", http.StatusBadRequest)
 		return
-	} else {
-		translationRequestGroupValue = translationRequestGroupValues
 	}
 
 	var sourceLanguage string
@@ -41,10 +37,10 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 	}
 
 	var translatedStrings []string
-	for _, lang := range translationRequestValue {
+	for _, lang := range translationRequestGroupValues {
 		res, err := getTranslation(translationRequestValue, sourceLanguage, lang, languageGroups, apiKey)
 		if err != nil {
-			translatedStrings = append(translatedStrings, fmt.Sprintf("Failed to translated language: %s", lang.Code))
+			translatedStrings = append(translatedStrings, fmt.Sprintf("Failed to translated language: %s", lang))
 		} else {
 			translatedStrings = append(translatedStrings, res)
 		}
