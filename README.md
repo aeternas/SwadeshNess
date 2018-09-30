@@ -1,2 +1,2 @@
 # SwadeshNess
-Backend for Swadesh lists creation
+Backend for Swadesh-like lists creation
