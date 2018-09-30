@@ -12,14 +12,14 @@ var (
 	turkicLanguages      = []Language{{FullName: "Tatar", Code: "tt"}, {FullName: "Bashkort", Code: "ba"}, {FullName: "Azerbaijanian", Code: "az"}, {FullName: "Turkish", Code: "tr"}}
 	turkicLanguagesGroup = LanguageGroup{Name: "Turkic", Languages: turkicLanguages}
 
-	romanianLanguages      = []Language{{FullName: "French", Code: "fr"}, {FullName: "Spanish", Code: "es"}, {FullName: "Italian", Code: "it"}, {FullName: "Romanian", Code: "ro"}}
-	romanianLanguagesGroup = LanguageGroup{Name: "Romanian", Languages: romanianLanguages}
+	romanianLanguages     = []Language{{FullName: "French", Code: "fr"}, {FullName: "Spanish", Code: "es"}, {FullName: "Italian", Code: "it"}, {FullName: "Romanian", Code: "ro"}}
+	romanicLanguagesGroup = LanguageGroup{Name: "Romanic", Languages: romanianLanguages}
 
 	cjkvLanguages = []Language{{FullName: "Mandarin", Code: "zh"}, {FullName: "Japanese", Code: "ja"}, {FullName: "Vietnamese", Code: "vi"}}
 
 	cjkvLanguagesGroup = LanguageGroup{Name: "CJKV Family", Languages: cjkvLanguages}
 
-	languageGroups = []LanguageGroup{turkicLanguagesGroup, romanianLanguagesGroup, cjkvLanguagesGroup}
+	languageGroups = []LanguageGroup{turkicLanguagesGroup, romanicLanguagesGroup, cjkvLanguagesGroup}
 )
 
 func main() {
