@@ -40,7 +40,7 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 	for _, lang := range translationRequestGroupValues {
 		res, err := getTranslation(translationRequestValue, sourceLanguage, lang, languageGroups, apiKey)
 		if err != nil {
-			translatedStrings = append(translatedStrings, fmt.Sprintf("Failed to translated language: %s", lang))
+			translatedStrings = append(translatedStrings, fmt.Sprintf("Failed to process language group: %s", lang))
 		} else {
 			translatedStrings = append(translatedStrings, res)
 		}
