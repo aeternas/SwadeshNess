@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"errors"
+	"fmt"
 	api "github.com/aeternas/SwadeshNess/apiClient"
 	. "github.com/aeternas/SwadeshNess/dto"
 	. "github.com/aeternas/SwadeshNess/language"
@@ -19,14 +21,10 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 	}
 	translationRequestValue := translationRequestValues[0]
 
-	var translationRequestGroupValue string
-
 	translationRequestGroupValues, ok := r.URL.Query()["group"]
 	if !ok || len(translationRequestValues[0]) < 1 {
 		http.Error(w, "Please provide `group` key e.g. \"Romanic\", \"Turkic\", \"CJKV Family\"", http.StatusBadRequest)
 		return
-	} else {
-		translationRequestGroupValue = translationRequestGroupValues[0]
 	}
 
 	var sourceLanguage string
@@ -38,18 +36,34 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 		sourceLanguage = sourceLanguageValues[0]
 	}
 
-	var desiredGroup LanguageGroup
+	var translatedStrings []string
+	for _, lang := range translationRequestGroupValues {
+		res, err := getTranslation(translationRequestValue, sourceLanguage, lang, languageGroups, apiKey)
+		if err != nil {
+			translatedStrings = append(translatedStrings, fmt.Sprintf("Failed to translated language: %s", lang))
+		} else {
+			translatedStrings = append(translatedStrings, res)
+		}
+	}
 
-	for i := range languageGroups {
-		if strings.ToLower(languageGroups[i].Name) == strings.ToLower(translationRequestGroupValue) {
-			desiredGroup = languageGroups[i]
+	text := strings.Join(translatedStrings, "\n")
+
+	if _, err := io.WriteString(w, text); err != nil {
+		http.Error(w, "Response output error", http.StatusInternalServerError)
+	}
+}
+
+func getTranslation(translationRequestValue, sourceLanguage, targetLanguage string, availableLanguageGroups []LanguageGroup, apiKey string) (string, error) {
+	var desiredGroup LanguageGroup
+	for i := range availableLanguageGroups {
+		if strings.ToLower(availableLanguageGroups[i].Name) == strings.ToLower(targetLanguage) {
+			desiredGroup = availableLanguageGroups[i]
 			break
 		}
 	}
 
 	if desiredGroup.Name == "" {
-		http.Error(w, "No such language group found", http.StatusBadRequest)
-		return
+		return "", errors.New("No such language group found")
 	}
 
 	ch := make(chan TranslationResult)
@@ -70,19 +84,14 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 	for i := range results {
 		result := results[i]
 		if result.Code != 200 {
-			http.Error(w, result.Message, result.Code)
-			return
+			return "", errors.New(result.Message)
 		}
 
 		translatedString := strings.Join(result.Text, ",")
 		translatedStrings = append(translatedStrings, translatedString)
 	}
 
-	text := strings.Join(translatedStrings, "\n")
-
-	if _, err := io.WriteString(w, text); err != nil {
-		http.Error(w, "Response output error", http.StatusInternalServerError)
-	}
+	return strings.Join(translatedStrings, "\n"), nil
 }
 
 func getRearrangedResults(res []TranslationResult, langs []Language) []TranslationResult {
