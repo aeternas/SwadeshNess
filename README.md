@@ -1,13 +1,14 @@
 # SwadeshNess
 Backend for Swadesh-like lists creation
 
-Powered by [«Яндекс.Переводчик»](http://translate.yandex.ru/) so you need to acquire an [API key](https://translate.yandex.ru/developers/keys) and setup envirnoment variable:
+Read about Swadesh lists on [Wikipedia](https://en.wikipedia.org/wiki/Swadesh_list?oldformat=true)
 
+Powered by [«Яндекс.Переводчик»](http://translate.yandex.ru/) so you need to acquire an [API key](https://translate.yandex.ru/developers/keys) and setup envirnoment variable:
 ```
 export YANDEX_API_KEY=<your key>
 ```
 
-Read about Swadesh lists on [Wikipedia](https://en.wikipedia.org/wiki/Swadesh_list?oldformat=true)
+Example queries:
 
 ```
 $ curl "localhost/?translate=Hello+World&group=Romance"
