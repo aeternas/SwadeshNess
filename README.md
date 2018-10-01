@@ -1,6 +1,12 @@
 # SwadeshNess
 Backend for Swadesh-like lists creation
 
+Powered by [«Яндекс.Переводчик»](http://translate.yandex.ru/) so you need to acquire an [API key](https://translate.yandex.ru/developers/keys) and setup envirnoment variable:
+
+```
+export YANDEX_API_KEY=<your key>
+```
+
 Read about Swadesh lists on [Wikipedia](https://en.wikipedia.org/wiki/Swadesh_list?oldformat=true)
 
 ```
@@ -29,5 +35,3 @@ Merhaba Dünya
 Full list of languages group could be retrieved on `/groups` endpoint
 
 P.S.: Yep, I am aware that CJKV is about characters not language :)
-
-P.P.S: Powered by [«Яндекс.Переводчик»](http://translate.yandex.ru/)
