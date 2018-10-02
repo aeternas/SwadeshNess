@@ -20,6 +20,14 @@ jobs:
     working_directory: /go/src/github.com/aeternas/SwadeshNess
     steps:
       - checkout
+      - restore_cache:
+          keys:
+          # This branch if available
+          - v1-dep-{{ .Branch }}-
+          # Default branch if not
+          - v1-dep-master-
+          # Any branch if there are none on the default branch - this should be unnecessary if you have your default branch configured correctly
+          - v1-dep-
 
       # specify any bash command here prefixed with `run: `
       - run: go get -v -t -d ./...
