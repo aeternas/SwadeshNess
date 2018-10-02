@@ -13,6 +13,15 @@ import (
 	"time"
 )
 
+var (
+	apiClient ApiClient
+)
+
+func init() {
+	httpApiClient := &HTTPApiClient{Client: &http.Client{Timeout: 10 * time.Second}}
+	apiClient = httpApiClient
+}
+
 func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups []LanguageGroup, apiKey string) {
 	translationRequestValues, ok := r.URL.Query()["translate"]
 	if !ok || len(translationRequestValues[0]) < 1 {
@@ -56,13 +65,6 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 
 func getTranslation(translationRequestValue, sourceLanguage, targetLanguage string, availableLanguageGroups []LanguageGroup, apiKey string) (string, error) {
 	var desiredGroup LanguageGroup
-
-	// TODO: Move to properties
-
-	var apiClient ApiClient
-	httpApiClient := &HTTPApiClient{Client: &http.Client{Timeout: 10 * time.Second}}
-
-	apiClient = httpApiClient
 
 	for i := range availableLanguageGroups {
 		if strings.ToLower(availableLanguageGroups[i].Name) == strings.ToLower(targetLanguage) {
