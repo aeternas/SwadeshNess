@@ -60,7 +60,7 @@ func getTranslation(translationRequestValue, sourceLanguage, targetLanguage stri
 	// TODO: Move to properties
 
 	var apiClient ApiClient
-	httpApiClient := &HTTPApiClient{&http.Client{Timeout: 10 * time.Second}}
+	httpApiClient := &HTTPApiClient{Client: &http.Client{Timeout: 10 * time.Second}}
 
 	apiClient = httpApiClient
 
