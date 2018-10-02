@@ -5,6 +5,7 @@ import (
 	"fmt"
 	. "github.com/aeternas/SwadeshNess/apiClient"
 	. "github.com/aeternas/SwadeshNess/dto"
+	. "github.com/aeternas/SwadeshNess/httpApiClient"
 	. "github.com/aeternas/SwadeshNess/language"
 	"io"
 	"log"
