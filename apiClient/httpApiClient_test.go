@@ -3,8 +3,10 @@ package apiClient
 import (
 	. "github.com/aeternas/SwadeshNess/dto"
 	l "github.com/aeternas/SwadeshNess/language"
+	"net/http"
 	"os"
 	"testing"
+	"time"
 )
 
 func TestMakeRequest(t *testing.T) {
@@ -14,7 +16,13 @@ func TestMakeRequest(t *testing.T) {
 
 	turkishLanguage := l.Language{FullName: "Turkish", Code: "tr"}
 
-	go MakeRequest("man", apiKey, "en", turkishLanguage, ch)
+	var apiClient ApiClient
+
+	httpApiClient := &HTTPApiClient{Client: &http.Client{Timeout: 10 * time.Second}}
+
+	apiClient = httpApiClient
+
+	go apiClient.MakeRequest("man", apiKey, "en", turkishLanguage, ch)
 
 	s := []TranslationResult{}
 

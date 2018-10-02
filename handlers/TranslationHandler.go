@@ -3,13 +3,14 @@ package handlers
 import (
 	"errors"
 	"fmt"
-	api "github.com/aeternas/SwadeshNess/apiClient"
+	. "github.com/aeternas/SwadeshNess/apiClient"
 	. "github.com/aeternas/SwadeshNess/dto"
 	. "github.com/aeternas/SwadeshNess/language"
 	"io"
 	"log"
 	"net/http"
 	"strings"
+	"time"
 )
 
 func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups []LanguageGroup, apiKey string) {
@@ -55,6 +56,14 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 
 func getTranslation(translationRequestValue, sourceLanguage, targetLanguage string, availableLanguageGroups []LanguageGroup, apiKey string) (string, error) {
 	var desiredGroup LanguageGroup
+
+	// TODO: Move to properties
+
+	var apiClient ApiClient
+	httpApiClient := &HTTPApiClient{Client: &http.Client{Timeout: 10 * time.Second}}
+
+	apiClient = httpApiClient
+
 	for i := range availableLanguageGroups {
 		if strings.ToLower(availableLanguageGroups[i].Name) == strings.ToLower(targetLanguage) {
 			desiredGroup = availableLanguageGroups[i]
@@ -69,7 +78,7 @@ func getTranslation(translationRequestValue, sourceLanguage, targetLanguage stri
 	ch := make(chan TranslationResult)
 
 	for _, lang := range desiredGroup.Languages {
-		go api.MakeRequest(translationRequestValue, apiKey, sourceLanguage, lang, ch)
+		go apiClient.MakeRequest(translationRequestValue, apiKey, sourceLanguage, lang, ch)
 	}
 
 	results := []TranslationResult{}
