@@ -1,6 +1,7 @@
-package apiClient
+package httpApiClient
 
 import (
+	. "github.com/aeternas/SwadeshNess/apiClient"
 	. "github.com/aeternas/SwadeshNess/dto"
 	l "github.com/aeternas/SwadeshNess/language"
 	"net/http"
