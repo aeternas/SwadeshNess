@@ -81,7 +81,7 @@ func getTranslation(translationRequestValue, sourceLanguage, targetLanguage stri
 	ch := make(chan YandexTranslationResult)
 
 	for _, lang := range desiredGroup.Languages {
-		go apiClient.MakeRequest(translationRequestValue, apiKey, sourceLanguage, lang, ch)
+		go apiClient.MakeTranslationRequest(translationRequestValue, apiKey, sourceLanguage, lang, ch)
 	}
 
 	results := []YandexTranslationResult{}
