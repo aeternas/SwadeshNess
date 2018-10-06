@@ -1,6 +1,6 @@
 package translation
 
-type TranslationResult struct {
+type YandexTranslationResult struct {
 	Code    int
 	Lang    string
 	Message string

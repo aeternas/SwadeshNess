@@ -78,13 +78,13 @@ func getTranslation(translationRequestValue, sourceLanguage, targetLanguage stri
 		return "", errors.New("No such language group found")
 	}
 
-	ch := make(chan TranslationResult)
+	ch := make(chan YandexTranslationResult)
 
 	for _, lang := range desiredGroup.Languages {
 		go apiClient.MakeRequest(translationRequestValue, apiKey, sourceLanguage, lang, ch)
 	}
 
-	results := []TranslationResult{}
+	results := []YandexTranslationResult{}
 	for range desiredGroup.Languages {
 		results = append(results, <-ch)
 	}
@@ -106,8 +106,8 @@ func getTranslation(translationRequestValue, sourceLanguage, targetLanguage stri
 	return strings.Join(translatedStrings, "\n"), nil
 }
 
-func getRearrangedResults(res []TranslationResult, langs []Language) []TranslationResult {
-	arrangedResults := []TranslationResult{}
+func getRearrangedResults(res []YandexTranslationResult, langs []Language) []YandexTranslationResult {
+	arrangedResults := []YandexTranslationResult{}
 
 	for _, desiredLang := range langs {
 		for _, resultLang := range res {

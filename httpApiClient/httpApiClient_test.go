@@ -13,7 +13,7 @@ import (
 func TestMakeRequest(t *testing.T) {
 	apiKey := os.Getenv("YANDEX_API_KEY")
 
-	ch := make(chan TranslationResult)
+	ch := make(chan YandexTranslationResult)
 
 	turkishLanguage := l.Language{FullName: "Turkish", Code: "tr"}
 
@@ -25,7 +25,7 @@ func TestMakeRequest(t *testing.T) {
 
 	go apiClient.MakeRequest("man", apiKey, "en", turkishLanguage, ch)
 
-	s := []TranslationResult{}
+	s := []YandexTranslationResult{}
 
 	s = append(s, <-ch)
 

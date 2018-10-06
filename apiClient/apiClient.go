@@ -6,5 +6,5 @@ import (
 )
 
 type ApiClient interface {
-	MakeRequest(w, apiKey, sourceLang string, targetLang Language, ch chan<- TranslationResult)
+	MakeRequest(w, apiKey, sourceLang string, targetLang Language, ch chan<- YandexTranslationResult)
 }
