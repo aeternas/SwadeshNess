@@ -15,12 +15,12 @@ type HTTPApiClient struct {
 	Client *http.Client
 }
 
-func (c *HTTPApiClient) MakeRequest(w, apiKey, sourceLang string, targetLang Language, ch chan<- TranslationResult) {
+func (c *HTTPApiClient) MakeRequest(w, apiKey, sourceLang string, targetLang Language, ch chan<- YandexTranslationResult) {
 	res := getRequest(c.Client, w, sourceLang, targetLang.Code, apiKey)
 	ch <- res
 }
 
-func getRequest(c *http.Client, w, sourceLang, targetLang, apiKey string) TranslationResult {
+func getRequest(c *http.Client, w, sourceLang, targetLang, apiKey string) YandexTranslationResult {
 	queryString := url.QueryEscape(w)
 
 	urlString := fmt.Sprintf("https://translate.yandex.net/api/v1.5/tr.json/translate?key=%s&lang=%s-%s&text=%s", apiKey, sourceLang, targetLang, queryString)
@@ -46,7 +46,7 @@ func getRequest(c *http.Client, w, sourceLang, targetLang, apiKey string) Transl
 		return getTranslationResultErrorString("I/O Read Error")
 	}
 
-	var data TranslationResult
+	var data YandexTranslationResult
 
 	if err := json.Unmarshal(body, &data); err != nil {
 		log.Println("Unmarshalling error: ", err)
@@ -68,6 +68,6 @@ func getRequest(c *http.Client, w, sourceLang, targetLang, apiKey string) Transl
 	return data
 }
 
-func getTranslationResultErrorString(err string) TranslationResult {
-	return TranslationResult{Code: http.StatusInternalServerError, Lang: "", Message: err, Text: []string{""}}
+func getTranslationResultErrorString(err string) YandexTranslationResult {
+	return YandexTranslationResult{Code: http.StatusInternalServerError, Lang: "", Message: err, Text: []string{""}}
 }
