@@ -1,9 +1,15 @@
 package translation
 
-import (
-	. "github.com/aeternas/SwadeshNess/language"
-)
+type SwadeshTranslation struct {
+	Results []GroupTranslation
+}
 
-type SwadeshTranslationResult struct {
-	Groups []LanguageGroup
+type LanguageTranslation struct {
+	Name        string
+	Translation string
+}
+
+type GroupTranslation struct {
+	Name    string
+	Results []LanguageTranslation
 }
