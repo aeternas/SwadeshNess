@@ -23,7 +23,7 @@ func TestMakeRequest(t *testing.T) {
 
 	apiClient = httpApiClient
 
-	go apiClient.MakeRequest("man", apiKey, "en", turkishLanguage, ch)
+	go apiClient.MakeTranslationRequest("man", apiKey, "en", turkishLanguage, ch)
 
 	s := []YandexTranslationResult{}
 

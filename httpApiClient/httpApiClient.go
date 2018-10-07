@@ -15,7 +15,7 @@ type HTTPApiClient struct {
 	Client *http.Client
 }
 
-func (c *HTTPApiClient) MakeRequest(w, apiKey, sourceLang string, targetLang Language, ch chan<- YandexTranslationResult) {
+func (c *HTTPApiClient) MakeTranslationRequest(w, apiKey, sourceLang string, targetLang Language, ch chan<- YandexTranslationResult) {
 	res := getRequest(c.Client, w, sourceLang, targetLang.Code, apiKey)
 	ch <- res
 }

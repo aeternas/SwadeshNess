@@ -1,13 +1,13 @@
 package handlers
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	. "github.com/aeternas/SwadeshNess/apiClient"
 	. "github.com/aeternas/SwadeshNess/dto"
 	. "github.com/aeternas/SwadeshNess/httpApiClient"
 	. "github.com/aeternas/SwadeshNess/language"
-	"io"
 	"log"
 	"net/http"
 	"strings"
@@ -47,24 +47,29 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 		sourceLanguage = sourceLanguageValues[0]
 	}
 
-	var translatedStrings []string
+	groups := []GroupTranslation{}
 	for _, lang := range translationRequestGroupValues {
 		res, err := getTranslation(translationRequestValue, sourceLanguage, lang, languageGroups, apiKey)
 		if err != nil {
-			translatedStrings = append(translatedStrings, fmt.Sprintf("Failed to process language group: %s", lang))
+			http.Error(w, fmt.Sprintf("Failed to process language group: %s", lang), http.StatusInternalServerError)
+			return
 		} else {
-			translatedStrings = append(translatedStrings, res)
+			groups = append(groups, res.Results[0])
 		}
 	}
 
-	text := strings.Join(translatedStrings, "\n")
+	swadeshTranslation := SwadeshTranslation{Results: groups}
 
-	if _, err := io.WriteString(w, text); err != nil {
+	bytes, err := json.Marshal(swadeshTranslation)
+	if err != nil {
+		http.Error(w, "Failed to marshall translation result response", http.StatusInternalServerError)
+	}
+	if _, err := w.Write(bytes); err != nil {
 		http.Error(w, "Response output error", http.StatusInternalServerError)
 	}
 }
 
-func getTranslation(translationRequestValue, sourceLanguage, targetLanguage string, availableLanguageGroups []LanguageGroup, apiKey string) (string, error) {
+func getTranslation(translationRequestValue, sourceLanguage, targetLanguage string, availableLanguageGroups []LanguageGroup, apiKey string) (SwadeshTranslation, error) {
 	var desiredGroup LanguageGroup
 
 	for i := range availableLanguageGroups {
@@ -75,13 +80,13 @@ func getTranslation(translationRequestValue, sourceLanguage, targetLanguage stri
 	}
 
 	if desiredGroup.Name == "" {
-		return "", errors.New("No such language group found")
+		return SwadeshTranslation{Results: []GroupTranslation{}}, errors.New("No such language group found")
 	}
 
 	ch := make(chan YandexTranslationResult)
 
 	for _, lang := range desiredGroup.Languages {
-		go apiClient.MakeRequest(translationRequestValue, apiKey, sourceLanguage, lang, ch)
+		go apiClient.MakeTranslationRequest(translationRequestValue, apiKey, sourceLanguage, lang, ch)
 	}
 
 	results := []YandexTranslationResult{}
@@ -89,35 +94,28 @@ func getTranslation(translationRequestValue, sourceLanguage, targetLanguage stri
 		results = append(results, <-ch)
 	}
 
-	results = getRearrangedResults(results, desiredGroup.Languages)
+	swadeshResults := translateToSwadeshTranslation(results, desiredGroup)
 
-	translatedStrings := []string{}
-
-	for i := range results {
-		result := results[i]
-		if result.Code != 200 {
-			return "", errors.New(result.Message)
-		}
-
-		translatedString := strings.Join(result.Text, ",")
-		translatedStrings = append(translatedStrings, translatedString)
-	}
-
-	return strings.Join(translatedStrings, "\n"), nil
+	return swadeshResults, nil
 }
 
-func getRearrangedResults(res []YandexTranslationResult, langs []Language) []YandexTranslationResult {
-	arrangedResults := []YandexTranslationResult{}
+func translateToSwadeshTranslation(res []YandexTranslationResult, desiredGroup LanguageGroup) SwadeshTranslation {
 
-	for _, desiredLang := range langs {
-		for _, resultLang := range res {
-			resultLangCode := strings.Split(resultLang.Lang, "-")[1]
-			if desiredLang.Code == resultLangCode {
-				arrangedResults = append(arrangedResults, resultLang)
+	languageTranslationResult := []LanguageTranslation{}
+
+	for _, desiredLang := range desiredGroup.Languages {
+		for _, yandexResult := range res {
+			resultLangCode := strings.Split(yandexResult.Lang, "-")[1]
+			if desiredLang.Code == resultLangCode && yandexResult.Code == 200 {
+				languageTranslationResult = append(languageTranslationResult, LanguageTranslation{Name: desiredLang.FullName, Translation: strings.Join(yandexResult.Text, ",")})
 				continue
 			}
 
 		}
 	}
-	return arrangedResults
+
+	groupTranslationResult := []GroupTranslation{{Name: desiredGroup.Name, Results: languageTranslationResult}}
+	swadeshTranslation := SwadeshTranslation{Results: groupTranslationResult}
+
+	return swadeshTranslation
 }
