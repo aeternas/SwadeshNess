@@ -15,7 +15,7 @@ var (
 	romanianLanguages     = []Language{{FullName: "French", Code: "fr"}, {FullName: "Spanish", Code: "es"}, {FullName: "Italian", Code: "it"}, {FullName: "Romanian", Code: "ro"}}
 	romanicLanguagesGroup = LanguageGroup{Name: "Romanic", Languages: romanianLanguages}
 
-	slavicLanguages      = []Language{{FullName: "Ukrainian", Code: "uk"}, {FullName: "Belorussian", Code: "be"}, {FullName: "Serbian", Code: "sr"}}
+	slavicLanguages      = []Language{{FullName: "Russian", Code: "ru"}, {FullName: "Ukrainian", Code: "uk"}, {FullName: "Belorussian", Code: "be"}, {FullName: "Serbian", Code: "sr"}}
 	slavicLanguagesGroup = LanguageGroup{Name: "Slavic", Languages: slavicLanguages}
 
 	cjkvLanguages = []Language{{FullName: "Mandarin", Code: "zh"}, {FullName: "Japanese", Code: "ja"}, {FullName: "Vietnamese", Code: "vi"}}
