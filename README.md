@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/aeternas/SwadeshNess.svg?branch=development)](https://travis-ci.org/aeternas/SwadeshNess)
+
 # SwadeshNess
 Backend for Swadesh-like lists creation. More information about Swadesh lists on [Wikipedia](https://en.wikipedia.org/wiki/Swadesh_list?oldformat=true)
 
