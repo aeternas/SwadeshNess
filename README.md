@@ -11,28 +11,85 @@ export YANDEX_API_KEY=<your key>
 Example queries:
 
 ```
-$ curl "localhost/?translate=Hello+World&group=Romance"
+$ curl "localhost/?translate=Hello+World&group=Romanic" | jq .
 
-Bonjour Tout Le Monde
-Hola Mundo
-Ciao Mondo
-Salut Lume
+{
+  "results": [
+    {
+      "name": "Romanic",
+      "results": [
+        {
+          "name": "French",
+          "translation": "Bonjour Tout Le Monde"
+        },
+        {
+          "name": "Spanish",
+          "translation": "Hola Mundo"
+        },
+        {
+          "name": "Italian",
+          "translation": "Ciao Mondo"
+        },
+        {
+          "name": "Romanian",
+          "translation": "Salut Lume"
+        }
+      ]
+    }
+  ]
+}
 ```
 or process several language groups simultaneously:
 
 ```
-$ curl "localhost/?translate=Hello+World&group=Romance&group=Turkic"
-Bonjour Tout Le Monde
-Hola Mundo
-Ciao Mondo
-Salut Lume
+$ curl "localhost/?translate=Hello+World&group=Romanic&group=Turkic" | jq .
 
-Сәлам Мир
-Сәләм Донъяға
-Salam Dünya
-Merhaba Dünya
+{
+  "results": [
+    {
+      "name": "Romanic",
+      "results": [
+        {
+          "name": "French",
+          "translation": "Bonjour Tout Le Monde"
+        },
+        {
+          "name": "Spanish",
+          "translation": "Hola Mundo"
+        },
+        {
+          "name": "Italian",
+          "translation": "Ciao Mondo"
+        },
+        {
+          "name": "Romanian",
+          "translation": "Salut Lume"
+        }
+      ]
+    },
+    {
+      "name": "Turkic",
+      "results": [
+        {
+          "name": "Tatar",
+          "translation": "Сәлам Мир"
+        },
+        {
+          "name": "Bashkort",
+          "translation": "Сәләм Донъяға"
+        },
+        {
+          "name": "Azerbaijanian",
+          "translation": "Salam Dünya"
+        },
+        {
+          "name": "Turkish",
+          "translation": "Merhaba Dünya"
+        }
+      ]
+    }
+  ]
+}
 ```
 
 Full list of languages group could be retrieved on `/groups` endpoint
-
-P.S.: Yep, I am aware that CJKV is about characters not language :)
