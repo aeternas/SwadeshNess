@@ -43,6 +43,7 @@ or process several language groups simultaneously:
 
 ```
 $ curl "localhost/?translate=Hello+World&group=Romanic&group=Turkic" | jq .
+
 {
   "results": [
     {
