@@ -26,7 +26,7 @@ func init() {
 func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups []LanguageGroup, apiKey string) {
 	translationRequestValues, ok := r.URL.Query()["translate"]
 	if !ok || len(translationRequestValues[0]) < 1 {
-		log.Println("Invalid request")
+		log.Printf("Invalid Request: %s", r.URL.String())
 		http.Error(w, "Bad Request", http.StatusBadRequest)
 		return
 	}
@@ -34,6 +34,7 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 
 	translationRequestGroupValues, ok := r.URL.Query()["group"]
 	if !ok || len(translationRequestValues[0]) < 1 {
+		log.Println("No Group Requested")
 		http.Error(w, "Please provide `group` key e.g. \"Romanic\", \"Turkic\", \"CJKV Family\"", http.StatusBadRequest)
 		return
 	}
@@ -51,6 +52,7 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 	for _, lang := range translationRequestGroupValues {
 		res, err := getTranslation(translationRequestValue, sourceLanguage, lang, languageGroups, apiKey)
 		if err != nil {
+			log.Printf("Failed to process language group: %s", lang)
 			http.Error(w, fmt.Sprintf("Failed to process language group: %s", lang), http.StatusInternalServerError)
 			return
 		} else {
@@ -62,9 +64,11 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 
 	bytes, err := json.Marshal(swadeshTranslation)
 	if err != nil {
+		log.Println("Marshalling Error")
 		http.Error(w, "Failed to marshall translation result response", http.StatusInternalServerError)
 	}
 	if _, err := w.Write(bytes); err != nil {
+		log.Println("Response output error")
 		http.Error(w, "Response output error", http.StatusInternalServerError)
 	}
 }
