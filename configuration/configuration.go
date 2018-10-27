@@ -10,6 +10,7 @@ import (
 
 type Configuration struct {
 	Languages []LanguageGroup
+	ApiKey    string
 	Credits   string
 }
 
@@ -28,6 +29,8 @@ func (r *Reader) ReadConfiguration() (Configuration, error) {
 	decoder := json.NewDecoder(file)
 	configuration := Configuration{}
 	err := decoder.Decode(&configuration)
+	apiKey := os.Getenv("YANDEX_API_KEY")
+	configuration.ApiKey = apiKey
 	if err != nil {
 		log.Fatal("Unable to read database")
 		return Configuration{}, errors.New("Failed to read database")
