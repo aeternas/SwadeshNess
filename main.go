@@ -13,23 +13,24 @@ var (
 	languageGroups     []LanguageGroup
 	reader             Config.AnyReader
 	translationHandler AnyTranslationHandler
+	configuration      Config.Configuration
 )
 
-func main() {
+func init() {
 	var lReader *Config.Reader = &Config.Reader{Path: "configuration/db.json"}
-	reader = lReader
-	configuration, err := reader.ReadConfiguration()
-	if err != nil {
-		panic("Failed to read configuration")
-	}
-	languageGroups = configuration.Languages
 	apiKey := os.Getenv("YANDEX_API_KEY")
+	reader = lReader
+	lConfiguration, _ := reader.ReadConfiguration()
+	configuration = lConfiguration
+	translationHandler = TranslationHandler{ApiKey: apiKey, Credits: configuration.Credits}
+}
 
+func main() {
+	languageGroups = configuration.Languages
 	http.HandleFunc("/dev/groups", func(w http.ResponseWriter, r *http.Request) {
 		GroupListHandler(w, r, languageGroups)
 	})
 	http.HandleFunc("/dev/", func(w http.ResponseWriter, r *http.Request) {
-		translationHandler = TranslationHandler{ApiKey: apiKey, Credits: configuration.Credits}
 		translationHandler.Translate(w, r, languageGroups)
 	})
 	log.Fatal(http.ListenAndServe(":8080", nil))
