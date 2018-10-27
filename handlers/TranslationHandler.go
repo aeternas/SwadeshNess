@@ -69,7 +69,7 @@ func (th TranslationHandler) Translate(w http.ResponseWriter, r *http.Request, l
 		}
 	}
 
-	swadeshTranslation := SwadeshTranslation{Results: groups}
+	swadeshTranslation := SwadeshTranslation{Results: groups, Credits: th.Credits}
 
 	bytes, err := json.Marshal(swadeshTranslation)
 	if err != nil {
