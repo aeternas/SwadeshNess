@@ -1,25 +1,28 @@
-package httpApiClient
+package httpApiClient_test
 
 import (
 	. "github.com/aeternas/SwadeshNess/apiClient"
 	. "github.com/aeternas/SwadeshNess/dto"
-	l "github.com/aeternas/SwadeshNess/language"
-	"net/http"
-	"os"
+	. "github.com/aeternas/SwadeshNess/language"
 	"testing"
-	"time"
 )
 
+type MockHTTPApiClient struct{}
+
+func (c *MockHTTPApiClient) MakeTranslationRequest(w, apiKey, sourceLang string, targetLang Language, ch chan<- YandexTranslationResult) {
+	ch <- YandexTranslationResult{Code: 200, Lang: "en-tr", Message: "", Text: []string{"adam"}}
+}
+
 func TestMakeRequest(t *testing.T) {
-	apiKey := os.Getenv("YANDEX_API_KEY")
+	apiKey := "APIKEY"
 
 	ch := make(chan YandexTranslationResult)
 
-	turkishLanguage := l.Language{FullName: "Turkish", Code: "tr"}
+	turkishLanguage := Language{FullName: "Turkish", Code: "tr"}
 
 	var apiClient ApiClient
 
-	httpApiClient := &HTTPApiClient{Client: &http.Client{Timeout: 10 * time.Second}}
+	httpApiClient := &MockHTTPApiClient{}
 
 	apiClient = httpApiClient
 
