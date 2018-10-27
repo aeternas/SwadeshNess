@@ -10,7 +10,6 @@ import (
 )
 
 var (
-	configuration  Configuration
 	languageGroups []LanguageGroup
 )
 
