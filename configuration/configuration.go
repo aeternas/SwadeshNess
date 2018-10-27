@@ -10,6 +10,7 @@ import (
 
 type Configuration struct {
 	Languages []LanguageGroup
+	Credits   string
 }
 
 type AnyReader interface {

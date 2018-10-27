@@ -2,6 +2,7 @@ package translation
 
 type SwadeshTranslation struct {
 	Results []GroupTranslation `json:"results"`
+	Credits string             `json:"credits"`
 }
 
 type LanguageTranslation struct {

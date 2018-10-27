@@ -10,8 +10,9 @@ import (
 )
 
 var (
-	languageGroups []LanguageGroup
-	reader         Config.AnyReader
+	languageGroups     []LanguageGroup
+	reader             Config.AnyReader
+	translationHandler AnyTranslationHandler
 )
 
 func main() {
@@ -28,7 +29,8 @@ func main() {
 		GroupListHandler(w, r, languageGroups)
 	})
 	http.HandleFunc("/dev/", func(w http.ResponseWriter, r *http.Request) {
-		TranslationHandler(w, r, languageGroups, apiKey)
+		translationHandler = TranslationHandler{ApiKey: apiKey, Credits: configuration.Credits}
+		translationHandler.Translate(w, r, languageGroups)
 	})
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
