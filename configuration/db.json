@@ -25,6 +25,10 @@
       "name": "Romanic",
       "languages": [
         {
+          "fullName": "Latin",
+          "code": "la"
+        },
+        {
           "fullName": "French",
           "code": "fr"
         },
@@ -79,6 +83,41 @@
           "code": "sr"
         }
       ]
+    },
+    {
+      "name": "Germanic",
+      "languages": [
+        {
+          "fullName": "German",
+          "code": "de"
+        },
+        {
+          "fullName": "Swedish",
+          "code": "sv"
+        },
+        {
+          "fullName": "Norwegian",
+          "code": "no"
+        },
+        {
+          "fullName": "Danish",
+          "code": "da"
+        }
+      ]
+    },
+    {
+      "name": "Arabic characters",
+      "languages": [
+        {
+          "fullName": "Arab",
+          "code": "ar"
+        },
+        {
+          "fullName": "Persian",
+          "code": "fa"
+        }
+      ]
     }
   ]
 }
+
