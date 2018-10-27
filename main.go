@@ -6,7 +6,6 @@ import (
 	. "github.com/aeternas/SwadeshNess/language"
 	"log"
 	"net/http"
-	"os"
 )
 
 var (
@@ -18,11 +17,10 @@ var (
 
 func init() {
 	var lReader *Config.Reader = &Config.Reader{Path: "configuration/db.json"}
-	apiKey := os.Getenv("YANDEX_API_KEY")
 	reader = lReader
 	lConfiguration, _ := reader.ReadConfiguration()
 	configuration = lConfiguration
-	translationHandler = TranslationHandler{ApiKey: apiKey, Credits: configuration.Credits}
+	translationHandler = &TranslationHandler{Config: &configuration}
 }
 
 func main() {

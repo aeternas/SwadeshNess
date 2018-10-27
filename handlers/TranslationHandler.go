@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	. "github.com/aeternas/SwadeshNess/apiClient"
+	. "github.com/aeternas/SwadeshNess/configuration"
 	. "github.com/aeternas/SwadeshNess/dto"
 	. "github.com/aeternas/SwadeshNess/httpApiClient"
 	. "github.com/aeternas/SwadeshNess/language"
@@ -28,11 +29,10 @@ type AnyTranslationHandler interface {
 }
 
 type TranslationHandler struct {
-	ApiKey  string
-	Credits string
+	Config *Configuration
 }
 
-func (th TranslationHandler) Translate(w http.ResponseWriter, r *http.Request, languageGroups []LanguageGroup) {
+func (th *TranslationHandler) Translate(w http.ResponseWriter, r *http.Request, languageGroups []LanguageGroup) {
 	translationRequestValues, ok := r.URL.Query()["translate"]
 	if !ok || len(translationRequestValues[0]) < 1 {
 		log.Printf("Invalid Request: %s", r.URL.String())
@@ -59,7 +59,7 @@ func (th TranslationHandler) Translate(w http.ResponseWriter, r *http.Request, l
 
 	groups := []GroupTranslation{}
 	for _, lang := range translationRequestGroupValues {
-		res, err := getTranslation(translationRequestValue, sourceLanguage, lang, languageGroups, th.ApiKey, th.Credits)
+		res, err := getTranslation(translationRequestValue, sourceLanguage, lang, languageGroups, th.Config.ApiKey, th.Config.Credits)
 		if err != nil {
 			log.Printf("Failed to process language group: %s", lang)
 			http.Error(w, fmt.Sprintf("Failed to process language group: %s", lang), http.StatusInternalServerError)
@@ -69,7 +69,7 @@ func (th TranslationHandler) Translate(w http.ResponseWriter, r *http.Request, l
 		}
 	}
 
-	swadeshTranslation := SwadeshTranslation{Results: groups, Credits: th.Credits}
+	swadeshTranslation := SwadeshTranslation{Results: groups, Credits: th.Config.Credits}
 
 	bytes, err := json.Marshal(swadeshTranslation)
 	if err != nil {
