@@ -3,6 +3,7 @@ package httpApiClient
 import (
 	"encoding/json"
 	"fmt"
+	. "github.com/aeternas/SwadeshNess/apiClient"
 	. "github.com/aeternas/SwadeshNess/dto"
 	. "github.com/aeternas/SwadeshNess/language"
 	"io/ioutil"
@@ -12,7 +13,8 @@ import (
 )
 
 type HTTPApiClient struct {
-	Client *http.Client
+	Client      *http.Client
+	Middlewares []Middleware
 }
 
 func (c *HTTPApiClient) MakeTranslationRequest(w, apiKey, sourceLang string, targetLang Language, ch chan<- YandexTranslationResult) {
