@@ -1,7 +1,7 @@
 package main
 
 import (
-	. "github.com/aeternas/SwadeshNess/configuration"
+	Config "github.com/aeternas/SwadeshNess/configuration"
 	. "github.com/aeternas/SwadeshNess/handlers"
 	. "github.com/aeternas/SwadeshNess/language"
 	"log"
@@ -14,7 +14,8 @@ var (
 )
 
 func main() {
-	configuration, err := ReadConfiguration()
+	var reader *Config.Reader = &Config.Reader{Path: "configuration/db.json"}
+	configuration, err := reader.ReadConfiguration()
 	if err != nil {
 		panic("Failed to read configuration")
 	}
