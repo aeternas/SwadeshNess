@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	. "github.com/aeternas/SwadeshNess/handlers"
 	. "github.com/aeternas/SwadeshNess/language"
 	"log"
@@ -9,23 +10,20 @@ import (
 )
 
 var (
-	turkicLanguages      = []Language{{FullName: "Tatar", Code: "tt"}, {FullName: "Bashkort", Code: "ba"}, {FullName: "Azerbaijanian", Code: "az"}, {FullName: "Turkish", Code: "tr"}}
-	turkicLanguagesGroup = LanguageGroup{Name: "Turkic", Languages: turkicLanguages}
-
-	romanianLanguages     = []Language{{FullName: "French", Code: "fr"}, {FullName: "Spanish", Code: "es"}, {FullName: "Italian", Code: "it"}, {FullName: "Romanian", Code: "ro"}}
-	romanicLanguagesGroup = LanguageGroup{Name: "Romanic", Languages: romanianLanguages}
-
-	slavicLanguages      = []Language{{FullName: "Russian", Code: "ru"}, {FullName: "Ukrainian", Code: "uk"}, {FullName: "Belorussian", Code: "be"}, {FullName: "Serbian", Code: "sr"}}
-	slavicLanguagesGroup = LanguageGroup{Name: "Slavic", Languages: slavicLanguages}
-
-	cjkvLanguages = []Language{{FullName: "Mandarin", Code: "zh"}, {FullName: "Japanese", Code: "ja"}, {FullName: "Vietnamese", Code: "vi"}}
-
-	cjkvLanguagesGroup = LanguageGroup{Name: "CJKV Family", Languages: cjkvLanguages}
-
-	languageGroups = []LanguageGroup{turkicLanguagesGroup, romanicLanguagesGroup, cjkvLanguagesGroup, slavicLanguagesGroup}
+	languageGroups []LanguageGroup
+	configuration  Configuration = readConfiguration()
 )
 
+type Configuration struct {
+	Languages []LanguageGroup
+}
+
+func init() {
+	languageGroups = configuration.Languages
+}
+
 func main() {
+	readConfiguration()
 	apiKey := os.Getenv("YANDEX_API_KEY")
 
 	http.HandleFunc("/dev/groups", func(w http.ResponseWriter, r *http.Request) {
@@ -35,4 +33,17 @@ func main() {
 		TranslationHandler(w, r, languageGroups, apiKey)
 	})
 	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+func readConfiguration() Configuration {
+	file, _ := os.Open("db.json")
+	defer file.Close()
+	decoder := json.NewDecoder(file)
+	configuration := Configuration{}
+	err := decoder.Decode(&configuration)
+	if err != nil {
+		log.Fatal("Unable to read database")
+		panic("Error reading database")
+	}
+	return configuration
 }
