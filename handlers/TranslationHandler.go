@@ -23,7 +23,16 @@ func init() {
 	apiClient = httpApiClient
 }
 
-func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups []LanguageGroup, apiKey string) {
+type AnyTranslationHandler interface {
+	Translate(w http.ResponseWriter, r *http.Request, languageGroups []LanguageGroup)
+}
+
+type TranslationHandler struct {
+	ApiKey  string
+	Credits string
+}
+
+func (th TranslationHandler) Translate(w http.ResponseWriter, r *http.Request, languageGroups []LanguageGroup) {
 	translationRequestValues, ok := r.URL.Query()["translate"]
 	if !ok || len(translationRequestValues[0]) < 1 {
 		log.Printf("Invalid Request: %s", r.URL.String())
@@ -50,7 +59,7 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 
 	groups := []GroupTranslation{}
 	for _, lang := range translationRequestGroupValues {
-		res, err := getTranslation(translationRequestValue, sourceLanguage, lang, languageGroups, apiKey)
+		res, err := getTranslation(translationRequestValue, sourceLanguage, lang, languageGroups, th.ApiKey, th.Credits)
 		if err != nil {
 			log.Printf("Failed to process language group: %s", lang)
 			http.Error(w, fmt.Sprintf("Failed to process language group: %s", lang), http.StatusInternalServerError)
@@ -60,7 +69,7 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 		}
 	}
 
-	swadeshTranslation := SwadeshTranslation{Results: groups}
+	swadeshTranslation := SwadeshTranslation{Results: groups, Credits: th.Credits}
 
 	bytes, err := json.Marshal(swadeshTranslation)
 	if err != nil {
@@ -73,7 +82,7 @@ func TranslationHandler(w http.ResponseWriter, r *http.Request, languageGroups [
 	}
 }
 
-func getTranslation(translationRequestValue, sourceLanguage, targetLanguage string, availableLanguageGroups []LanguageGroup, apiKey string) (SwadeshTranslation, error) {
+func getTranslation(translationRequestValue, sourceLanguage, targetLanguage string, availableLanguageGroups []LanguageGroup, apiKey, credits string) (SwadeshTranslation, error) {
 	var desiredGroup LanguageGroup
 
 	for i := range availableLanguageGroups {
@@ -98,12 +107,12 @@ func getTranslation(translationRequestValue, sourceLanguage, targetLanguage stri
 		results = append(results, <-ch)
 	}
 
-	swadeshResults := translateToSwadeshTranslation(results, desiredGroup)
+	swadeshResults := translateToSwadeshTranslation(results, desiredGroup, credits)
 
 	return swadeshResults, nil
 }
 
-func translateToSwadeshTranslation(res []YandexTranslationResult, desiredGroup LanguageGroup) SwadeshTranslation {
+func translateToSwadeshTranslation(res []YandexTranslationResult, desiredGroup LanguageGroup, credits string) SwadeshTranslation {
 
 	languageTranslationResult := []LanguageTranslation{}
 
@@ -119,7 +128,7 @@ func translateToSwadeshTranslation(res []YandexTranslationResult, desiredGroup L
 	}
 
 	groupTranslationResult := []GroupTranslation{{Name: desiredGroup.Name, Results: languageTranslationResult}}
-	swadeshTranslation := SwadeshTranslation{Results: groupTranslationResult}
+	swadeshTranslation := SwadeshTranslation{Results: groupTranslationResult, Credits: credits}
 
 	return swadeshTranslation
 }
