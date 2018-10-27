@@ -12,6 +12,10 @@ type Configuration struct {
 	Languages []LanguageGroup
 }
 
+type AnyReader interface {
+	ReadConfiguration() (Configuration, error)
+}
+
 type Reader struct {
 	Path string
 }
