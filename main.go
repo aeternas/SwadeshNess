@@ -1,7 +1,7 @@
 package main
 
 import (
-	"encoding/json"
+	. "github.com/aeternas/SwadeshNess/configuration"
 	. "github.com/aeternas/SwadeshNess/handlers"
 	. "github.com/aeternas/SwadeshNess/language"
 	"log"
@@ -10,20 +10,16 @@ import (
 )
 
 var (
+	configuration  Configuration
 	languageGroups []LanguageGroup
-	configuration  Configuration = readConfiguration()
 )
 
-type Configuration struct {
-	Languages []LanguageGroup
-}
-
-func init() {
-	languageGroups = configuration.Languages
-}
-
 func main() {
-	readConfiguration()
+	configuration, err := ReadConfiguration()
+	if err != nil {
+		panic("Failed to read configuration")
+	}
+	languageGroups = configuration.Languages
 	apiKey := os.Getenv("YANDEX_API_KEY")
 
 	http.HandleFunc("/dev/groups", func(w http.ResponseWriter, r *http.Request) {
@@ -33,17 +29,4 @@ func main() {
 		TranslationHandler(w, r, languageGroups, apiKey)
 	})
 	log.Fatal(http.ListenAndServe(":8080", nil))
-}
-
-func readConfiguration() Configuration {
-	file, _ := os.Open("db.json")
-	defer file.Close()
-	decoder := json.NewDecoder(file)
-	configuration := Configuration{}
-	err := decoder.Decode(&configuration)
-	if err != nil {
-		log.Fatal("Unable to read database")
-		panic("Error reading database")
-	}
-	return configuration
 }
