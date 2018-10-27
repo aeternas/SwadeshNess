@@ -1,6 +1,7 @@
 package main
 
 import (
+	. "github.com/aeternas/SwadeshNess/configuration"
 	. "github.com/aeternas/SwadeshNess/handlers"
 	. "github.com/aeternas/SwadeshNess/language"
 	"log"
@@ -9,23 +10,15 @@ import (
 )
 
 var (
-	turkicLanguages      = []Language{{FullName: "Tatar", Code: "tt"}, {FullName: "Bashkort", Code: "ba"}, {FullName: "Azerbaijanian", Code: "az"}, {FullName: "Turkish", Code: "tr"}}
-	turkicLanguagesGroup = LanguageGroup{Name: "Turkic", Languages: turkicLanguages}
-
-	romanianLanguages     = []Language{{FullName: "French", Code: "fr"}, {FullName: "Spanish", Code: "es"}, {FullName: "Italian", Code: "it"}, {FullName: "Romanian", Code: "ro"}}
-	romanicLanguagesGroup = LanguageGroup{Name: "Romanic", Languages: romanianLanguages}
-
-	slavicLanguages      = []Language{{FullName: "Russian", Code: "ru"}, {FullName: "Ukrainian", Code: "uk"}, {FullName: "Belorussian", Code: "be"}, {FullName: "Serbian", Code: "sr"}}
-	slavicLanguagesGroup = LanguageGroup{Name: "Slavic", Languages: slavicLanguages}
-
-	cjkvLanguages = []Language{{FullName: "Mandarin", Code: "zh"}, {FullName: "Japanese", Code: "ja"}, {FullName: "Vietnamese", Code: "vi"}}
-
-	cjkvLanguagesGroup = LanguageGroup{Name: "CJKV Family", Languages: cjkvLanguages}
-
-	languageGroups = []LanguageGroup{turkicLanguagesGroup, romanicLanguagesGroup, cjkvLanguagesGroup, slavicLanguagesGroup}
+	languageGroups []LanguageGroup
 )
 
 func main() {
+	configuration, err := ReadConfiguration()
+	if err != nil {
+		panic("Failed to read configuration")
+	}
+	languageGroups = configuration.Languages
 	apiKey := os.Getenv("YANDEX_API_KEY")
 
 	http.HandleFunc("/groups", func(w http.ResponseWriter, r *http.Request) {

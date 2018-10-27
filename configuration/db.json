@@ -1,0 +1,123 @@
+{
+  "languages": [
+    {
+      "name": "Turkic",
+      "languages": [
+        {
+          "fullName": "Tatar",
+          "code": "tt"
+        },
+        {
+          "fullName": "Bashkort",
+          "code": "ba"
+        },
+        {
+          "fullName": "Azerbaijanian",
+          "code": "az"
+        },
+        {
+          "fullName": "Turkish",
+          "code": "tr"
+        }
+      ]
+    },
+    {
+      "name": "Romanic",
+      "languages": [
+        {
+          "fullName": "Latin",
+          "code": "la"
+        },
+        {
+          "fullName": "French",
+          "code": "fr"
+        },
+        {
+          "fullName": "Spanish",
+          "code": "es"
+        },
+        {
+          "fullName": "Italian",
+          "code": "it"
+        },
+        {
+          "fullName": "Romanian",
+          "code": "ro"
+        }
+      ]
+    },
+    {
+      "name": "CJKV Family",
+      "languages": [
+        {
+          "fullName": "Mandarin",
+          "code": "zh"
+        },
+        {
+          "fullName": "Japanese",
+          "code": "ja"
+        },
+        {
+          "fullName": "Vietnamese",
+          "code": "vi"
+        }
+      ]
+    },
+    {
+      "name": "Slavic",
+      "languages": [
+        {
+          "fullName": "Russian",
+          "code": "ru"
+        },
+        {
+          "fullName": "Ukrainian",
+          "code": "uk"
+        },
+        {
+          "fullName": "Belorussian",
+          "code": "be"
+        },
+        {
+          "fullName": "Serbian",
+          "code": "sr"
+        }
+      ]
+    },
+    {
+      "name": "Germanic",
+      "languages": [
+        {
+          "fullName": "German",
+          "code": "de"
+        },
+        {
+          "fullName": "Swedish",
+          "code": "sv"
+        },
+        {
+          "fullName": "Norwegian",
+          "code": "no"
+        },
+        {
+          "fullName": "Danish",
+          "code": "da"
+        }
+      ]
+    },
+    {
+      "name": "Arabic characters",
+      "languages": [
+        {
+          "fullName": "Arab",
+          "code": "ar"
+        },
+        {
+          "fullName": "Persian",
+          "code": "fa"
+        }
+      ]
+    }
+  ]
+}
+
