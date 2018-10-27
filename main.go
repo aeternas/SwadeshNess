@@ -11,10 +11,12 @@ import (
 
 var (
 	languageGroups []LanguageGroup
+	reader         Config.AnyReader
 )
 
 func main() {
-	var reader *Config.Reader = &Config.Reader{Path: "configuration/db.json"}
+	var lReader *Config.Reader = &Config.Reader{Path: "configuration/db.json"}
+	reader = lReader
 	configuration, err := reader.ReadConfiguration()
 	if err != nil {
 		panic("Failed to read configuration")
