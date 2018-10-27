@@ -12,8 +12,13 @@ type Configuration struct {
 	Languages []LanguageGroup
 }
 
-func ReadConfiguration() (Configuration, error) {
-	file, _ := os.Open("configuration/db.json")
+type Reader struct {
+	Path string
+}
+
+func (r *Reader) ReadConfiguration() (Configuration, error) {
+	var p string = (*r).Path
+	file, _ := os.Open(p)
 	defer file.Close()
 	decoder := json.NewDecoder(file)
 	configuration := Configuration{}
