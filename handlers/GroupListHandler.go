@@ -2,13 +2,21 @@ package handlers
 
 import (
 	"encoding/json"
-	. "github.com/aeternas/SwadeshNess/language"
+	. "github.com/aeternas/SwadeshNess/configuration"
 	"log"
 	"net/http"
 )
 
-func GroupListHandler(w http.ResponseWriter, r *http.Request, groups []LanguageGroup) {
-	bytes, err := json.Marshal(groups)
+type AnyGroupListHandler interface {
+	GetGroups(w http.ResponseWriter, r *http.Request)
+}
+
+type GroupListHandler struct {
+	Config *Configuration
+}
+
+func (gh *GroupListHandler) GetGroups(w http.ResponseWriter, r *http.Request) {
+	bytes, err := json.Marshal(gh.Config.Languages)
 	if err != nil {
 		log.Println("Marshalling Error")
 		http.Error(w, "Marshalling error", http.StatusInternalServerError)
