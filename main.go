@@ -27,10 +27,10 @@ func init() {
 
 func main() {
 	languageGroups = configuration.Languages
-	http.HandleFunc("/dev/groups", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc(configuration.EEndpoints.GroupsEndpoint, func(w http.ResponseWriter, r *http.Request) {
 		groupListHandler.GetGroups(w, r)
 	})
-	http.HandleFunc("/dev/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc(configuration.EEndpoints.TranslationEndpoint, func(w http.ResponseWriter, r *http.Request) {
 		translationHandler.Translate(w, r, languageGroups)
 	})
 	log.Fatal(http.ListenAndServe(":8080", nil))
