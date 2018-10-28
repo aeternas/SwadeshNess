@@ -12,6 +12,7 @@ var (
 	languageGroups     []LanguageGroup
 	reader             Config.AnyReader
 	translationHandler AnyTranslationHandler
+	groupListHandler   AnyGroupListHandler
 	configuration      Config.Configuration
 )
 
@@ -21,14 +22,15 @@ func init() {
 	lConfiguration, _ := reader.ReadConfiguration()
 	configuration = lConfiguration
 	translationHandler = &TranslationHandler{Config: &configuration}
+	groupListHandler = &GroupListHandler{Config: &configuration}
 }
 
 func main() {
 	languageGroups = configuration.Languages
-	http.HandleFunc("/groups", func(w http.ResponseWriter, r *http.Request) {
-		GroupListHandler(w, r, languageGroups)
+	http.HandleFunc(configuration.EEndpoints.GroupsEndpoint, func(w http.ResponseWriter, r *http.Request) {
+		groupListHandler.GetGroups(w, r)
 	})
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc(configuration.EEndpoints.TranslationEndpoint, func(w http.ResponseWriter, r *http.Request) {
 		translationHandler.Translate(w, r, languageGroups)
 	})
 	log.Fatal(http.ListenAndServe(":8080", nil))
