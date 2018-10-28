@@ -4,6 +4,7 @@ import (
 	Config "github.com/aeternas/SwadeshNess/configuration"
 	. "github.com/aeternas/SwadeshNess/handlers"
 	. "github.com/aeternas/SwadeshNess/language"
+	Wrappers "github.com/aeternas/SwadeshNess/wrappers"
 	"log"
 	"net/http"
 )
@@ -17,7 +18,7 @@ var (
 )
 
 func init() {
-	var lReader *Config.Reader = &Config.Reader{Path: "configuration/db.json"}
+	var lReader *Config.Reader = &Config.Reader{Path: "configuration/db.json", OsWrapper: new(Wrappers.OsWrapper)}
 	reader = lReader
 	lConfiguration, _ := reader.ReadConfiguration()
 	configuration = lConfiguration
