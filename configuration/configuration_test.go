@@ -10,7 +10,7 @@ var (
 )
 
 func init() {
-	osWrapper = new(Wrappers.MockOsWrapper)
+	osWrapper = new(MockOsWrapper)
 }
 
 func TestConfigurationRead(t *testing.T) {
@@ -37,4 +37,16 @@ func TestCreditsParsing(t *testing.T) {
 	if len(config.Credits) < 1 {
 		t.Errorf("Invalid credits")
 	}
+}
+
+type MockOsWrapper struct {
+	GetEnvArgs      string
+	GetEnvWasCalled int
+	GetEnvStub      string
+}
+
+func (w *MockOsWrapper) GetEnv(k string) string {
+	w.GetEnvWasCalled += 1
+	w.GetEnvArgs = k
+	return w.GetEnvStub
 }
