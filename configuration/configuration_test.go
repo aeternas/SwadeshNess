@@ -17,7 +17,7 @@ func init() {
 
 func TestConfigurationRead(t *testing.T) {
 	file, _ := os.Open("db.json")
-	mockWrapper.OpenStub = OpenStubType{f: file, err: errors.New("Err")}
+	mockWrapper.OpenStub = Wrappers.FileOpened{F: file, Err: errors.New("Err")}
 	osWrapper = mockWrapper
 	var reader *Reader = &Reader{Path: "db.json", OsWrapper: osWrapper}
 	_, err := reader.ReadConfiguration()
@@ -28,7 +28,7 @@ func TestConfigurationRead(t *testing.T) {
 
 func TestLanguagesParsing(t *testing.T) {
 	file, _ := os.Open("db.json")
-	mockWrapper.OpenStub = OpenStubType{f: file, err: errors.New("Err")}
+	mockWrapper.OpenStub = Wrappers.FileOpened{F: file, Err: errors.New("Err")}
 	osWrapper = mockWrapper
 	var reader *Reader = &Reader{Path: "db.json", OsWrapper: osWrapper}
 
@@ -40,7 +40,7 @@ func TestLanguagesParsing(t *testing.T) {
 
 func TestCreditsParsing(t *testing.T) {
 	file, _ := os.Open("db.json")
-	mockWrapper.OpenStub = OpenStubType{f: file, err: errors.New("Err")}
+	mockWrapper.OpenStub = Wrappers.FileOpened{F: file, Err: errors.New("Err")}
 	osWrapper = mockWrapper
 	var reader *Reader = &Reader{Path: "db.json", OsWrapper: osWrapper}
 
@@ -50,10 +50,6 @@ func TestCreditsParsing(t *testing.T) {
 	}
 }
 
-type OpenStubType struct {
-	f, err interface{}
-}
-
 type MockOsWrapper struct {
 	GetEnvArgs      string
 	GetEnvWasCalled int
@@ -61,7 +57,7 @@ type MockOsWrapper struct {
 
 	OpenArgs      string
 	OpenWasCalled int
-	OpenStub      OpenStubType
+	OpenStub      Wrappers.FileOpened
 }
 
 func (w *MockOsWrapper) GetEnv(k string) string {
@@ -70,8 +66,8 @@ func (w *MockOsWrapper) GetEnv(k string) string {
 	return w.GetEnvStub
 }
 
-func (w *MockOsWrapper) Open(n string) (*os.File, error) {
+func (w *MockOsWrapper) Open(n string) Wrappers.FileOpened {
 	w.OpenWasCalled += 1
 	w.OpenArgs = n
-	return w.OpenStub.f.(*os.File), w.OpenStub.err.(error)
+	return w.OpenStub
 }
