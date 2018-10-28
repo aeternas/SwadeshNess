@@ -33,7 +33,8 @@ type Reader struct {
 func (r *Reader) ReadConfiguration() (Configuration, error) {
 	lReader := *r
 	var p string = lReader.Path
-	file, _ := lReader.OsWrapper.Open(p)
+	fileOpened := lReader.OsWrapper.Open(p)
+	file := fileOpened.F
 	defer file.Close()
 	decoder := json.NewDecoder(file)
 	configuration := Configuration{}
