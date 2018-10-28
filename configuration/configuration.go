@@ -6,7 +6,6 @@ import (
 	. "github.com/aeternas/SwadeshNess/language"
 	. "github.com/aeternas/SwadeshNess/wrappers"
 	"log"
-	"os"
 )
 
 const (
@@ -34,7 +33,7 @@ type Reader struct {
 func (r *Reader) ReadConfiguration() (Configuration, error) {
 	lReader := *r
 	var p string = lReader.Path
-	file, _ := os.Open(p)
+	file, _ := lReader.OsWrapper.Open(p)
 	defer file.Close()
 	decoder := json.NewDecoder(file)
 	configuration := Configuration{}
