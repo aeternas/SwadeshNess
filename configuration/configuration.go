@@ -9,6 +9,12 @@ import (
 	"os"
 )
 
+const (
+	API_KEY              = "YANDEX_API_KEY"
+	TRANSLATION_ENDPOINT = "TRANSLATION_ENDPOINT"
+	GROUP_ENDPOINT       = "GROUP_ENDPOINT"
+)
+
 type Configuration struct {
 	Languages  []LanguageGroup
 	ApiKey     string
@@ -33,9 +39,9 @@ func (r *Reader) ReadConfiguration() (Configuration, error) {
 	decoder := json.NewDecoder(file)
 	configuration := Configuration{}
 	err := decoder.Decode(&configuration)
-	apiKey := lReader.OsWrapper.GetEnv("YANDEX_API_KEY")
-	var translationEndpoint string = lReader.OsWrapper.GetEnv("TRANSLATION_ENDPOINT")
-	var groupEndpoint string = lReader.OsWrapper.GetEnv("GROUP_ENDPOINT")
+	apiKey := lReader.OsWrapper.GetEnv(API_KEY)
+	var translationEndpoint string = lReader.OsWrapper.GetEnv(TRANSLATION_ENDPOINT)
+	var groupEndpoint string = lReader.OsWrapper.GetEnv(GROUP_ENDPOINT)
 	configuration.ApiKey = apiKey
 	endpoints := Endpoints{TranslationEndpoint: translationEndpoint, GroupsEndpoint: groupEndpoint}
 	configuration.EEndpoints = endpoints
