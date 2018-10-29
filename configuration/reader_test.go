@@ -25,7 +25,7 @@ func TestReadConfiguration(t *testing.T) {
 	if mockWrapper.GetEnvWasCalled != 3 {
 		t.Errorf("GetEnv was not called valid amount of times: %v instead of 3", mockWrapper.GetEnvWasCalled)
 	}
-	if reflect.DeepEqual(mockWrapper.GetEnvArgs, expectedGetEnvArgs) == false {
+	if !reflect.DeepEqual(mockWrapper.GetEnvArgs, expectedGetEnvArgs) {
 		t.Errorf("GetEnv total args are not equal to expected, %v", mockWrapper.GetEnvArgs)
 	}
 	if err == nil {
