@@ -25,15 +25,15 @@ func (r *Reader) ReadConfiguration() (Configuration, error) {
 	decoder := json.NewDecoder(file)
 	configuration := Configuration{}
 	err := decoder.Decode(&configuration)
-	if err != nil {
-		log.Printf("Configuration decoding failed")
-		return Configuration{}, errors.New("Failed to read database")
-	}
 	apiKey := lReader.OsWrapper.GetEnv(API_KEY)
 	var translationEndpoint string = lReader.OsWrapper.GetEnv(TRANSLATION_ENDPOINT)
 	var groupEndpoint string = lReader.OsWrapper.GetEnv(GROUP_ENDPOINT)
 	configuration.ApiKey = apiKey
 	endpoints := Endpoints{TranslationEndpoint: translationEndpoint, GroupsEndpoint: groupEndpoint}
 	configuration.EEndpoints = endpoints
+	if err != nil {
+		log.Printf("Configuration decoding failed")
+		return Configuration{}, errors.New("Failed to read database")
+	}
 	return configuration, nil
 }
