@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	Wrappers "github.com/aeternas/SwadeshNess/wrappers"
+	"log"
 )
 
 type AnyReader interface {
@@ -25,6 +26,7 @@ func (r *Reader) ReadConfiguration() (Configuration, error) {
 	configuration := Configuration{}
 	err := decoder.Decode(&configuration)
 	if err != nil {
+		log.Printf("Configuration decoding failed")
 		return Configuration{}, errors.New("Failed to read database")
 	}
 	apiKey := lReader.OsWrapper.GetEnv(API_KEY)
