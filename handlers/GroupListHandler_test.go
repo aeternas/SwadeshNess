@@ -1,17 +1,20 @@
 package handlers
 
 import (
+	"errors"
 	"testing"
 )
 
+type MockResponseWriterWrapper struct {
+	WriteWasCalled int
+}
+
+func (w *MockResponseWriterWrapper) Write([]byte) (int, error) {
+	w.WriteWasCalled += 1
+	return 0, errors.New("WriteError")
+}
+
 func TestGetGroupsGroupListHandler(t *testing.T) {
+	_ = new(MockResponseWriterWrapper)
 	t.SkipNow()
-	/*gps := []LanguageGroup{LanguageGroup{Name: "Group:", Languages: []Language{{FullName: "Language", Code: "Lang"}}}}
-	var tConfig *Configuration = &Configuration{Languages: gps, ApiKey: "", Credits: "", EEndpoints: Endpoints{}}
-	gh := GroupListHandler{Config: tConfig}
-	var tResponseWriter *http.ResponseWriter = &http.ResponseWriter
-	gh.GetGroups(tResponseWriter, &http.Request)
-	if len(gps) > 0 {
-		t.Errorf("Err")
-	}*/
 }
