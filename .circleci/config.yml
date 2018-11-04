@@ -51,4 +51,7 @@ jobs:
       - setup_remote_docker
       - run:
           name: Containerize, Push and Deploy
-          command: bash docker_push
+          command: |
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            docker build -t aeternas/swadeshness:$CIRCLE_BRANCH . && \
+            docker push aeternas/swadeshness:$CIRCLE_BRANCH
