@@ -50,4 +50,4 @@ jobs:
           command: go test -v ./...
       - run:
           name: Containerize, Push and Deploy
-          command: sudo bash docker_push
+          command: bash docker_push
