@@ -52,6 +52,6 @@ jobs:
       - run:
           name: Containerize, Push and Deploy
           command: |
-            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker build -t aeternas/swadeshness:$CIRCLE_BRANCH . && \
             docker push aeternas/swadeshness:$CIRCLE_BRANCH
