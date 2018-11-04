@@ -45,4 +45,9 @@ jobs:
       - run: 
           name: linting
           command: go install ./vendor/github.com/golangci/golangci-lint/cmd/golangci-lint && golangci-lint run
-      - run: go test -v ./...
+      - run:
+          name: tests
+          command: go test -v ./...
+      - run:
+          name: Containerize, Push and Deploy
+          command: bash docker_push
