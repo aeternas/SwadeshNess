@@ -20,6 +20,11 @@ jobs:
     working_directory: /go/src/github.com/aeternas/SwadeshNess
     steps:
       - checkout
+      - run: mkdir -p workspace
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
       - restore_cache:
           keys:
           # This branch if available
@@ -52,6 +57,8 @@ jobs:
     docker:
       - image: circleci/golang:1.10
     steps:
+      - attach_workspace:
+          at: /tmp/
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
