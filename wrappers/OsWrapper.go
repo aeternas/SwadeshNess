@@ -20,8 +20,8 @@ type OsWrapper struct {
 	NestedOsWrapper AnyOsWrapper
 }
 
-func New(w AnyOsWrapper) OsWrapper {
-	return OsWrapper{NestedOsWrapper: w}
+func New(w AnyOsWrapper) AnyOsWrapper {
+	return &OsWrapper{NestedOsWrapper: w}
 }
 
 func (w *OsWrapper) GetEnv(k string) string {
