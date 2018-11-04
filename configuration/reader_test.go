@@ -9,7 +9,7 @@ import (
 var (
 	expectedGetEnvArgs = []string{"YANDEX_API_KEY", "TRANSLATION_ENDPOINT", "GROUP_ENDPOINT"}
 	osWrapper          Wrappers.AnyOsWrapper
-	mockWrapper        = new(MockOsWrapper)
+	mockWrapper        = new(Wrappers.MockOsWrapper)
 )
 
 func TestReadConfiguration(t *testing.T) {
@@ -31,26 +31,4 @@ func TestReadConfiguration(t *testing.T) {
 	if err == nil {
 		t.Errorf("No error occured, test logic failure")
 	}
-}
-
-type MockOsWrapper struct {
-	GetEnvArgs      []string
-	GetEnvWasCalled int
-	GetEnvStub      string
-
-	OpenArgs      string
-	OpenWasCalled int
-	OpenStub      Wrappers.FileOpened
-}
-
-func (w *MockOsWrapper) GetEnv(k string) string {
-	w.GetEnvWasCalled += 1
-	w.GetEnvArgs = append(w.GetEnvArgs, k)
-	return w.GetEnvStub
-}
-
-func (w *MockOsWrapper) Open(n string) Wrappers.FileOpened {
-	w.OpenWasCalled += 1
-	w.OpenArgs = n
-	return w.OpenStub
 }
