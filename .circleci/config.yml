@@ -20,10 +20,6 @@ jobs:
     working_directory: /go/src/github.com/aeternas/SwadeshNess
     steps:
       - checkout
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
       - restore_cache:
           keys:
           # This branch if available
@@ -32,9 +28,18 @@ jobs:
           - v1-dep-master-
           # Any branch if there are none on the default branch - this should be unnecessary if you have your default branch configured correctly
           - v1-dep-
-
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
       # specify any bash command here prefixed with `run: `
       - run: go get -v -t -d ./...
+      - run: 
+          name: linting
+          command: go install ./vendor/github.com/golangci/golangci-lint/cmd/golangci-lint && golangci-lint run
+      - run:
+          name: tests
+          command: go test -v ./...
       - save_cache:
           key: v1-dep-{{ .Branch }}-{{ epoch }}
           paths:
@@ -46,12 +51,6 @@ jobs:
           - ~/.go_workspace
           - ~/.gradle
           - ~/.cache/bower
-      - run: 
-          name: linting
-          command: go install ./vendor/github.com/golangci/golangci-lint/cmd/golangci-lint && golangci-lint run
-      - run:
-          name: tests
-          command: go test -v ./...
   deploy:
     docker:
       - image: circleci/golang:1.10
@@ -59,7 +58,6 @@ jobs:
     steps:
       - attach_workspace:
           at: /go/src/github.com/aeternas/SwadeshNess
-      - run: pwd && ls
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
