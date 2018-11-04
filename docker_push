@@ -1,4 +1,4 @@
 #!/bin/bash
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-sudo docker build -t aeternas/swadeshness:$CIRCLE_BRANCH . && \
-sudo docker push aeternas/swadeshness:$CIRCLE_BRANCH
+docker build -t aeternas/swadeshness:$TRAVIS_BRANCH . && \
+docker push aeternas/swadeshness:$TRAVIS_BRANCH
