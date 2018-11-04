@@ -3,7 +3,7 @@
 # Check https://circleci.com/docs/2.0/language-go/ for more details
 version: 2
 jobs:
-  build:
+  lint-test:
     docker:
       # specify the version
       - image: circleci/golang:1.10
@@ -28,9 +28,18 @@ jobs:
           - v1-dep-master-
           # Any branch if there are none on the default branch - this should be unnecessary if you have your default branch configured correctly
           - v1-dep-
-
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
       # specify any bash command here prefixed with `run: `
       - run: go get -v -t -d ./...
+      - run: 
+          name: linting
+          command: go install ./vendor/github.com/golangci/golangci-lint/cmd/golangci-lint && golangci-lint run
+      - run:
+          name: tests
+          command: go test -v ./...
       - save_cache:
           key: v1-dep-{{ .Branch }}-{{ epoch }}
           paths:
@@ -42,12 +51,13 @@ jobs:
           - ~/.go_workspace
           - ~/.gradle
           - ~/.cache/bower
-      - run: 
-          name: linting
-          command: go install ./vendor/github.com/golangci/golangci-lint/cmd/golangci-lint && golangci-lint run
-      - run:
-          name: tests
-          command: go test -v ./...
+  deploy:
+    docker:
+      - image: circleci/golang:1.10
+    working_directory: /go/src/github.com/aeternas/SwadeshNess
+    steps:
+      - attach_workspace:
+          at: /go/src/github.com/aeternas/SwadeshNess
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
@@ -56,3 +66,11 @@ jobs:
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker build -t aeternas/swadeshness:$CIRCLE_BRANCH . && \
             docker push aeternas/swadeshness:$CIRCLE_BRANCH
+workflows:
+  version: 2
+  lint-test-deploy:
+    jobs:
+      - lint-test
+      - deploy:
+          requires:
+            - lint-test
