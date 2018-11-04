@@ -18,7 +18,8 @@ var (
 )
 
 func init() {
-	var lReader *Config.Reader = &Config.Reader{Path: "configuration/db.json", OsWrapper: new(Wrappers.OsWrapper)}
+	var wrapper = Wrappers.New(new(Wrappers.OsWrapper))
+	var lReader *Config.Reader = &Config.Reader{Path: "configuration/db.json", OsWrapper: wrapper}
 	reader = lReader
 	lConfiguration, _ := reader.ReadConfiguration()
 	configuration = lConfiguration

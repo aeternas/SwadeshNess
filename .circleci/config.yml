@@ -45,4 +45,14 @@ jobs:
       - run: 
           name: linting
           command: go install ./vendor/github.com/golangci/golangci-lint/cmd/golangci-lint && golangci-lint run
-      - run: go test -v ./...
+      - run:
+          name: tests
+          command: go test -v ./...
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Containerize, Push and Deploy
+          command: |
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker build -t aeternas/swadeshness:$CIRCLE_BRANCH . && \
+            docker push aeternas/swadeshness:$CIRCLE_BRANCH

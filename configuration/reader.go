@@ -26,8 +26,8 @@ func (r *Reader) ReadConfiguration() (Configuration, error) {
 	configuration := Configuration{}
 	err := decoder.Decode(&configuration)
 	apiKey := lReader.OsWrapper.GetEnv(API_KEY)
-	var translationEndpoint string = lReader.OsWrapper.GetEnv(TRANSLATION_ENDPOINT)
-	var groupEndpoint string = lReader.OsWrapper.GetEnv(GROUP_ENDPOINT)
+	var translationEndpoint string = lReader.OsWrapper.GetEnvFallback(TRANSLATION_ENDPOINT, "/")
+	var groupEndpoint string = lReader.OsWrapper.GetEnvFallback(GROUP_ENDPOINT, "/groups")
 	configuration.ApiKey = apiKey
 	endpoints := Endpoints{TranslationEndpoint: translationEndpoint, GroupsEndpoint: groupEndpoint}
 	configuration.EEndpoints = endpoints
