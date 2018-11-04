@@ -24,7 +24,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - .
+            - output
       - restore_cache:
           keys:
           # This branch if available
@@ -59,6 +59,7 @@ jobs:
     steps:
       - attach_workspace:
           at: /tmp/
+      - run: pwd && ls
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
