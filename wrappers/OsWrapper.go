@@ -29,6 +29,9 @@ func (w *OsWrapper) GetEnv(k string) string {
 }
 
 func (w *OsWrapper) GetEnvFallback(k, f string) string {
+	if w.NestedOsWrapper == nil {
+		panic("OsWrapper was initialized improperly")
+	}
 	if value, ok := w.NestedOsWrapper.LookupEnv(k); ok {
 		return value
 	}
