@@ -55,6 +55,7 @@ jobs:
   deploy:
     docker:
       - image: circleci/golang:1.10
+    working_directory: /go/src/github.com/aeternas/SwadeshNess
     steps:
       - attach_workspace:
           at: /go/src/github.com/aeternas/SwadeshNess
