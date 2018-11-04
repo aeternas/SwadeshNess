@@ -48,6 +48,7 @@ jobs:
       - run:
           name: tests
           command: go test -v ./...
+      - setup_remote_docker
       - run:
           name: Containerize, Push and Deploy
           command: bash docker_push
