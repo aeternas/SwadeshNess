@@ -3,7 +3,7 @@
 # Check https://circleci.com/docs/2.0/language-go/ for more details
 version: 2
 jobs:
-  lint-test:
+  lint:
     docker:
       # specify the version
       - image: circleci/golang:1.10
@@ -37,9 +37,6 @@ jobs:
       - run: 
           name: linting
           command: go install ./vendor/github.com/golangci/golangci-lint/cmd/golangci-lint && golangci-lint run
-      - run:
-          name: tests
-          command: go test -v ./...
       - save_cache:
           key: v1-dep-{{ .Branch }}-{{ epoch }}
           paths:
@@ -51,6 +48,16 @@ jobs:
           - ~/.go_workspace
           - ~/.gradle
           - ~/.cache/bower
+  test:
+    docker:
+      - image: circleci/golang:1.10
+    working_directory: /go/src/github.com/aeternas/SwadeshNess
+    steps:
+      - attach_workspace:
+          at: /go/src/github.com/aeternas/SwadeshNess
+      - run:
+          name: tests
+          command: go test -v ./...
   deploy:
     docker:
       - image: circleci/golang:1.10
@@ -70,7 +77,11 @@ workflows:
   version: 2
   lint-test-deploy:
     jobs:
-      - lint-test
+      - lint
+      - test:
+          requires:
+            - lint
       - deploy:
           requires:
-            - lint-test
+            - lint
+            - test
