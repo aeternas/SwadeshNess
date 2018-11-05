@@ -12,8 +12,9 @@ COPY . .
 
 RUN go get -d -v ./...
 RUN go install -v ./...
-RUN ECHO $VERS
 RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build
+
+CMD ECHO $VERS
 
 FROM alpine:latest
 
