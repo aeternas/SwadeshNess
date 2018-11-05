@@ -85,6 +85,10 @@ jobs:
       - image: aeternas/swadeshness-tests:$CIRCLE_BRANCH
     working_directory: /
     steps:
+      - run:
+          name: Update PATH and Define Environment Variable at Runtime
+          command: |
+            echo 'export VERSION="$CIRCLE_PREVIOUS_BUILD_NUM"' >> $BASH_ENV
       - run: ./SwadeshNess-IntegrationTests
 workflows:
   version: 2
