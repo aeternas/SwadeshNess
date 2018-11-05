@@ -14,6 +14,7 @@ var (
 	reader             Config.AnyReader
 	translationHandler AnyTranslationHandler
 	groupListHandler   AnyGroupListHandler
+	versionHandler     AnyVersionHandler
 	configuration      Config.Configuration
 )
 
@@ -25,6 +26,7 @@ func init() {
 	configuration = lConfiguration
 	translationHandler = &TranslationHandler{Config: &configuration}
 	groupListHandler = &GroupListHandler{Config: &configuration}
+	versionHandler = &VersionHandler{Config: &configuration}
 }
 
 func main() {
@@ -34,6 +36,9 @@ func main() {
 	})
 	http.HandleFunc(configuration.EEndpoints.TranslationEndpoint, func(w http.ResponseWriter, r *http.Request) {
 		translationHandler.Translate(w, r, languageGroups)
+	})
+	http.HandleFunc(configuration.EEndpoints.VersionEndpoint, func(w http.ResponseWriter, r *http.Request) {
+		versionHandler.GetVersion(w, r)
 	})
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

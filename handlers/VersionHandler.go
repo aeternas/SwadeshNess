@@ -8,7 +8,7 @@ import (
 )
 
 type AnyVersionHandler interface {
-	GetGroups(w http.ResponseWriter, r *http.Request)
+	GetVersion(w http.ResponseWriter, r *http.Request)
 }
 
 type VersionHandler struct {
