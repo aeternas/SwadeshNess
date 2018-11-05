@@ -55,7 +55,7 @@ jobs:
       - run: 
           name: linting
           command: go install ./vendor/github.com/golangci/golangci-lint/cmd/golangci-lint && golangci-lint run
-  test:
+  unit_tests:
     docker:
       - image: circleci/golang:1.10
     working_directory: /go/src/github.com/aeternas/SwadeshNess
@@ -80,6 +80,13 @@ jobs:
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker build -t aeternas/swadeshness:$CIRCLE_BRANCH . && \
             docker push aeternas/swadeshness:$CIRCLE_BRANCH
+  integration_tests:
+    docker:
+      - image: circleci/golang:1.10
+    steps:
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run: docker run -it aeternas/swadeshness-tests:$CIRCLE_BRANCH
 workflows:
   version: 2
   lint-test-deploy:
@@ -94,4 +101,7 @@ workflows:
       - deploy:
           requires:
             - lint
-            - test
+            - unit_tests
+      - integration_tests:
+          requires:
+            - deploy
