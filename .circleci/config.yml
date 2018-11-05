@@ -84,6 +84,8 @@ jobs:
     docker:
       - image: circleci/golang:1.10
     steps:
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run: docker run -it aeternas/swadeshness-tests:development
 workflows:
   version: 2
