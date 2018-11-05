@@ -75,10 +75,6 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
-          name: Update PATH and Define Environment Variable at Runtime
-          command: |
-            echo 'export VERSION="$CIRCLE_BUILD_NUM"' >> $BASH_ENV
-      - run:
           name: Containerize, Push and Deploy
           command: |
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
@@ -90,11 +86,7 @@ jobs:
     steps:
       - setup_remote_docker:
           docker_layer_caching: true
-      - run:
-          name: Update PATH and Define Environment Variable at Runtime
-          command: |
-            echo 'export VERSION="$CIRCLE_BUILD_NUM"' >> $BASH_ENV
-      - run: docker run -it aeternas/swadeshness-tests:$CIRCLE_BRANCH
+      - run: docker run -e "VERSION=$CIRCLE_BUILD_NUM" -it aeternas/swadeshness-tests:$CIRCLE_BRANCH
 workflows:
   version: 2
   lint-test-deploy:
