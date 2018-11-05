@@ -3,6 +3,7 @@ FROM golang:1.10
 ARG YANDEX_API_KEY=foo
 
 ENV YANDEX_API_KEY=${YANDEX_API_KEY}
+ENV VERSION=${VERSION}
 
 WORKDIR /go/src/github.com/aeternas/SwadeshNess
 COPY . .
