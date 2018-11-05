@@ -3,20 +3,9 @@
 # Check https://circleci.com/docs/2.0/language-go/ for more details
 version: 2
 jobs:
-  lint:
+  checkout:
     docker:
-      # specify the version
       - image: circleci/golang:1.10
-      
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
-
-    #### TEMPLATE_NOTE: go expects specific checkout path representing url
-    #### expecting it in the form of
-    ####   /go/src/github.com/circleci/go-tool
-    ####   /go/src/bitbucket.org/circleci/go-tool
     working_directory: /go/src/github.com/aeternas/SwadeshNess
     steps:
       - run:
@@ -33,26 +22,39 @@ jobs:
           - v1-dep-master-
           # Any branch if there are none on the default branch - this should be unnecessary if you have your default branch configured correctly
           - v1-dep-
+      - run: go get -v -t -d ./...
+      - save_cache:
+         key: v1-dep-{{ .Branch }}-{{ epoch }}
+         paths:
+         - vendor/bundle
+         - ~/virtualenvs
+         - ~/.m2
+         - ~/.ivy2
+         - ~/.bundle
+         - ~/.go_workspace
+         - ~/.gradle
+         - ~/.cache/bower
       - persist_to_workspace:
           root: .
           paths:
             - .
+  lint:
+    docker:
+      - image: circleci/golang:1.10
+    working_directory: /go/src/github.com/aeternas/SwadeshNess
+    steps:
+      - run:
+          name: Checkout
+          command: |
+            mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+            git clone --depth=50 -b $CIRCLE_BRANCH $CIRCLE_REPOSITORY_URL ./ && \
+            git checkout $CIRCLE_SHA1
+      - attach_workspace:
+          at: /go/src/github.com/aeternas/SwadeshNess
       # specify any bash command here prefixed with `run: `
-      - run: go get -v -t -d ./...
       - run: 
           name: linting
           command: go install ./vendor/github.com/golangci/golangci-lint/cmd/golangci-lint && golangci-lint run
-      - save_cache:
-          key: v1-dep-{{ .Branch }}-{{ epoch }}
-          paths:
-          - vendor/bundle
-          - ~/virtualenvs
-          - ~/.m2
-          - ~/.ivy2
-          - ~/.bundle
-          - ~/.go_workspace
-          - ~/.gradle
-          - ~/.cache/bower
   test:
     docker:
       - image: circleci/golang:1.10
@@ -82,10 +84,13 @@ workflows:
   version: 2
   lint-test-deploy:
     jobs:
-      - lint
+      - checkout
+      - lint:
+          requires:
+            - checkout
       - test:
           requires:
-            - lint
+            - checkout
       - deploy:
           requires:
             - lint
