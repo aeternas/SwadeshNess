@@ -84,7 +84,7 @@ jobs:
     docker:
       - image: aeternas/swadeshness-tests:development
     steps:
-      - run: echo "Noop"
+      - run: history
 workflows:
   version: 2
   lint-test-deploy:
