@@ -85,6 +85,10 @@
         {
           "fullName": "Serbian",
           "code": "sr"
+        },
+        {
+          "fullName": "Czech",
+          "code": "cz"
         }
       ]
     },
