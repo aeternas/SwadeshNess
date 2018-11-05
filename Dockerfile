@@ -14,7 +14,9 @@ RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build
 
 FROM alpine:latest
 
-ENV VERSION $VER
+ARG VERS
+
+ENV VERSION $VERS
 
 RUN echo $VERSION
 RUN apk --no-cache add ca-certificates
