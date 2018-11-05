@@ -85,8 +85,7 @@ jobs:
       - image: aeternas/swadeshness-tests:$CIRCLE_BRANCH
     working_directory: /
     steps:
-      - run: pwd
-      - run: sh ./SwadeshNess-IntegrationTests
+      - run: ./SwadeshNess-IntegrationTests
 workflows:
   version: 2
   lint-test-deploy:
