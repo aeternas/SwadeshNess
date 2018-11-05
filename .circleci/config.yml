@@ -95,7 +95,7 @@ workflows:
       - lint:
           requires:
             - checkout
-      - test:
+      - unit_tests:
           requires:
             - checkout
       - deploy:
