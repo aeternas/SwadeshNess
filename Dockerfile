@@ -1,11 +1,8 @@
 FROM golang:1.10
 
-ARG YANDEX_API_KEY=foo
+ARG VERS
 
-ARG VERSION
-
-ENV YANDEX_API_KEY=${YANDEX_API_KEY}
-ENV VERS=$VERSION
+ENV VER=${VERS}
 
 WORKDIR /go/src/github.com/aeternas/SwadeshNess
 COPY . .
@@ -14,16 +11,10 @@ RUN go get -d -v ./...
 RUN go install -v ./...
 RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build
 
-CMD ECHO $VERS
-
 FROM alpine:latest
 
-ARG VERSION
-
-ARG YANDEX_API_KEY=foo
-
-ENV YANDEX_API_KEY=${YANDEX_API_KEY}
-ENV VERSION=${VERSION}
+ARG VER
+ENV VERSION=${VER}
 
 RUN apk --no-cache add ca-certificates
 COPY --from=0 /go/src/github.com/aeternas/SwadeshNess .
