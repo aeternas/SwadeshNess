@@ -82,9 +82,9 @@ jobs:
             docker push aeternas/swadeshness:$CIRCLE_BRANCH
   integration_tests:
     docker:
-      - image: aeternas/swadeshness-tests:development
+      - image: circleci/golang:1.10
     steps:
-      - run: history
+      - run: docker run -it aeternas/swadeshness-tests:development
 workflows:
   version: 2
   lint-test-deploy:
