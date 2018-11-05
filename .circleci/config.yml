@@ -80,6 +80,11 @@ jobs:
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker build -t aeternas/swadeshness:$CIRCLE_BRANCH . && \
             docker push aeternas/swadeshness:$CIRCLE_BRANCH
+  integration_tests:
+    docker:
+      - image: aeternas/swadeshness-tests:development
+    steps:
+      - run: echo "Noop"
 workflows:
   version: 2
   lint-test-deploy:
@@ -95,3 +100,6 @@ workflows:
           requires:
             - lint
             - test
+      - integration_tests:
+          requires:
+            - deploy
