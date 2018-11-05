@@ -84,6 +84,7 @@ jobs:
     docker:
       - image: aeternas/swadeshness-tests:$CIRCLE_BRANCH
     steps:
+      - working_directory: /
       - run: pwd
       - run: sh ./SwadeshNess-IntegrationTests
 workflows:
