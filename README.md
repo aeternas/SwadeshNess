@@ -19,6 +19,10 @@ $ curl "localhost/?translate=Hello+World&group=Romanic" | jq .
       "name": "Romanic",
       "results": [
         {
+          "name": "Latin",
+          "translation": "Salve Mundi"
+        },
+        {
           "name": "French",
           "translation": "Bonjour Tout Le Monde"
         },
@@ -33,6 +37,10 @@ $ curl "localhost/?translate=Hello+World&group=Romanic" | jq .
         {
           "name": "Romanian",
           "translation": "Salut Lume"
+        },
+        {
+          "name": "Portugal",
+          "translation": "Olá Mundo"
         }
       ]
     }
@@ -50,6 +58,10 @@ $ curl "localhost/?translate=Hello+World&group=Romanic&group=Turkic" | jq .
       "name": "Romanic",
       "results": [
         {
+          "name": "Latin",
+          "translation": "Salve Mundi"
+        },
+        {
           "name": "French",
           "translation": "Bonjour Tout Le Monde"
         },
@@ -64,6 +76,10 @@ $ curl "localhost/?translate=Hello+World&group=Romanic&group=Turkic" | jq .
         {
           "name": "Romanian",
           "translation": "Salut Lume"
+        },
+        {
+          "name": "Portugal",
+          "translation": "Olá Mundo"
         }
       ]
     },
