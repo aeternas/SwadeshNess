@@ -16,6 +16,7 @@ FROM alpine:latest
 
 ENV VERSION $VER
 
+RUN echo $VERSION
 RUN apk --no-cache add ca-certificates
 COPY --from=0 /go/src/github.com/aeternas/SwadeshNess .
 
