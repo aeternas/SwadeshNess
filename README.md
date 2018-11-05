@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/aeternas/SwadeshNess.svg?branch=master)](https://travis-ci.org/aeternas/SwadeshNess)
+[![CircleCI](https://circleci.com/gh/aeternas/SwadeshNess/tree/master.svg?style=svg)](https://circleci.com/gh/aeternas/SwadeshNess/tree/master)
 
 # SwadeshNess
 Backend for Swadesh-like lists creation. More information about Swadesh lists on [Wikipedia](https://en.wikipedia.org/wiki/Swadesh_list?oldformat=true)
