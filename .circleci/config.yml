@@ -19,7 +19,12 @@ jobs:
     ####   /go/src/bitbucket.org/circleci/go-tool
     working_directory: /go/src/github.com/aeternas/SwadeshNess
     steps:
-      - checkout
+      - run:
+          name: Checkout
+          command: |
+            mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+            git clone --depth=50 -b $CIRCLE_BRANCH $CIRCLE_REPOSITORY_URL ./ && \
+            git checkout $CIRCLE_SHA1
       - restore_cache:
           keys:
           # This branch if available

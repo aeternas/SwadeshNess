@@ -43,6 +43,10 @@
         {
           "fullName": "Romanian",
           "code": "ro"
+        },
+        {
+          "fullName": "Portugal",
+          "code": "pt"
         }
       ]
     },
@@ -81,6 +85,14 @@
         {
           "fullName": "Serbian",
           "code": "sr"
+        },
+        {
+          "fullName": "Polish",
+          "code": "pl"
+        },
+        {
+          "fullName": "Czech",
+          "code": "cs"
         }
       ]
     },
@@ -102,6 +114,19 @@
         {
           "fullName": "Danish",
           "code": "da"
+        }
+      ]
+    },
+    {
+      "name": "Baltic",
+      "languages": [
+        {
+          "fullName": "Latvian",
+          "code": "lv"
+        },
+        {
+          "fullName": "Lietuvan",
+          "code": "lt"
         }
       ]
     },
