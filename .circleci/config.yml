@@ -3,14 +3,16 @@
 # Check https://circleci.com/docs/2.0/language-go/ for more details
 
 _defaults: &defaults
+  image_workdir: &image_workdir
+    docker:
+      - image: circleci/golang:1.10
+    working_directory: /go/src/github.com/aeternas/SwadeshNess
   run: &getDeps go get -v -t -d ./...
 
 version: 2
 jobs:
   checkout:
-    docker:
-      - image: circleci/golang:1.10
-    working_directory: /go/src/github.com/aeternas/SwadeshNess
+    *image_workdir
     steps:
       - run:
           name: Checkout
