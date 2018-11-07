@@ -16,6 +16,9 @@ _git_checkout: &git_checkout
     git clone --depth=50 -b $CIRCLE_BRANCH $CIRCLE_REPOSITORY_URL ./ && \
     git checkout $CIRCLE_SHA1
 
+_attach_workspace: &attach_workspace
+  at: /go/src/github.com/aeternas/SwadeshNess
+
 version: 2
 jobs:
   checkout:
@@ -48,14 +51,11 @@ jobs:
           paths:
             - .
   lint:
-    docker:
-      - image: circleci/golang:1.10
-    working_directory: /go/src/github.com/aeternas/SwadeshNess
+    docker: *docker_worker
+    working_directory: *work_dir
     steps:
       - run: *git_checkout
-      - attach_workspace:
-          at: /go/src/github.com/aeternas/SwadeshNess
-      # specify any bash command here prefixed with `run: `
+      - attach_workspace: *attach_workspace
       - run: *getDeps
       - run: 
           name: linting
@@ -64,8 +64,7 @@ jobs:
     docker: *docker_worker
     working_directory: *work_dir
     steps:
-      - attach_workspace:
-          at: /go/src/github.com/aeternas/SwadeshNess
+      - attach_workspace: *attach_workspace
       - run: *getDeps
       - run:
           name: tests
@@ -74,8 +73,7 @@ jobs:
     docker: *docker_worker
     working_directory: *work_dir
     steps:
-      - attach_workspace:
-          at: /go/src/github.com/aeternas/SwadeshNess
+      - attach_workspace: *attach_workspace
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
