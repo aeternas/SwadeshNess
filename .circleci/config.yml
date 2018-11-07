@@ -47,6 +47,7 @@ jobs:
       - image: circleci/golang:1.10
     working_directory: /go/src/github.com/aeternas/SwadeshNess
     steps:
+      - run: *getDeps
       - run:
           name: Checkout
           command: |
