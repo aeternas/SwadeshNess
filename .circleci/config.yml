@@ -67,6 +67,7 @@ jobs:
     steps:
       - attach_workspace:
           at: /go/src/github.com/aeternas/SwadeshNess
+      - run: *getDeps
       - run:
           name: tests
           command: go test -v ./...
