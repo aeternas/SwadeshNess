@@ -3,21 +3,26 @@
 # Check https://circleci.com/docs/2.0/language-go/ for more details
 
 _defaults: &defaults
-  run: &getDeps go get -v -t -d ./...
+_get_deps: &getDeps go get -v -t -d ./...
+
+_docker_worker: &docker_worker
+  - image: circleci/golang:1.10
+_workdir: &work_dir /go/src/github.com/aeternas/SwadeshNess
+
+_git_checkout: &git_checkout
+  name: Checkout
+  command: |
+    mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+    git clone --depth=50 -b $CIRCLE_BRANCH $CIRCLE_REPOSITORY_URL ./ && \
+    git checkout $CIRCLE_SHA1
 
 version: 2
 jobs:
   checkout:
-    docker:
-      - image: circleci/golang:1.10
-    working_directory: /go/src/github.com/aeternas/SwadeshNess
+    docker: *docker_worker
+    working_directory: *work_dir
     steps:
-      - run:
-          name: Checkout
-          command: |
-            mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
-            git clone --depth=50 -b $CIRCLE_BRANCH $CIRCLE_REPOSITORY_URL ./ && \
-            git checkout $CIRCLE_SHA1
+      - run : *git_checkout
       - restore_cache:
           keys:
           # This branch if available
@@ -47,12 +52,7 @@ jobs:
       - image: circleci/golang:1.10
     working_directory: /go/src/github.com/aeternas/SwadeshNess
     steps:
-      - run:
-          name: Checkout
-          command: |
-            mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
-            git clone --depth=50 -b $CIRCLE_BRANCH $CIRCLE_REPOSITORY_URL ./ && \
-            git checkout $CIRCLE_SHA1
+      - run: *git_checkout
       - attach_workspace:
           at: /go/src/github.com/aeternas/SwadeshNess
       # specify any bash command here prefixed with `run: `
@@ -61,9 +61,8 @@ jobs:
           name: linting
           command: go install ./vendor/github.com/golangci/golangci-lint/cmd/golangci-lint && golangci-lint run
   unit_tests:
-    docker:
-      - image: circleci/golang:1.10
-    working_directory: /go/src/github.com/aeternas/SwadeshNess
+    docker: *docker_worker
+    working_directory: *work_dir
     steps:
       - attach_workspace:
           at: /go/src/github.com/aeternas/SwadeshNess
@@ -72,9 +71,8 @@ jobs:
           name: tests
           command: go test -v ./...
   deploy:
-    docker:
-      - image: circleci/golang:1.10
-    working_directory: /go/src/github.com/aeternas/SwadeshNess
+    docker: *docker_worker
+    working_directory: *work_dir
     steps:
       - attach_workspace:
           at: /go/src/github.com/aeternas/SwadeshNess
