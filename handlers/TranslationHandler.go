@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	. "github.com/aeternas/SwadeshNess-packages/dto"
 	. "github.com/aeternas/SwadeshNess-packages/language"
 	. "github.com/aeternas/SwadeshNess/apiClient"
 	. "github.com/aeternas/SwadeshNess/configuration"
