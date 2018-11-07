@@ -51,9 +51,7 @@ jobs:
     docker: *docker_worker
     working_directory: *work_dir
     steps:
-      - run: *git_checkout
       - attach_workspace: *attach_workspace
-      - run: *get_deps
       - run: 
           name: linting
           command: go install ./vendor/github.com/golangci/golangci-lint/cmd/golangci-lint && golangci-lint run
@@ -62,7 +60,6 @@ jobs:
     working_directory: *work_dir
     steps:
       - attach_workspace: *attach_workspace
-      - run: *get_deps
       - run:
           name: tests
           command: go test -v ./...
