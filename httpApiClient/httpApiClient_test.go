@@ -1,9 +1,9 @@
 package httpApiClient_test
 
 import (
+	. "github.com/aeternas/SwadeshNess-packages/language"
 	. "github.com/aeternas/SwadeshNess/apiClient"
 	. "github.com/aeternas/SwadeshNess/dto"
-	. "github.com/aeternas/SwadeshNess/language"
 	"testing"
 )
 

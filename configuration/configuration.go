@@ -1,7 +1,7 @@
 package configuration
 
 import (
-	. "github.com/aeternas/SwadeshNess/language"
+	. "github.com/aeternas/SwadeshNess-packages/language"
 )
 
 const (

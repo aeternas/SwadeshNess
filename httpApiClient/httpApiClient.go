@@ -3,9 +3,9 @@ package httpApiClient
 import (
 	"encoding/json"
 	"fmt"
+	. "github.com/aeternas/SwadeshNess-packages/language"
 	. "github.com/aeternas/SwadeshNess/apiClient"
 	. "github.com/aeternas/SwadeshNess/dto"
-	. "github.com/aeternas/SwadeshNess/language"
 	"io/ioutil"
 	"log"
 	"net/http"

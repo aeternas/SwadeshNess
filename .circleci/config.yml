@@ -1,6 +1,10 @@
 # Golang CircleCI 2.0 configuration file
 #
 # Check https://circleci.com/docs/2.0/language-go/ for more details
+
+_defaults: &defaults
+  run: &getDeps go get -v -t -d ./...
+
 version: 2
 jobs:
   checkout:
@@ -22,7 +26,7 @@ jobs:
           - v1-dep-master-
           # Any branch if there are none on the default branch - this should be unnecessary if you have your default branch configured correctly
           - v1-dep-
-      - run: go get -v -t -d ./...
+      - run: *getDeps
       - save_cache:
          key: v1-dep-{{ .Branch }}-{{ epoch }}
          paths:
@@ -52,6 +56,7 @@ jobs:
       - attach_workspace:
           at: /go/src/github.com/aeternas/SwadeshNess
       # specify any bash command here prefixed with `run: `
+      - run: *getDeps
       - run: 
           name: linting
           command: go install ./vendor/github.com/golangci/golangci-lint/cmd/golangci-lint && golangci-lint run
@@ -62,6 +67,7 @@ jobs:
     steps:
       - attach_workspace:
           at: /go/src/github.com/aeternas/SwadeshNess
+      - run: *getDeps
       - run:
           name: tests
           command: go test -v ./...
