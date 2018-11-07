@@ -11,8 +11,7 @@ _defaults: &defaults
 
 version: 2
 jobs:
-  checkout:
-    *image_workdir
+  checkout: *image_workdir
     steps:
       - run:
           name: Checkout
