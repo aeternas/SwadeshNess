@@ -25,7 +25,7 @@ jobs:
     docker: *docker_worker
     working_directory: *work_dir
     steps:
-      - run : *git_checkout
+      - run: *git_checkout
       - restore_cache:
           keys:
           - v1-dep-{{ .Branch }}-
