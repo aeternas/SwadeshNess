@@ -88,7 +88,9 @@ jobs:
           name: Update PATH and Define Environment Variable at Runtime
           command: |
             echo 'export VERSION="$CIRCLE_PREVIOUS_BUILD_NUM"' >> $BASH_ENV
-      - deploy: ./SwadeshNess-IntegrationTests
+      - deploy:
+          name: Run Integration Tests 
+          command: ./SwadeshNess-IntegrationTests
 workflows:
   version: 2
   lint-test-deploy:
