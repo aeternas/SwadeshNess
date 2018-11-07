@@ -47,7 +47,6 @@ jobs:
       - image: circleci/golang:1.10
     working_directory: /go/src/github.com/aeternas/SwadeshNess
     steps:
-      - run: *getDeps
       - run:
           name: Checkout
           command: |
@@ -57,6 +56,7 @@ jobs:
       - attach_workspace:
           at: /go/src/github.com/aeternas/SwadeshNess
       # specify any bash command here prefixed with `run: `
+      - run: *getDeps
       - run: 
           name: linting
           command: go install ./vendor/github.com/golangci/golangci-lint/cmd/golangci-lint && golangci-lint run
