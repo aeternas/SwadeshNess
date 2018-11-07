@@ -1,9 +1,9 @@
 package main
 
 import (
+	. "github.com/aeternas/SwadeshNess-packages/language"
 	Config "github.com/aeternas/SwadeshNess/configuration"
 	. "github.com/aeternas/SwadeshNess/handlers"
-	. "github.com/aeternas/SwadeshNess/language"
 	Wrappers "github.com/aeternas/SwadeshNess/wrappers"
 	"log"
 	"net/http"

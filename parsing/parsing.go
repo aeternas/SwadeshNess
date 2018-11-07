@@ -1,7 +1,7 @@
 package parsing
 
 import (
-	l "github.com/aeternas/SwadeshNess/language"
+	l "github.com/aeternas/SwadeshNess-packages/language"
 )
 
 type TranslateRequest struct {
