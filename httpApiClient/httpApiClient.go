@@ -38,7 +38,6 @@ func getRequest(c *http.Client, middlewares []Middleware, w, sourceLang, targetL
 		req = middleware.AdaptRequest(req)
 	}
 
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	resp, err := c.Do(req)
 
 	if err != nil {
