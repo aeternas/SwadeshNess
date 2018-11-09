@@ -18,11 +18,12 @@ type HTTPApiClient struct {
 }
 
 func (c *HTTPApiClient) MakeTranslationRequest(w, apiKey, sourceLang string, targetLang Language, ch chan<- YandexTranslationResult) {
-	res := getRequest(c.Client, w, sourceLang, targetLang.Code, apiKey)
+	c.Middlewares = []Middleware{NewDefaultMiddleware()}
+	res := getRequest(c.Client, c.Middlewares, w, sourceLang, targetLang.Code, apiKey)
 	ch <- res
 }
 
-func getRequest(c *http.Client, w, sourceLang, targetLang, apiKey string) YandexTranslationResult {
+func getRequest(c *http.Client, middlewares []Middleware, w, sourceLang, targetLang, apiKey string) YandexTranslationResult {
 	queryString := url.QueryEscape(w)
 
 	urlString := fmt.Sprintf("https://translate.yandex.net/api/v1.5/tr.json/translate?key=%s&lang=%s-%s&text=%s", apiKey, sourceLang, targetLang, queryString)
@@ -31,6 +32,10 @@ func getRequest(c *http.Client, w, sourceLang, targetLang, apiKey string) Yandex
 	if err != nil {
 		log.Println("Request initialization error: ", err)
 		return getTranslationResultErrorString("Request initialization error")
+	}
+
+	for _, middleware := range middlewares {
+		req = middleware.AdaptRequest(req)
 	}
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
