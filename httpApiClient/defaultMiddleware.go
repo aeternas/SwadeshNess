@@ -19,6 +19,7 @@ func NewDefaultMiddleware() DefaultMiddleware {
 }
 
 func (defaultMiddleware) AdaptRequest(r *http.Request) *http.Request {
+	r.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	return r
 }
 
