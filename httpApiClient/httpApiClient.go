@@ -5,6 +5,7 @@ import (
 	"fmt"
 	. "github.com/aeternas/SwadeshNess-packages/language"
 	. "github.com/aeternas/SwadeshNess/apiClient"
+	. "github.com/aeternas/SwadeshNess/configuration"
 	. "github.com/aeternas/SwadeshNess/dto"
 	"io/ioutil"
 	"log"
@@ -17,16 +18,16 @@ type HTTPApiClient struct {
 	Middlewares []Middleware
 }
 
-func (c *HTTPApiClient) MakeTranslationRequest(w, apiKey, sourceLang string, targetLang Language, ch chan<- YandexTranslationResult) {
-	c.Middlewares = []Middleware{NewDefaultMiddleware()}
-	res := getRequest(c.Client, c.Middlewares, w, sourceLang, targetLang.Code, apiKey)
+func (c *HTTPApiClient) MakeTranslationRequest(w string, conf *Configuration, sourceLang string, targetLang Language, ch chan<- YandexTranslationResult) {
+	c.Middlewares = []Middleware{NewDefaultMiddleware(), NewAuthMiddleware(conf.ApiKey)}
+	res := getRequest(c.Client, c.Middlewares, w, sourceLang, targetLang.Code)
 	ch <- res
 }
 
-func getRequest(c *http.Client, middlewares []Middleware, w, sourceLang, targetLang, apiKey string) YandexTranslationResult {
+func getRequest(c *http.Client, middlewares []Middleware, w, sourceLang, targetLang string) YandexTranslationResult {
 	queryString := url.QueryEscape(w)
 
-	urlString := fmt.Sprintf("https://translate.yandex.net/api/v1.5/tr.json/translate?key=%s&lang=%s-%s&text=%s", apiKey, sourceLang, targetLang, queryString)
+	urlString := fmt.Sprintf("https://translate.yandex.net/api/v1.5/tr.json/translate?lang=%s-%s&text=%s", sourceLang, targetLang, queryString)
 
 	req, err := http.NewRequest("GET", urlString, nil)
 	if err != nil {

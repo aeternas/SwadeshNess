@@ -3,18 +3,20 @@ package httpApiClient_test
 import (
 	. "github.com/aeternas/SwadeshNess-packages/language"
 	. "github.com/aeternas/SwadeshNess/apiClient"
+	. "github.com/aeternas/SwadeshNess/configuration"
 	. "github.com/aeternas/SwadeshNess/dto"
 	"testing"
 )
 
 type MockHTTPApiClient struct{}
 
-func (c *MockHTTPApiClient) MakeTranslationRequest(w, apiKey, sourceLang string, targetLang Language, ch chan<- YandexTranslationResult) {
+func (c *MockHTTPApiClient) MakeTranslationRequest(w string, conf *Configuration, sourceLang string, targetLang Language, ch chan<- YandexTranslationResult) {
 	ch <- YandexTranslationResult{Code: 200, Lang: "en-tr", Message: "", Text: []string{"adam"}}
 }
 
 func TestMakeRequest(t *testing.T) {
 	apiKey := "APIKEY"
+	config := &Configuration{Languages: []LanguageGroup{}, ApiKey: "", Credits: "", Version: "", EEndpoints: Endpoints{}}
 
 	ch := make(chan YandexTranslationResult)
 
@@ -26,7 +28,7 @@ func TestMakeRequest(t *testing.T) {
 
 	apiClient = httpApiClient
 
-	go apiClient.MakeTranslationRequest("man", apiKey, "en", turkishLanguage, ch)
+	go apiClient.MakeTranslationRequest("man", config, "en", turkishLanguage, ch)
 
 	s := []YandexTranslationResult{}
 

@@ -60,7 +60,7 @@ func (th *TranslationHandler) Translate(w http.ResponseWriter, r *http.Request, 
 
 	groups := []GroupTranslation{}
 	for _, lang := range translationRequestGroupValues {
-		res, err := getTranslation(translationRequestValue, sourceLanguage, lang, languageGroups, th.Config.ApiKey, th.Config.Credits)
+		res, err := getTranslation(translationRequestValue, sourceLanguage, lang, th.Config)
 		if err != nil {
 			log.Printf("Failed to process language group: %s", lang)
 			http.Error(w, fmt.Sprintf("Failed to process language group: %s", lang), http.StatusInternalServerError)
@@ -83,12 +83,12 @@ func (th *TranslationHandler) Translate(w http.ResponseWriter, r *http.Request, 
 	}
 }
 
-func getTranslation(translationRequestValue, sourceLanguage, targetLanguage string, availableLanguageGroups []LanguageGroup, apiKey, credits string) (SwadeshTranslation, error) {
+func getTranslation(translationRequestValue, sourceLanguage, targetLanguage string, conf *Configuration) (SwadeshTranslation, error) {
 	var desiredGroup LanguageGroup
 
-	for i := range availableLanguageGroups {
-		if strings.ToLower(availableLanguageGroups[i].Name) == strings.ToLower(targetLanguage) {
-			desiredGroup = availableLanguageGroups[i]
+	for i := range conf.Languages {
+		if strings.ToLower(conf.Languages[i].Name) == strings.ToLower(targetLanguage) {
+			desiredGroup = conf.Languages[i]
 			break
 		}
 	}
@@ -100,7 +100,7 @@ func getTranslation(translationRequestValue, sourceLanguage, targetLanguage stri
 	ch := make(chan YandexTranslationResult)
 
 	for _, lang := range desiredGroup.Languages {
-		go apiClient.MakeTranslationRequest(translationRequestValue, apiKey, sourceLanguage, lang, ch)
+		go apiClient.MakeTranslationRequest(translationRequestValue, conf, sourceLanguage, lang, ch)
 	}
 
 	results := []YandexTranslationResult{}
@@ -108,7 +108,7 @@ func getTranslation(translationRequestValue, sourceLanguage, targetLanguage stri
 		results = append(results, <-ch)
 	}
 
-	swadeshResults := translateToSwadeshTranslation(results, desiredGroup, credits)
+	swadeshResults := translateToSwadeshTranslation(results, desiredGroup, conf.Credits)
 
 	return swadeshResults, nil
 }
