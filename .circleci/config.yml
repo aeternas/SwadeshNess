@@ -2,7 +2,7 @@ _defaults: &defaults
 _get_deps: &get_deps go get -v -t -d ./...
 
 _docker_worker: &docker_worker
-  - image: circleci/golang:1.10
+  - image: circleci/golang:1.11
 _workdir: &work_dir /go/src/github.com/aeternas/SwadeshNess
 
 _git_checkout: &git_checkout
