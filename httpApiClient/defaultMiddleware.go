@@ -1,13 +1,10 @@
 package httpApiClient
 
 import (
-	. "github.com/aeternas/SwadeshNess/apiClient"
 	"net/http"
 )
 
-type defaultMiddleware struct {
-	Middleware
-}
+type defaultMiddleware struct{}
 
 type DefaultMiddleware interface {
 	AdaptRequest(r *http.Request) *http.Request
