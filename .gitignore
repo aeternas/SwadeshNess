@@ -13,3 +13,7 @@
 
 # IDE
 .vscode
+
+#certificates
+server.key
+server.crt
