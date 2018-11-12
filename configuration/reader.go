@@ -30,8 +30,8 @@ func (r *Reader) ReadConfiguration() (Configuration, error) {
 	var groupEndpoint string = lReader.OsWrapper.GetEnvFallback(GROUP_ENDPOINT, "/groups")
 	var versionEndpoint string = lReader.OsWrapper.GetEnvFallback(VERSION_ENDPOINT, "/version")
 	var version string = lReader.OsWrapper.GetEnvFallback(VERSION, "0")
-	var serverKeyPath string = lReader.OsWrapper.GetEnvFallback(SERVER_KEY, "server.key")
-	var serverCertPath string = lReader.OsWrapper.GetEnvFallback(SERVER_CERT, "server.crt")
+	var serverKeyPath string = lReader.OsWrapper.GetEnvFallback(SERVER_KEY, "certs/server.key")
+	var serverCertPath string = lReader.OsWrapper.GetEnvFallback(SERVER_CERT, "certs/server.crt")
 	configuration.ApiKey = apiKey
 	configuration.Version = version
 	endpoints := Endpoints{TranslationEndpoint: translationEndpoint, GroupsEndpoint: groupEndpoint, VersionEndpoint: versionEndpoint}
