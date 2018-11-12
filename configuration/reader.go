@@ -30,10 +30,14 @@ func (r *Reader) ReadConfiguration() (Configuration, error) {
 	var groupEndpoint string = lReader.OsWrapper.GetEnvFallback(GROUP_ENDPOINT, "/groups")
 	var versionEndpoint string = lReader.OsWrapper.GetEnvFallback(VERSION_ENDPOINT, "/version")
 	var version string = lReader.OsWrapper.GetEnvFallback(VERSION, "0")
+	var serverKeyPath string = lReader.OsWrapper.GetEnvFallback(SERVER_KEY, "certs/server.key")
+	var serverCertPath string = lReader.OsWrapper.GetEnvFallback(SERVER_CERT, "certs/server.crt")
 	configuration.ApiKey = apiKey
 	configuration.Version = version
 	endpoints := Endpoints{TranslationEndpoint: translationEndpoint, GroupsEndpoint: groupEndpoint, VersionEndpoint: versionEndpoint}
+	security := Security{ServerKeyPath: serverKeyPath, ServerCertPath: serverCertPath}
 	configuration.EEndpoints = endpoints
+	configuration.Security = security
 	if err != nil {
 		log.Printf("Configuration decoding failed")
 		return Configuration{}, errors.New("Failed to read database")

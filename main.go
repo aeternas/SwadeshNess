@@ -40,5 +40,5 @@ func main() {
 	http.HandleFunc(configuration.EEndpoints.VersionEndpoint, func(w http.ResponseWriter, r *http.Request) {
 		versionHandler.GetVersion(w, r)
 	})
-	log.Fatal(http.ListenAndServeTLS(":8080", "certs/certificate.chained.crt", "certs/private.key", nil))
+	log.Fatal(http.ListenAndServeTLS(":8080", configuration.Security.ServerCertPath, configuration.Security.ServerKeyPath, nil))
 }
