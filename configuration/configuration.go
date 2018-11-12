@@ -10,6 +10,8 @@ const (
 	GROUP_ENDPOINT       = "GROUP_ENDPOINT"
 	VERSION_ENDPOINT     = "VERSION_ENDPOINT"
 	VERSION              = "VERSION"
+	SERVER_KEY           = "SERVER_KEY"
+	SERVER_CERT          = "SERVER_CERT"
 )
 
 type Configuration struct {
@@ -18,4 +20,5 @@ type Configuration struct {
 	Credits    string
 	Version    string
 	EEndpoints Endpoints
+	Security   Security
 }
