@@ -20,4 +20,4 @@ ENV VERSION $VERS
 RUN apk --no-cache add ca-certificates
 COPY --from=0 /go/src/github.com/aeternas/SwadeshNess .
 
-CMD ["./SwadeshNess"]
+CMD ["./SwadeshNess --https"]
