@@ -82,6 +82,9 @@ jobs:
       - run:
           name: Update PATH and Define Environment Variable at Runtime
           command: |
+            echo 'export PROD_HOST="https://vpered.su"' >> $BASH_ENV
+            echo 'export DEV_HOST="https://vpered.su:8080/dev"' >> $BASH_ENV
+            echo 'export BRANCH="$CIRCLE_BRANCH"' >> $BASH_ENV
             echo 'export VERSION="$CIRCLE_PREVIOUS_BUILD_NUM"' >> $BASH_ENV
       - deploy:
           name: Run Integration Tests 
