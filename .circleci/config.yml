@@ -1,19 +1,16 @@
-_defaults: &defaults
-_get_deps: &get_deps go get -v -t -d ./...
-
-_docker_worker: &docker_worker
-  - image: circleci/golang:1.11
-_workdir: &work_dir /go/src/github.com/aeternas/SwadeshNess
-
-_git_checkout: &git_checkout
-  name: Checkout
-  command: |
-    mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
-    git clone --depth=50 -b $CIRCLE_BRANCH $CIRCLE_REPOSITORY_URL ./ && \
-    git checkout $CIRCLE_SHA1
-
-_attach_workspace: &attach_workspace
-  at: /go/src/github.com/aeternas/SwadeshNess
+aliases:
+  - &get_deps go get -v -t -d ./...
+  - &docker_worker
+    - image: circleci/golang:1.11
+  - &work_dir /go/src/github.com/aeternas/SwadeshNess
+  - &git_checkout
+    name: Checkout
+    command: |
+      mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+      git clone --depth=50 -b $CIRCLE_BRANCH $CIRCLE_REPOSITORY_URL ./ && \
+      git checkout $CIRCLE_SHA1
+  - &attach_workspace
+    at: /go/src/github.com/aeternas/SwadeshNess
 
 version: 2
 jobs:
