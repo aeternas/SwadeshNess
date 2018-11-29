@@ -11,6 +11,17 @@ aliases:
       git checkout $CIRCLE_SHA1
   - &attach_workspace
     at: /go/src/github.com/aeternas/SwadeshNess
+  - &save_cache
+    key: v1-dep-{{ .Branch }}-{{ epoch }}
+    paths:
+    - vendor/bundle
+    - ~/virtualenvs
+    - ~/.m2
+    - ~/.ivy2
+    - ~/.bundle
+    - ~/.go_workspace
+    - ~/.gradle
+    - ~/.cache/bower
 
 version: 2
 jobs:
@@ -25,17 +36,7 @@ jobs:
           - v1-dep-master-
           - v1-dep-
       - run: *get_deps
-      - save_cache:
-         key: v1-dep-{{ .Branch }}-{{ epoch }}
-         paths:
-         - vendor/bundle
-         - ~/virtualenvs
-         - ~/.m2
-         - ~/.ivy2
-         - ~/.bundle
-         - ~/.go_workspace
-         - ~/.gradle
-         - ~/.cache/bower
+      - save_cache: *save_cache
       - persist_to_workspace:
           root: .
           paths:
