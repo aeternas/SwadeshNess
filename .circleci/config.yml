@@ -22,7 +22,37 @@ aliases:
     - ~/.go_workspace
     - ~/.gradle
     - ~/.cache/bower
-
+  - &restore_cache
+    keys:
+    - v1-dep-{{ .Branch }}-
+    - v1-dep-master-
+    - v1-dep-
+  - &persist_to_workspace
+    root: .
+    paths:
+      - .
+  - &lint
+    name: linting
+    command: go install ./vendor/github.com/golangci/golangci-lint/cmd/golangci-lint && golangci-lint run
+  - &test
+    name: tests
+    command: go test -v ./...
+  - &containerize_push_deploy
+    name: Containerize, Push and Deploy
+    command: |
+      docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      docker build --build-arg VERS=$CIRCLE_BUILD_NUM -t aeternas/swadeshness:$CIRCLE_BRANCH . && \
+      docker push aeternas/swadeshness:$CIRCLE_BRANCH
+  - &update_envs
+    name: Update PATH and Define Environment Variable at Runtime
+    command: |
+      echo 'export PROD_HOST="https://vpered.su"' >> $BASH_ENV
+      echo 'export DEV_HOST="https://vpered.su:8080/dev"' >> $BASH_ENV
+      echo 'export BRANCH="$CIRCLE_BRANCH"' >> $BASH_ENV
+      echo 'export VERSION="$CIRCLE_PREVIOUS_BUILD_NUM"' >> $BASH_ENV
+  - &run_integration_tests
+    name: Run Integration Tests
+    command: ./SwadeshNess-IntegrationTests
 version: 2
 jobs:
   checkout:
@@ -30,35 +60,24 @@ jobs:
     working_directory: *work_dir
     steps:
       - run: *git_checkout
-      - restore_cache:
-          keys:
-          - v1-dep-{{ .Branch }}-
-          - v1-dep-master-
-          - v1-dep-
+      - restore_cache: *restore_cache
       - run: *get_deps
       - save_cache: *save_cache
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
+      - persist_to_workspace: *persist_to_workspace
   lint:
     docker: *docker_worker
     working_directory: *work_dir
     steps:
       - attach_workspace: *attach_workspace
       - run: *get_deps
-      - run: 
-          name: linting
-          command: go install ./vendor/github.com/golangci/golangci-lint/cmd/golangci-lint && golangci-lint run
+      - run: *lint
   unit_tests:
     docker: *docker_worker
     working_directory: *work_dir
     steps:
       - attach_workspace: *attach_workspace
       - run: *get_deps
-      - run:
-          name: tests
-          command: go test -v ./...
+      - run: *test
   deploy:
     docker: *docker_worker
     working_directory: *work_dir
@@ -66,27 +85,14 @@ jobs:
       - attach_workspace: *attach_workspace
       - setup_remote_docker:
           docker_layer_caching: true
-      - deploy:
-          name: Containerize, Push and Deploy
-          command: |
-            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-            docker build --build-arg VERS=$CIRCLE_BUILD_NUM -t aeternas/swadeshness:$CIRCLE_BRANCH . && \
-            docker push aeternas/swadeshness:$CIRCLE_BRANCH
+      - deploy: *containerize_push_deploy
   integration_tests:
     docker:
       - image: aeternas/swadeshness-tests:$CIRCLE_BRANCH
     working_directory: /
     steps:
-      - run:
-          name: Update PATH and Define Environment Variable at Runtime
-          command: |
-            echo 'export PROD_HOST="https://vpered.su"' >> $BASH_ENV
-            echo 'export DEV_HOST="https://vpered.su:8080/dev"' >> $BASH_ENV
-            echo 'export BRANCH="$CIRCLE_BRANCH"' >> $BASH_ENV
-            echo 'export VERSION="$CIRCLE_PREVIOUS_BUILD_NUM"' >> $BASH_ENV
-      - deploy:
-          name: Run Integration Tests 
-          command: ./SwadeshNess-IntegrationTests
+      - run: *update_envs
+      - deploy: *run_integration_tests
 workflows:
   version: 2
   lint-test-deploy:
