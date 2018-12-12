@@ -20,11 +20,18 @@ func NewRedisCachingWrapper() RedisCachingWrapper {
 }
 
 func (rcw *redisCachingWrapper) GetCachedValue(k string) (string, error) {
-	return "", nil
+	val, err := rcw.RedisClient.Get(k).Result()
+	if err != nil {
+		return "", err
+	}
+
+	//if err == redis.Nil {
+	return val, nil
 }
 
 func (rcw *redisCachingWrapper) SaveCachedValue(k, v string) error {
-	return nil
+	err := rcw.RedisClient.Set(k, v, 0).Err()
+	return err
 }
 
 func ExampleNewClient() *Redis.Client {
@@ -37,5 +44,4 @@ func ExampleNewClient() *Redis.Client {
 	pong, err := client.Ping().Result()
 	fmt.Println(pong, err)
 	return client
-	// Output: PONG <nil>
 }
