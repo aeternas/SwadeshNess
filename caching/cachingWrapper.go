@@ -1,6 +1,6 @@
 package caching
 
 type AnyCacheWrapper interface {
-	GetCachedValue(k string) string
-	SaveCachedValue(k, v string)
+	GetCachedValue(k string) (string, error)
+	SaveCachedValue(k, v string) error
 }

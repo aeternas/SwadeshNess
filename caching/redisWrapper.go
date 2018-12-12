@@ -6,8 +6,8 @@ import (
 )
 
 type RedisCachingWrapper interface {
-	GetCachedValue(k string) string
-	SaveCachedValue(k, v string)
+	GetCachedValue(k string) (string, error)
+	SaveCachedValue(k, v string) error
 }
 
 type redisCachingWrapper struct {
@@ -19,12 +19,12 @@ func NewRedisCachingWrapper() RedisCachingWrapper {
 	return &redisCachingWrapper{RedisClient: redisClient}
 }
 
-func (rcw *redisCachingWrapper) GetCachedValue(k string) string {
-	return ""
+func (rcw *redisCachingWrapper) GetCachedValue(k string) (string, error) {
+	return "", nil
 }
 
-func (rcw *redisCachingWrapper) SaveCachedValue(k, v string) {
-
+func (rcw *redisCachingWrapper) SaveCachedValue(k, v string) error {
+	return nil
 }
 
 func ExampleNewClient() *Redis.Client {
