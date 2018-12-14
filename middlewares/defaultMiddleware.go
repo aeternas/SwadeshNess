@@ -1,4 +1,4 @@
-package httpApiClient
+package middlewares
 
 import (
 	"net/http"

@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	. "github.com/aeternas/SwadeshNess/apiClient"
+	. "github.com/aeternas/SwadeshNess/middlewares"
 )
 
 type AnyHandler struct {
