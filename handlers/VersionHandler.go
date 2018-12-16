@@ -7,15 +7,11 @@ import (
 	"net/http"
 )
 
-type AnyVersionHandler interface {
-	GetVersion(w http.ResponseWriter, r *http.Request)
-}
-
 type VersionHandler struct {
 	Config *Configuration
 }
 
-func (gh *VersionHandler) GetVersion(w http.ResponseWriter, r *http.Request) {
+func (gh *VersionHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {
 	bytes, err := json.Marshal(gh.Config.Version)
 	if err != nil {
 		log.Println("Marshalling Error")

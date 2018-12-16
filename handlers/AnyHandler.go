@@ -13,9 +13,7 @@ type anyHandler struct {
 	Middlewares []Middleware
 }
 
-func (ah anyHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {
-
-}
+func (ah anyHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {}
 
 func NewAnyHandler() AnyHandler {
 	return &anyHandler{}
