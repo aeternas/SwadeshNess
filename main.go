@@ -14,7 +14,7 @@ var (
 	languageGroups     []LanguageGroup
 	reader             Config.AnyReader
 	translationHandler AnyTranslationHandler
-	groupListHandler   AnyGroupListHandler
+	groupListHandler   AnyHandler
 	versionHandler     AnyHandler
 	configuration      Config.Configuration
 	cw                 Caching.AnyCacheWrapper
@@ -35,7 +35,7 @@ func init() {
 func main() {
 	languageGroups = configuration.Languages
 	http.HandleFunc(configuration.EEndpoints.GroupsEndpoint, func(w http.ResponseWriter, r *http.Request) {
-		groupListHandler.GetGroups(w, r)
+		groupListHandler.HandleRequest(w, r)
 	})
 	http.HandleFunc(configuration.EEndpoints.TranslationEndpoint, func(w http.ResponseWriter, r *http.Request) {
 		translationHandler.Translate(w, r, languageGroups)
