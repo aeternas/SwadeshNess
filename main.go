@@ -15,7 +15,7 @@ var (
 	reader             Config.AnyReader
 	translationHandler AnyTranslationHandler
 	groupListHandler   AnyGroupListHandler
-	versionHandler     AnyVersionHandler
+	versionHandler     AnyHandler
 	configuration      Config.Configuration
 	cw                 Caching.AnyCacheWrapper
 )
@@ -41,7 +41,7 @@ func main() {
 		translationHandler.Translate(w, r, languageGroups)
 	})
 	http.HandleFunc(configuration.EEndpoints.VersionEndpoint, func(w http.ResponseWriter, r *http.Request) {
-		versionHandler.GetVersion(w, r)
+		versionHandler.HandleRequest(w, r)
 	})
 	if configuration.Security.NeedsHTTPS {
 		log.Fatal(http.ListenAndServeTLS(":8080", configuration.Security.ServerCertPath, configuration.Security.ServerKeyPath, nil))
