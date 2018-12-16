@@ -7,15 +7,11 @@ import (
 	"net/http"
 )
 
-type AnyGroupListHandler interface {
-	GetGroups(w http.ResponseWriter, r *http.Request)
-}
-
 type GroupListHandler struct {
 	Config *Configuration
 }
 
-func (gh *GroupListHandler) GetGroups(w http.ResponseWriter, r *http.Request) {
+func (gh *GroupListHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {
 	bytes, err := json.Marshal(gh.Config.Languages)
 	if err != nil {
 		log.Println("Marshalling Error")
