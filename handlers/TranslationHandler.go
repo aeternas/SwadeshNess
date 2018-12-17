@@ -25,10 +25,6 @@ func init() {
 	apiClient = httpApiClient
 }
 
-type AnyTranslationHandler interface {
-	Translate(w http.ResponseWriter, r *http.Request, languageGroups []LanguageGroup)
-}
-
 type TranslationHandler struct {
 	Config *Configuration
 }
