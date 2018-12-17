@@ -13,7 +13,7 @@ import (
 var (
 	languageGroups     []LanguageGroup
 	reader             Config.AnyReader
-	translationHandler AnyTranslationHandler
+	translationHandler AnyHandler
 	groupListHandler   AnyHandler
 	versionHandler     AnyHandler
 	configuration      Config.Configuration
@@ -38,7 +38,7 @@ func main() {
 		groupListHandler.HandleRequest(w, r)
 	})
 	http.HandleFunc(configuration.EEndpoints.TranslationEndpoint, func(w http.ResponseWriter, r *http.Request) {
-		translationHandler.Translate(w, r, languageGroups)
+		translationHandler.HandleRequest(w, r)
 	})
 	http.HandleFunc(configuration.EEndpoints.VersionEndpoint, func(w http.ResponseWriter, r *http.Request) {
 		versionHandler.HandleRequest(w, r)

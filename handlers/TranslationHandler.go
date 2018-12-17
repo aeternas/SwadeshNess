@@ -33,7 +33,7 @@ type TranslationHandler struct {
 	Config *Configuration
 }
 
-func (th *TranslationHandler) Translate(w http.ResponseWriter, r *http.Request, languageGroups []LanguageGroup) {
+func (th *TranslationHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {
 	translationRequestValues, ok := r.URL.Query()["translate"]
 	if !ok || len(translationRequestValues[0]) < 1 {
 		log.Printf("Invalid Request: %s", r.URL.String())
