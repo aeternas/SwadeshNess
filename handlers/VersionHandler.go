@@ -3,12 +3,14 @@ package handlers
 import (
 	"encoding/json"
 	. "github.com/aeternas/SwadeshNess/configuration"
+	middleware "github.com/aeternas/SwadeshNess/middlewares"
 	"log"
 	"net/http"
 )
 
 type VersionHandler struct {
-	Config *Configuration
+	Config      *Configuration
+	Middlewares []middleware.Middleware
 }
 
 func (gh *VersionHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {

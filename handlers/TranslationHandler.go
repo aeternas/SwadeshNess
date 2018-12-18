@@ -10,6 +10,7 @@ import (
 	. "github.com/aeternas/SwadeshNess/configuration"
 	. "github.com/aeternas/SwadeshNess/dto"
 	. "github.com/aeternas/SwadeshNess/httpApiClient"
+	middleware "github.com/aeternas/SwadeshNess/middlewares"
 	"log"
 	"net/http"
 	"strings"
@@ -26,7 +27,8 @@ func init() {
 }
 
 type TranslationHandler struct {
-	Config *Configuration
+	Config      *Configuration
+	Middlewares []middleware.Middleware
 }
 
 func (th *TranslationHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {

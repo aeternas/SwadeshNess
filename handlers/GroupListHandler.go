@@ -3,12 +3,14 @@ package handlers
 import (
 	"encoding/json"
 	. "github.com/aeternas/SwadeshNess/configuration"
+	middleware "github.com/aeternas/SwadeshNess/middlewares"
 	"log"
 	"net/http"
 )
 
 type GroupListHandler struct {
-	Config *Configuration
+	Config      *Configuration
+	Middlewares []middleware.Middleware
 }
 
 func (gh *GroupListHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {
