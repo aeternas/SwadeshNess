@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	. "github.com/aeternas/SwadeshNess-packages/language"
+	. "github.com/aeternas/SwadeshNess/clientMiddlewares"
 	. "github.com/aeternas/SwadeshNess/configuration"
 	. "github.com/aeternas/SwadeshNess/dto"
-	. "github.com/aeternas/SwadeshNess/middlewares"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -15,16 +15,16 @@ import (
 
 type HTTPApiClient struct {
 	Client      *http.Client
-	Middlewares []Middleware
+	Middlewares []ClientMiddleware
 }
 
 func (c *HTTPApiClient) MakeTranslationRequest(w string, conf *Configuration, sourceLang string, targetLang Language, ch chan<- YandexTranslationResult) {
-	c.Middlewares = []Middleware{NewDefaultMiddleware(), NewAuthMiddleware(conf.ApiKey), NewLoggerMiddleware()}
+	c.Middlewares = []ClientMiddleware{NewDefaultClientMiddleware(), NewAuthClientMiddleware(conf.ApiKey), NewLoggerClientMiddleware()}
 	res := getRequest(c.Client, c.Middlewares, w, sourceLang, targetLang.Code)
 	ch <- res
 }
 
-func getRequest(c *http.Client, middlewares []Middleware, w, sourceLang, targetLang string) YandexTranslationResult {
+func getRequest(c *http.Client, middlewares []ClientMiddleware, w, sourceLang, targetLang string) YandexTranslationResult {
 	queryString := url.QueryEscape(w)
 
 	urlString := fmt.Sprintf("https://translate.yandex.net/api/v1.5/tr.json/translate?lang=%s-%s&text=%s", sourceLang, targetLang, queryString)

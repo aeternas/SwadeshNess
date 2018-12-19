@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	middleware "github.com/aeternas/SwadeshNess/middlewares"
+	serverMiddleware "github.com/aeternas/SwadeshNess/serverMiddlewares"
 	"net/http"
 )
 
@@ -10,7 +10,7 @@ type AnyHandler interface {
 }
 
 type anyHandler struct {
-	Middlewares []middleware.Middleware
+	Middlewares []serverMiddleware.ServerMiddleware
 }
 
 func (ah anyHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {}
