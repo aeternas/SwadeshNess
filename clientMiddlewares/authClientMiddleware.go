@@ -6,20 +6,20 @@ import (
 	"net/url"
 )
 
-type authMiddleware struct {
+type authClientMiddleware struct {
 	apiKey string
 }
 
-type AuthMiddleware interface {
+type AuthClientMiddleware interface {
 	AdaptRequest(r *http.Request) *http.Request
 	AdaptResponse(r *http.Response) *http.Response
 }
 
-func NewAuthMiddleware(apiKey string) AuthMiddleware {
-	return &authMiddleware{apiKey: apiKey}
+func NewAuthClientMiddleware(apiKey string) AuthClientMiddleware {
+	return &authClientMiddleware{apiKey: apiKey}
 }
 
-func (a *authMiddleware) AdaptRequest(r *http.Request) *http.Request {
+func (a *authClientMiddleware) AdaptRequest(r *http.Request) *http.Request {
 	u, err := url.Parse(r.URL.String())
 	if err != nil {
 		log.Fatal(err)
@@ -32,6 +32,6 @@ func (a *authMiddleware) AdaptRequest(r *http.Request) *http.Request {
 	return r
 }
 
-func (authMiddleware) AdaptResponse(r *http.Response) *http.Response {
+func (authClientMiddleware) AdaptResponse(r *http.Response) *http.Response {
 	return r
 }

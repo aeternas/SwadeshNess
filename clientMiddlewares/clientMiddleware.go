@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-type Middleware interface {
+type ClientMiddleware interface {
 	AdaptRequest(r *http.Request) *http.Request
 	AdaptResponse(r *http.Response) *http.Response
 }
