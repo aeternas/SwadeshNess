@@ -1,11 +1,14 @@
 package middlewares
 
 import (
+	Caching "github.com/aeternas/SwadeshNess/caching"
 	"log"
 	"net/http"
 )
 
-type cachingDefaultServerMiddleware struct{}
+type cachingDefaultServerMiddleware struct {
+	CachingWrapper *Caching.AnyCacheWrapper
+}
 
 type CachingDefaultServerMiddleware interface {
 	AdaptRequest(r *http.Request) *http.Request
