@@ -135,6 +135,19 @@
       ]
     },
     {
+      "name": "Finno-Ugric",
+      "languages": [
+        {
+          "fullName": "Finnish",
+          "code": "fi"
+        },
+        {
+          "fullName": "Hungarian",
+          "code": "hu"
+        }
+      ]
+    },
+    {
       "name": "Arabic characters",
       "languages": [
         {
