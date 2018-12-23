@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	apiClient "github.com/aeternas/SwadeshNess/apiClient"
 	"log"
 	"net/http"
 )
@@ -8,7 +9,7 @@ import (
 type loggerClientMiddleware struct{}
 
 type LoggerClientMiddleware interface {
-	AdaptRequest(r *http.Request) *http.Request
+	AdaptRequest(r *apiClient.Request) *apiClient.Request
 	AdaptResponse(r *http.Response) *http.Response
 }
 
@@ -16,7 +17,7 @@ func NewLoggerClientMiddleware() LoggerClientMiddleware {
 	return &loggerClientMiddleware{}
 }
 
-func (loggerClientMiddleware) AdaptRequest(r *http.Request) *http.Request {
+func (loggerClientMiddleware) AdaptRequest(r *apiClient.Request) *apiClient.Request {
 	log.Println(r)
 	return r
 }
