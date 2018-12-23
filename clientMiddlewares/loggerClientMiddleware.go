@@ -23,6 +23,6 @@ func (loggerClientMiddleware) AdaptRequest(r *apiClient.Request) *apiClient.Requ
 }
 
 func (loggerClientMiddleware) AdaptResponse(r *http.Response) *http.Response {
-	log.Println(r.NetRequest)
+	log.Println(r)
 	return r
 }
