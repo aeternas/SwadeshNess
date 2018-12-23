@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	. "github.com/aeternas/SwadeshNess-packages/language"
+	apiClient "github.com/aeternas/SwadeshNess/apiClient"
 	. "github.com/aeternas/SwadeshNess/clientMiddlewares"
 	. "github.com/aeternas/SwadeshNess/configuration"
 	. "github.com/aeternas/SwadeshNess/dto"
@@ -35,8 +36,10 @@ func getRequest(c *http.Client, middlewares []ClientMiddleware, w, sourceLang, t
 		return getTranslationResultErrorString("Request initialization error")
 	}
 
+	request := &apiClient.Request{Data: []string{}, Cached: false, NetRequest: req}
+
 	for _, middleware := range middlewares {
-		req = middleware.AdaptRequest(req)
+		request = middleware.AdaptRequest(request)
 	}
 
 	resp, err := c.Do(req)

@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	apiClient "github.com/aeternas/SwadeshNess/apiClient"
 	"log"
 	"net/http"
 	"net/url"
@@ -11,7 +12,7 @@ type authClientMiddleware struct {
 }
 
 type AuthClientMiddleware interface {
-	AdaptRequest(r *http.Request) *http.Request
+	AdaptRequest(r *apiClient.Request) *apiClient.Request
 	AdaptResponse(r *http.Response) *http.Response
 }
 
@@ -19,8 +20,8 @@ func NewAuthClientMiddleware(apiKey string) AuthClientMiddleware {
 	return &authClientMiddleware{apiKey: apiKey}
 }
 
-func (a *authClientMiddleware) AdaptRequest(r *http.Request) *http.Request {
-	u, err := url.Parse(r.URL.String())
+func (a *authClientMiddleware) AdaptRequest(r *apiClient.Request) *apiClient.Request {
+	u, err := url.Parse(r.NetRequest.URL.String())
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -28,7 +29,7 @@ func (a *authClientMiddleware) AdaptRequest(r *http.Request) *http.Request {
 	q := u.Query()
 	q.Add("key", a.apiKey)
 	u.RawQuery = q.Encode()
-	r.URL = u
+	r.NetRequest.URL = u
 	return r
 }
 
