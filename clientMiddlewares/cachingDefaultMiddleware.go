@@ -4,7 +4,6 @@ import (
 	apiClient "github.com/aeternas/SwadeshNess/apiClient"
 	Caching "github.com/aeternas/SwadeshNess/caching"
 	"log"
-	"net/http"
 )
 
 type cachingDefaultClientMiddleware struct {
@@ -13,7 +12,7 @@ type cachingDefaultClientMiddleware struct {
 
 type CachingDefaultClientMiddleware interface {
 	AdaptRequest(r *apiClient.Request) *apiClient.Request
-	AdaptResponse(r *http.Response) *http.Response
+	AdaptResponse(r *apiClient.Response) *apiClient.Response
 }
 
 func NewCachingDefaultClientMiddleware() CachingDefaultClientMiddleware {
@@ -25,7 +24,7 @@ func (cachingDefaultClientMiddleware) AdaptRequest(r *apiClient.Request) *apiCli
 	return r
 }
 
-func (cachingDefaultClientMiddleware) AdaptResponse(r *http.Response) *http.Response {
+func (cachingDefaultClientMiddleware) AdaptResponse(r *apiClient.Response) *apiClient.Response {
 	log.Println(r)
 	return r
 }

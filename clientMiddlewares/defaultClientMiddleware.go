@@ -2,14 +2,13 @@ package middlewares
 
 import (
 	apiClient "github.com/aeternas/SwadeshNess/apiClient"
-	"net/http"
 )
 
 type defaultClientMiddleware struct{}
 
 type DefaultClientMiddleware interface {
 	AdaptRequest(r *apiClient.Request) *apiClient.Request
-	AdaptResponse(r *http.Response) *http.Response
+	AdaptResponse(r *apiClient.Response) *apiClient.Response
 }
 
 func NewDefaultClientMiddleware() DefaultClientMiddleware {
@@ -21,6 +20,6 @@ func (defaultClientMiddleware) AdaptRequest(r *apiClient.Request) *apiClient.Req
 	return r
 }
 
-func (defaultClientMiddleware) AdaptResponse(r *http.Response) *http.Response {
+func (defaultClientMiddleware) AdaptResponse(r *apiClient.Response) *apiClient.Response {
 	return r
 }
