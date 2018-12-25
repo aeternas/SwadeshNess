@@ -3,7 +3,6 @@ package middlewares
 import (
 	apiClient "github.com/aeternas/SwadeshNess/apiClient"
 	"log"
-	"net/http"
 	"net/url"
 )
 
@@ -13,7 +12,7 @@ type authClientMiddleware struct {
 
 type AuthClientMiddleware interface {
 	AdaptRequest(r *apiClient.Request) *apiClient.Request
-	AdaptResponse(r *http.Response) *http.Response
+	AdaptResponse(r *apiClient.Response) *apiClient.Response
 }
 
 func NewAuthClientMiddleware(apiKey string) AuthClientMiddleware {
@@ -33,6 +32,6 @@ func (a *authClientMiddleware) AdaptRequest(r *apiClient.Request) *apiClient.Req
 	return r
 }
 
-func (authClientMiddleware) AdaptResponse(r *http.Response) *http.Response {
+func (authClientMiddleware) AdaptResponse(r *apiClient.Response) *apiClient.Response {
 	return r
 }
