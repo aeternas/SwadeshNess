@@ -5,6 +5,6 @@ import (
 )
 
 type Response struct {
-	NetResponse *http.Response
 	Data        interface{}
+	NetResponse *http.Response
 }

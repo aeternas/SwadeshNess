@@ -75,6 +75,10 @@ func (th *TranslationHandler) HandleRequest(w http.ResponseWriter, r *http.Reque
 		log.Println("Marshalling Error")
 		http.Error(w, "Failed to marshall translation result response", http.StatusInternalServerError)
 	}
+
+	response := &Response{Data: bytes, NetResponse: &http.Response{}}
+	log.Println(response)
+
 	if _, err := w.Write(bytes); err != nil {
 		log.Println("Response output error")
 		http.Error(w, "Response output error", http.StatusInternalServerError)
