@@ -54,7 +54,7 @@ func (th *TranslationHandler) HandleRequest(w http.ResponseWriter, r *http.Reque
 
 	translationRequestValue := translationRequestValues[0]
 
-	translationRequestGroupValues, ok := r.URL.Query()["group"]
+	translationRequestGroupValues, ok := request.NetRequest.URL.Query()["group"]
 	if !ok || len(translationRequestValues[0]) < 1 {
 		log.Println("No Group Requested")
 		http.Error(w, "Please provide `group` key e.g. \"Romanic\", \"Turkic\", \"CJKV Family\"", http.StatusBadRequest)
@@ -63,7 +63,7 @@ func (th *TranslationHandler) HandleRequest(w http.ResponseWriter, r *http.Reque
 
 	var sourceLanguage string
 
-	sourceLanguageValues, ok := r.URL.Query()["source"]
+	sourceLanguageValues, ok := request.NetRequest.URL.Query()["source"]
 	if !ok || len(sourceLanguageValues[0]) < 1 {
 		sourceLanguage = "en"
 	} else {
