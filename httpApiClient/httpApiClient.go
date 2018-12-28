@@ -36,7 +36,7 @@ func getRequest(c *http.Client, middlewares []ClientMiddleware, w, sourceLang, t
 		return getTranslationResultErrorString("Request initialization error")
 	}
 
-	request := &apiClient.Request{Data: []string{}, Cached: false, NetRequest: req}
+	request := &apiClient.Request{Data: []byte{}, Cached: false, NetRequest: req}
 
 	for _, middleware := range middlewares {
 		request = middleware.AdaptRequest(request)

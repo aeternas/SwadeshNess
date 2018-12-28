@@ -38,6 +38,20 @@ func (th *TranslationHandler) HandleRequest(w http.ResponseWriter, r *http.Reque
 		http.Error(w, "Bad Request", http.StatusBadRequest)
 		return
 	}
+
+	request := &Request{Data: []byte{}, Cached: false, NetRequest: r}
+
+	for _, middleware := range th.Middlewares {
+		request = middleware.AdaptRequest(request)
+	}
+
+	if request.Cached {
+		response := &Response{Data: []byte{}, NetResponse: nil}
+		response = th.adaptResponse(response)
+		th.writeResponse(w, response.Data)
+		return
+	}
+
 	translationRequestValue := translationRequestValues[0]
 
 	translationRequestGroupValues, ok := r.URL.Query()["group"]
@@ -76,10 +90,22 @@ func (th *TranslationHandler) HandleRequest(w http.ResponseWriter, r *http.Reque
 		http.Error(w, "Failed to marshall translation result response", http.StatusInternalServerError)
 	}
 
-	response := &Response{Data: bytes, NetResponse: &http.Response{}}
-	log.Println(response)
+	th.writeResponse(w, bytes)
+}
 
-	if _, err := w.Write(bytes); err != nil {
+func (th *TranslationHandler) adaptResponse(r *Response) *Response {
+	adaptedResponse := r
+	log.Println(adaptedResponse)
+
+	for _, middleware := range th.Middlewares {
+		adaptedResponse = middleware.AdaptResponse(adaptedResponse)
+	}
+
+	return adaptedResponse
+}
+
+func (th *TranslationHandler) writeResponse(w http.ResponseWriter, bts []byte) {
+	if _, err := w.Write(bts); err != nil {
 		log.Println("Response output error")
 		http.Error(w, "Response output error", http.StatusInternalServerError)
 	}
