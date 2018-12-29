@@ -1,9 +1,9 @@
 package middlewares
 
 import (
+	apiClient "github.com/aeternas/SwadeshNess/apiClient"
 	Caching "github.com/aeternas/SwadeshNess/caching"
 	"log"
-	"net/http"
 )
 
 type cachingDefaultServerMiddleware struct {
@@ -11,20 +11,20 @@ type cachingDefaultServerMiddleware struct {
 }
 
 type CachingDefaultServerMiddleware interface {
-	AdaptRequest(r *http.Request) *http.Request
-	AdaptResponse(r *http.Response) *http.Response
+	AdaptRequest(r *apiClient.Request) *apiClient.Request
+	AdaptResponse(r *apiClient.Response) *apiClient.Response
 }
 
 func NewCachingDefaultServerMiddleware() CachingDefaultServerMiddleware {
 	return &cachingDefaultServerMiddleware{}
 }
 
-func (cachingDefaultServerMiddleware) AdaptRequest(r *http.Request) *http.Request {
+func (cachingDefaultServerMiddleware) AdaptRequest(r *apiClient.Request) *apiClient.Request {
 	log.Println(r)
 	return r
 }
 
-func (cachingDefaultServerMiddleware) AdaptResponse(r *http.Response) *http.Response {
+func (cachingDefaultServerMiddleware) AdaptResponse(r *apiClient.Response) *apiClient.Response {
 	log.Println(r)
 	return r
 }

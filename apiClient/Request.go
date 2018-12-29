@@ -5,7 +5,7 @@ import (
 )
 
 type Request struct {
-	Data       interface{}
+	Data       []byte
 	Cached     bool
 	NetRequest *http.Request
 }

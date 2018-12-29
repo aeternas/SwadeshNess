@@ -1,10 +1,10 @@
 package middlewares
 
 import (
-	"net/http"
+	apiClient "github.com/aeternas/SwadeshNess/apiClient"
 )
 
 type ServerMiddleware interface {
-	AdaptRequest(r *http.Request) *http.Request
-	AdaptResponseWriter(w *http.ResponseWriter) *http.ResponseWriter
+	AdaptRequest(r *apiClient.Request) *apiClient.Request
+	AdaptResponse(w *apiClient.Response) *apiClient.Response
 }

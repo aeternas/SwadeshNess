@@ -5,6 +5,6 @@ import (
 )
 
 type Response struct {
-	Data        interface{}
+	Data        []byte
 	NetResponse *http.Response
 }
