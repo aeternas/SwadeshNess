@@ -47,7 +47,7 @@ func (th *TranslationHandler) HandleRequest(w http.ResponseWriter, r *http.Reque
 
 	if request.Cached {
 		log.Printf("Request is cached")
-		response := &Response{Data: []byte{}, NetResponse: nil}
+		response := &Response{Data: []byte{}, NetResponse: nil, Request: request}
 		response = th.adaptResponse(response)
 		th.writeResponse(w, response)
 		return
