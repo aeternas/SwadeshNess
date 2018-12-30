@@ -3,6 +3,7 @@ package middlewares
 import (
 	apiClient "github.com/aeternas/SwadeshNess/apiClient"
 	Caching "github.com/aeternas/SwadeshNess/caching"
+	Conf "github.com/aeternas/SwadeshNess/configuration"
 	"log"
 )
 
@@ -15,8 +16,8 @@ type CachingDefaultServerMiddleware interface {
 	AdaptResponse(r *apiClient.Response) *apiClient.Response
 }
 
-func NewCachingDefaultServerMiddleware() CachingDefaultServerMiddleware {
-	cw := Caching.NewRedisCachingWrapper().(Caching.AnyCacheWrapper)
+func NewCachingDefaultServerMiddleware(c *Conf.Configuration) CachingDefaultServerMiddleware {
+	cw := Caching.NewRedisCachingWrapper(c).(Caching.AnyCacheWrapper)
 	return &cachingDefaultServerMiddleware{CW: &cw}
 }
 

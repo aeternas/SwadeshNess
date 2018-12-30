@@ -33,13 +33,14 @@ func (r *Reader) ReadConfiguration() (Configuration, error) {
 	var version string = lReader.OsWrapper.GetEnvFallback(VERSION, "0")
 	var serverKeyPath string = lReader.OsWrapper.GetEnvFallback(SERVER_KEY, "certs/server.key")
 	var serverCertPath string = lReader.OsWrapper.GetEnvFallback(SERVER_CERT, "certs/server.crt")
+	var redisAddress string = lReader.OsWrapper.GetEnvFallback(REDIS_ADDRESS, "localhost")
 	var needsHTTPS bool = false
 	if args := os.Args; len(args) > 1 && os.Args[1] == "--https" {
 		needsHTTPS = true
 	}
 	configuration.ApiKey = apiKey
 	configuration.Version = version
-	endpoints := Endpoints{TranslationEndpoint: translationEndpoint, GroupsEndpoint: groupEndpoint, VersionEndpoint: versionEndpoint}
+	endpoints := Endpoints{TranslationEndpoint: translationEndpoint, GroupsEndpoint: groupEndpoint, VersionEndpoint: versionEndpoint, RedisAddress: redisAddress}
 	security := Security{NeedsHTTPS: needsHTTPS, ServerKeyPath: serverKeyPath, ServerCertPath: serverCertPath}
 	configuration.EEndpoints = endpoints
 	configuration.Security = security

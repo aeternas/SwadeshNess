@@ -8,7 +8,7 @@ import (
 
 var (
 	expectedGetEnvArgs         = []string{"YANDEX_API_KEY"}
-	expectedGetEnvFallbackArgs = []string{"TRANSLATION_ENDPOINT", "/", "GROUP_ENDPOINT", "/groups", "VERSION_ENDPOINT", "/version", "VERSION", "0", "SERVER_KEY", "certs/server.key", "SERVER_CERT", "certs/server.crt"}
+	expectedGetEnvFallbackArgs = []string{"TRANSLATION_ENDPOINT", "/", "GROUP_ENDPOINT", "/groups", "VERSION_ENDPOINT", "/version", "VERSION", "0", "SERVER_KEY", "certs/server.key", "SERVER_CERT", "certs/server.crt", "REDIS_ADDRESS", "localhost"}
 	osWrapper                  Wrappers.AnyOsWrapper
 	mockWrapper                = new(Wrappers.MockOsWrapper)
 )
@@ -29,8 +29,8 @@ func TestReadConfiguration(t *testing.T) {
 	if !reflect.DeepEqual(mockWrapper.GetEnvArgs, expectedGetEnvArgs) {
 		t.Errorf("GetEnv total args are not equal to expected, %v", mockWrapper.GetEnvArgs)
 	}
-	if mockWrapper.GetEnvFallbackWasCalled != 6 {
-		t.Errorf("GetEnvFallback was not called valid amount of times: %v instead of 6", mockWrapper.GetEnvFallbackWasCalled)
+	if mockWrapper.GetEnvFallbackWasCalled != 7 {
+		t.Errorf("GetEnvFallback was not called valid amount of times: %v instead of 7", mockWrapper.GetEnvFallbackWasCalled)
 	}
 	if !reflect.DeepEqual(mockWrapper.GetEnvFallbackArgs, expectedGetEnvFallbackArgs) {
 		t.Errorf("GetEnvFallback args are %v", mockWrapper.GetEnvFallbackArgs)

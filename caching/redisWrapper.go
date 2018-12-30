@@ -2,6 +2,7 @@ package caching
 
 import (
 	"fmt"
+	Configuration "github.com/aeternas/SwadeshNess/configuration"
 	Redis "github.com/go-redis/redis"
 )
 
@@ -14,8 +15,8 @@ type redisCachingWrapper struct {
 	RedisClient *Redis.Client
 }
 
-func NewRedisCachingWrapper() RedisCachingWrapper {
-	var redisClient *Redis.Client = ExampleNewClient()
+func NewRedisCachingWrapper(c *Configuration.Configuration) RedisCachingWrapper {
+	var redisClient *Redis.Client = NewClient(c)
 	return &redisCachingWrapper{RedisClient: redisClient}
 }
 
@@ -34,9 +35,10 @@ func (rcw *redisCachingWrapper) SaveCachedValue(k, v string) error {
 	return err
 }
 
-func ExampleNewClient() *Redis.Client {
+func NewClient(c *Configuration.Configuration) *Redis.Client {
+	address := fmt.Sprintf("%s:6379", c.EEndpoints.RedisAddress)
 	client := Redis.NewClient(&Redis.Options{
-		Addr:     "localhost:6379",
+		Addr:     address,
 		Password: "",
 		DB:       0,
 	})

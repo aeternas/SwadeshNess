@@ -25,7 +25,7 @@ func init() {
 	reader = lReader
 	lConfiguration, _ := reader.ReadConfiguration()
 	configuration = lConfiguration
-	cm := ServerMiddlewares.NewCachingDefaultServerMiddleware()
+	cm := ServerMiddlewares.NewCachingDefaultServerMiddleware(&configuration)
 	translationHandler = &TranslationHandler{Config: &configuration, Middlewares: []ServerMiddlewares.ServerMiddleware{cm}}
 	groupListHandler = &GroupListHandler{Config: &configuration}
 	versionHandler = &VersionHandler{Config: &configuration}
