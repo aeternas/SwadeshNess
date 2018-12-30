@@ -11,10 +11,6 @@ import (
 	"testing"
 )
 
-type RequestMock struct {
-	http.Request
-}
-
 func TestNoop(t *testing.T) {
 	fmt.Println("")
 }
