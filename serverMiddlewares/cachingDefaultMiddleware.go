@@ -14,6 +14,7 @@ type cachingDefaultServerMiddleware struct {
 type CachingDefaultServerMiddleware interface {
 	AdaptRequest(r *apiClient.Request) *apiClient.Request
 	AdaptResponse(r *apiClient.Response) *apiClient.Response
+	GetKey(r *apiClient.Request) string
 }
 
 func NewCachingDefaultServerMiddleware(c *Conf.Configuration) CachingDefaultServerMiddleware {
@@ -22,7 +23,7 @@ func NewCachingDefaultServerMiddleware(c *Conf.Configuration) CachingDefaultServ
 }
 
 func (c cachingDefaultServerMiddleware) AdaptRequest(r *apiClient.Request) *apiClient.Request {
-	key := getKey(r)
+	key := c.GetKey(r)
 	cw := c.CW
 	val, err := (*cw).GetCachedValue(key)
 	if err != nil {
@@ -36,7 +37,7 @@ func (c cachingDefaultServerMiddleware) AdaptRequest(r *apiClient.Request) *apiC
 }
 
 func (c cachingDefaultServerMiddleware) AdaptResponse(r *apiClient.Response) *apiClient.Response {
-	key := getKey(r.Request)
+	key := c.GetKey(r.Request)
 	cw := c.CW
 	str := string(r.Data)
 	if err := (*cw).SaveCachedValue(key, str); err != nil {
@@ -45,6 +46,7 @@ func (c cachingDefaultServerMiddleware) AdaptResponse(r *apiClient.Response) *ap
 	return r
 }
 
-func getKey(r *apiClient.Request) string {
-	return (*r).NetRequest.URL.RawQuery
+func (cachingDefaultServerMiddleware) GetKey(r *apiClient.Request) string {
+	log.Println(r.NetRequest.URL)
+	return r.NetRequest.URL.RawQuery
 }
