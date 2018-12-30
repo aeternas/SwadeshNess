@@ -26,7 +26,8 @@ func (c cachingDefaultServerMiddleware) AdaptRequest(r *apiClient.Request) *apiC
 	key := c.GetKey(r)
 	cw := c.CW
 	val, err := (*cw).GetCachedValue(key)
-	log.Println(val)
+	log.Printf("Trying to extract cached value %s", key)
+	log.Printf("Trying to extract cached value %s", val)
 	if err != nil {
 		log.Printf("Failed to extract cached value %s", key)
 		return r
