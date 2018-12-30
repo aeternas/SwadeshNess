@@ -33,13 +33,16 @@ func (c cachingDefaultServerMiddleware) AdaptRequest(r *apiClient.Request) *apiC
 		return r
 	}
 	bytes := []byte(val)
-	log.Print(bytes)
+	log.Printf("Cache retrieval was success %s", val)
 	r.Cached = true
 	r.Data = bytes
 	return r
 }
 
 func (c cachingDefaultServerMiddleware) AdaptResponse(r *apiClient.Response) *apiClient.Response {
+	if r.Cached {
+		return r
+	}
 	key := c.GetKey(r.Request)
 	cw := c.CW
 	str := string(r.Data)
