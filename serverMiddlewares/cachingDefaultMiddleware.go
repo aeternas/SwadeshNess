@@ -41,7 +41,7 @@ func (c cachingDefaultServerMiddleware) AdaptRequest(r *apiClient.Request) *apiC
 
 func (c cachingDefaultServerMiddleware) AdaptResponse(r *apiClient.Response) *apiClient.Response {
 	if r.Request.Cached {
-		r.Data = r.request.Data
+		r.Data = r.Request.Data
 		return r
 	}
 	key := c.GetKey(r.Request)
