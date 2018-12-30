@@ -46,9 +46,9 @@ func (th *TranslationHandler) HandleRequest(w http.ResponseWriter, r *http.Reque
 	}
 
 	if request.Cached {
-		response := &Response{Data: []byte{}, NetResponse: nil}
+		response := &Response{Data: []byte{}, NetResponse: nil, Request: request}
 		response = th.adaptResponse(response)
-		th.writeResponse(w, response.Data)
+		th.writeResponse(w, response)
 		return
 	}
 
@@ -90,13 +90,15 @@ func (th *TranslationHandler) HandleRequest(w http.ResponseWriter, r *http.Reque
 		http.Error(w, "Failed to marshall translation result response", http.StatusInternalServerError)
 	}
 
-	th.writeResponse(w, bytes)
+	resp := &Response{Data: bytes, NetResponse: nil, Request: request}
+
+	adaptedResponse := th.adaptResponse(resp)
+
+	th.writeResponse(w, adaptedResponse)
 }
 
 func (th *TranslationHandler) adaptResponse(r *Response) *Response {
 	adaptedResponse := r
-	log.Println(adaptedResponse)
-
 	for _, middleware := range th.Middlewares {
 		adaptedResponse = middleware.AdaptResponse(adaptedResponse)
 	}
@@ -104,8 +106,8 @@ func (th *TranslationHandler) adaptResponse(r *Response) *Response {
 	return adaptedResponse
 }
 
-func (th *TranslationHandler) writeResponse(w http.ResponseWriter, bts []byte) {
-	if _, err := w.Write(bts); err != nil {
+func (th *TranslationHandler) writeResponse(w http.ResponseWriter, r *Response) {
+	if _, err := w.Write(r.Data); err != nil {
 		log.Println("Response output error")
 		http.Error(w, "Response output error", http.StatusInternalServerError)
 	}

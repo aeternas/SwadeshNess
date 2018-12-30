@@ -12,6 +12,7 @@ const (
 	VERSION              = "VERSION"
 	SERVER_KEY           = "SERVER_KEY"
 	SERVER_CERT          = "SERVER_CERT"
+	REDIS_ADDRESS        = "REDIS_ADDRESS"
 )
 
 type Configuration struct {
