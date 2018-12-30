@@ -2,9 +2,9 @@ package main
 
 import (
 	. "github.com/aeternas/SwadeshNess-packages/language"
-	Caching "github.com/aeternas/SwadeshNess/caching"
 	Config "github.com/aeternas/SwadeshNess/configuration"
 	. "github.com/aeternas/SwadeshNess/handlers"
+	ServerMiddlewares "github.com/aeternas/SwadeshNess/serverMiddlewares"
 	Wrappers "github.com/aeternas/SwadeshNess/wrappers"
 	"log"
 	"net/http"
@@ -17,7 +17,6 @@ var (
 	groupListHandler   AnyHandler
 	versionHandler     AnyHandler
 	configuration      Config.Configuration
-	cw                 Caching.AnyCacheWrapper
 )
 
 func init() {
@@ -26,8 +25,8 @@ func init() {
 	reader = lReader
 	lConfiguration, _ := reader.ReadConfiguration()
 	configuration = lConfiguration
-	cw = Caching.NewRedisCachingWrapper()
-	translationHandler = &TranslationHandler{Config: &configuration}
+	cm := ServerMiddlewares.NewCachingDefaultServerMiddleware()
+	translationHandler = &TranslationHandler{Config: &configuration, Middlewares: []ServerMiddlewares.ServerMiddleware{cm}}
 	groupListHandler = &GroupListHandler{Config: &configuration}
 	versionHandler = &VersionHandler{Config: &configuration}
 }

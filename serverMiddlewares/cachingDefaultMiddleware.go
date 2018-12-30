@@ -7,7 +7,7 @@ import (
 )
 
 type cachingDefaultServerMiddleware struct {
-	CachingWrapper *Caching.AnyCacheWrapper
+	CW *Caching.AnyCacheWrapper
 }
 
 type CachingDefaultServerMiddleware interface {
@@ -16,15 +16,16 @@ type CachingDefaultServerMiddleware interface {
 }
 
 func NewCachingDefaultServerMiddleware() CachingDefaultServerMiddleware {
-	return &cachingDefaultServerMiddleware{}
+	cw := Caching.NewRedisCachingWrapper().(Caching.AnyCacheWrapper)
+	return &cachingDefaultServerMiddleware{CW: &cw}
 }
 
-func (cachingDefaultServerMiddleware) AdaptRequest(r *apiClient.Request) *apiClient.Request {
+func (c cachingDefaultServerMiddleware) AdaptRequest(r *apiClient.Request) *apiClient.Request {
 	log.Println(r)
 	return r
 }
 
-func (cachingDefaultServerMiddleware) AdaptResponse(r *apiClient.Response) *apiClient.Response {
+func (c cachingDefaultServerMiddleware) AdaptResponse(r *apiClient.Response) *apiClient.Response {
 	log.Println(r)
 	return r
 }
