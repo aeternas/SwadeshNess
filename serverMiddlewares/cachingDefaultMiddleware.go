@@ -47,6 +47,6 @@ func (c cachingDefaultServerMiddleware) AdaptResponse(r *apiClient.Response) *ap
 }
 
 func (cachingDefaultServerMiddleware) GetKey(r *apiClient.Request) string {
-	log.Println(r.NetRequest.URL)
+	log.Println(r.NetRequest.URL.RawQuery)
 	return r.NetRequest.URL.RawQuery
 }
