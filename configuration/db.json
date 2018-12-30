@@ -87,6 +87,10 @@
           "code": "sr"
         },
         {
+          "fullName": "Bulgarian",
+          "code": "bg"
+        },
+        {
           "fullName": "Polish",
           "code": "pl"
         },
@@ -161,5 +165,5 @@
       ]
     }
   ],
-  "credits": "Переведено сервисом \"Яндекс.Переводчик\" http:\/\/translate.yandex.ru\/"
+  "credits": "Переведено сервисом \"Яндекс.Переводчик\" http://translate.yandex.ru/"
 }
