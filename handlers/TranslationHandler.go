@@ -46,6 +46,7 @@ func (th *TranslationHandler) HandleRequest(w http.ResponseWriter, r *http.Reque
 	}
 
 	if request.Cached {
+		log.Printf("Request is cached")
 		response := &Response{Data: []byte{}, NetResponse: nil}
 		response = th.adaptResponse(response)
 		th.writeResponse(w, response)
@@ -101,6 +102,7 @@ func (th *TranslationHandler) adaptResponse(r *Response) *Response {
 	adaptedResponse := r
 	log.Println(adaptedResponse)
 
+	log.Print("Adapting response...")
 	for _, middleware := range th.Middlewares {
 		adaptedResponse = middleware.AdaptResponse(adaptedResponse)
 	}
