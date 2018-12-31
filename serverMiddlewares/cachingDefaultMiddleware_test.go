@@ -17,12 +17,12 @@ func TestNoop(t *testing.T) {
 
 func TestGetKey(t *testing.T) {
 	var wrapper = Wrappers.New(new(Wrappers.OsWrapper))
-	var reader *Conf.Reader = &Conf.Reader{Path: "db.json", OsWrapper: wrapper}
+	var reader *Conf.Reader = &Conf.Reader{Path: "../configuration/db.json", OsWrapper: wrapper}
 	config, _ := reader.ReadConfiguration()
 	mdlwr := m.NewCachingDefaultServerMiddleware(&config)
 	request := &Api.Request{Data: []byte{}, Cached: false, NetRequest: &http.Request{URL: &url.URL{RawQuery: "translate=translation"}}}
 	str := mdlwr.GetKey(request)
-	if str != "translate=translation" {
-		t.Errorf("Key is empty!")
+	if str != "translate=translation&v=1" {
+		t.Errorf("Key is not equal to expected: %s", str)
 	}
 }

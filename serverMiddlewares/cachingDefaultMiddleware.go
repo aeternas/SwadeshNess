@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"fmt"
 	apiClient "github.com/aeternas/SwadeshNess/apiClient"
 	Caching "github.com/aeternas/SwadeshNess/caching"
 	Conf "github.com/aeternas/SwadeshNess/configuration"
@@ -8,7 +9,8 @@ import (
 )
 
 type cachingDefaultServerMiddleware struct {
-	CW *Caching.AnyCacheWrapper
+	CW            *Caching.AnyCacheWrapper
+	Configuration *Conf.Configuration
 }
 
 type CachingDefaultServerMiddleware interface {
@@ -19,7 +21,7 @@ type CachingDefaultServerMiddleware interface {
 
 func NewCachingDefaultServerMiddleware(c *Conf.Configuration) CachingDefaultServerMiddleware {
 	cw := Caching.NewRedisCachingWrapper(c).(Caching.AnyCacheWrapper)
-	return &cachingDefaultServerMiddleware{CW: &cw}
+	return &cachingDefaultServerMiddleware{CW: &cw, Configuration: c}
 }
 
 func (c cachingDefaultServerMiddleware) AdaptRequest(r *apiClient.Request) *apiClient.Request {
@@ -52,6 +54,7 @@ func (c cachingDefaultServerMiddleware) AdaptResponse(r *apiClient.Response) *ap
 	return r
 }
 
-func (cachingDefaultServerMiddleware) GetKey(r *apiClient.Request) string {
-	return r.NetRequest.URL.RawQuery
+func (c cachingDefaultServerMiddleware) GetKey(r *apiClient.Request) string {
+	version := fmt.Sprintf("&v=%s", c.Configuration.ConfigVersion)
+	return r.NetRequest.URL.RawQuery + version
 }
