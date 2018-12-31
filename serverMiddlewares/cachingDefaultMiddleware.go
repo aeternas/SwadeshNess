@@ -27,11 +27,11 @@ func (c cachingDefaultServerMiddleware) AdaptRequest(r *apiClient.Request) *apiC
 	cw := c.CW
 	val, err := (*cw).GetCachedValue(key)
 	if err != nil || len(val) == 0 {
-		log.Printf("Failed to extract cached value %s", key)
+		log.Printf("Cache miss for %s", key)
 		return r
 	}
 	bytes := []byte(val)
-	log.Printf("Cache retrieval was success %s", val)
+	log.Printf("Cache hit with %s ", val)
 	r.Cached = true
 	r.Data = bytes
 	return r
@@ -47,7 +47,7 @@ func (c cachingDefaultServerMiddleware) AdaptResponse(r *apiClient.Response) *ap
 	str := string(r.Data)
 	log.Printf("Trying to save data %s for key %s", str, key)
 	if err := (*cw).SaveCachedValue(key, str); err != nil {
-		log.Printf("Failed to save cached value %s", r.Data)
+		log.Printf("Failed to save value to cache: %s", r.Data)
 	}
 	return r
 }
