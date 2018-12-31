@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	. "github.com/aeternas/SwadeshNess-packages/language"
-	apiClient "github.com/aeternas/SwadeshNess/apiClient"
+	ApiClient "github.com/aeternas/SwadeshNess/apiClient"
 	. "github.com/aeternas/SwadeshNess/clientMiddlewares"
 	. "github.com/aeternas/SwadeshNess/configuration"
 	. "github.com/aeternas/SwadeshNess/dto"
@@ -36,7 +36,7 @@ func getRequest(c *http.Client, middlewares []ClientMiddleware, w, sourceLang, t
 		return getTranslationResultErrorString("Request initialization error")
 	}
 
-	request := &apiClient.Request{Data: []byte{}, Cached: false, NetRequest: req}
+	request := &ApiClient.Request{Data: []byte{}, Cached: false, NetRequest: req}
 
 	for _, middleware := range middlewares {
 		request = middleware.AdaptRequest(request)
@@ -49,6 +49,8 @@ func getRequest(c *http.Client, middlewares []ClientMiddleware, w, sourceLang, t
 		return getTranslationResultErrorString("Request execution error")
 	}
 
+	response := &ApiClient.Response{Data: []byte{}, NetResponse: resp, Request: request}
+
 	body, err := ioutil.ReadAll(resp.Body)
 
 	if err != nil {
@@ -56,9 +58,11 @@ func getRequest(c *http.Client, middlewares []ClientMiddleware, w, sourceLang, t
 		return getTranslationResultErrorString("I/O Read Error")
 	}
 
+	response.Data = body
+
 	var data YandexTranslationResult
 
-	if err := json.Unmarshal(body, &data); err != nil {
+	if err := json.Unmarshal(response.Data, &data); err != nil {
 		log.Println("Unmarshalling error: ", err)
 		return getTranslationResultErrorString("Unmarshalling error")
 	}
