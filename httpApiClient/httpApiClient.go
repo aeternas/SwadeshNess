@@ -42,7 +42,7 @@ func getRequest(c *http.Client, middlewares []ClientMiddleware, w, sourceLang, t
 		request = middleware.AdaptRequest(request)
 	}
 
-	resp, err := c.Do(req)
+	resp, err := c.Do(request.NetRequest)
 
 	if err != nil {
 		log.Println("Request execution error: ", err)
