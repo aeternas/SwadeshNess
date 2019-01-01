@@ -51,7 +51,7 @@ func getRequest(c *http.Client, middlewares []ClientMiddleware, w, sourceLang, t
 
 	response := &ApiClient.Response{Data: []byte{}, NetResponse: resp, Request: request}
 
-	body, err := ioutil.ReadAll(response.resp.Body)
+	body, err := ioutil.ReadAll(response.NetResponse.Body)
 
 	if err != nil {
 		log.Println("I/O Read Error: ", err)
