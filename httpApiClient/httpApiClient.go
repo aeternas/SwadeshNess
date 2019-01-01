@@ -51,6 +51,10 @@ func (c *HTTPApiClient) getRequest(middlewares []ClientMiddleware, w, sourceLang
 
 	resp, err := c.Client.Do(request.NetRequest)
 
+	if resp != nil {
+		log.Println("request is actually being sent: ", resp)
+	}
+
 	if err != nil {
 		log.Println("Request execution error: ", err)
 		return getTranslationResultErrorString("Request execution error")
