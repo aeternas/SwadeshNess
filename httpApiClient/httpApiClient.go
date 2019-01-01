@@ -21,11 +21,11 @@ type HTTPApiClient struct {
 
 func (c *HTTPApiClient) MakeTranslationRequest(w string, conf *Configuration, sourceLang string, targetLang Language, ch chan<- YandexTranslationResult) {
 	c.Middlewares = []ClientMiddleware{NewDefaultClientMiddleware(), NewAuthClientMiddleware(conf.ApiKey), NewLoggerClientMiddleware()}
-	res := getRequest(c.Client, c.Middlewares, w, sourceLang, targetLang.Code)
+	res := c.getRequest(c.Middlewares, w, sourceLang, targetLang.Code)
 	ch <- res
 }
 
-func getRequest(c *http.Client, middlewares []ClientMiddleware, w, sourceLang, targetLang string) YandexTranslationResult {
+func (c *HTTPApiClient) getRequest(middlewares []ClientMiddleware, w, sourceLang, targetLang string) YandexTranslationResult {
 	queryString := url.QueryEscape(w)
 
 	urlString := fmt.Sprintf("https://translate.yandex.net/api/v1.5/tr.json/translate?lang=%s-%s&text=%s", sourceLang, targetLang, queryString)
@@ -42,14 +42,21 @@ func getRequest(c *http.Client, middlewares []ClientMiddleware, w, sourceLang, t
 		request = middleware.AdaptRequest(request)
 	}
 
-	resp, err := c.Do(request.NetRequest)
+	response := &ApiClient.Response{Data: []byte{}, NetResponse: nil, Request: request}
+
+	if request.Cached {
+		response = c.adaptResponse(response)
+		return c.getTranslationData(response)
+	}
+
+	resp, err := c.Client.Do(request.NetRequest)
 
 	if err != nil {
 		log.Println("Request execution error: ", err)
 		return getTranslationResultErrorString("Request execution error")
 	}
 
-	response := &ApiClient.Response{Data: []byte{}, NetResponse: resp, Request: request}
+	response.NetResponse = resp
 
 	body, err := ioutil.ReadAll(response.NetResponse.Body)
 
@@ -60,14 +67,29 @@ func getRequest(c *http.Client, middlewares []ClientMiddleware, w, sourceLang, t
 
 	response.Data = body
 
+	response = c.adaptResponse(response)
+
+	return c.getTranslationData(response)
+}
+
+func (c *HTTPApiClient) adaptResponse(r *ApiClient.Response) *ApiClient.Response {
+	adaptedResponse := r
+	for _, middleware := range c.Middlewares {
+		adaptedResponse = middleware.AdaptResponse(adaptedResponse)
+	}
+
+	return adaptedResponse
+}
+
+func (c *HTTPApiClient) getTranslationData(r *ApiClient.Response) YandexTranslationResult {
 	var data YandexTranslationResult
 
-	if err := json.Unmarshal(response.Data, &data); err != nil {
+	if err := json.Unmarshal(r.Data, &data); err != nil {
 		log.Println("Unmarshalling error: ", err)
 		return getTranslationResultErrorString("Unmarshalling error")
 	}
 
-	defer response.NetResponse.Body.Close()
+	defer r.NetResponse.Body.Close()
 
 	if data.Code != 200 {
 		switch data.Code {
