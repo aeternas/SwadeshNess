@@ -1,7 +1,6 @@
 package middlewares
 
 import (
-	"fmt"
 	apiClient "github.com/aeternas/SwadeshNess/apiClient"
 	Caching "github.com/aeternas/SwadeshNess/caching"
 	Conf "github.com/aeternas/SwadeshNess/configuration"
