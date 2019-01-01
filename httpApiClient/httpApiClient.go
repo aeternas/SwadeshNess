@@ -67,7 +67,7 @@ func getRequest(c *http.Client, middlewares []ClientMiddleware, w, sourceLang, t
 		return getTranslationResultErrorString("Unmarshalling error")
 	}
 
-	defer resp.Body.Close()
+	defer response.NetResponse.Body.Close()
 
 	if data.Code != 200 {
 		switch data.Code {
