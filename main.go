@@ -2,12 +2,16 @@ package main
 
 import (
 	. "github.com/aeternas/SwadeshNess-packages/language"
+	ApiClient "github.com/aeternas/SwadeshNess/apiClient"
+	ClientMiddlewares "github.com/aeternas/SwadeshNess/clientMiddlewares"
 	Config "github.com/aeternas/SwadeshNess/configuration"
 	. "github.com/aeternas/SwadeshNess/handlers"
+	HTTPApiClient "github.com/aeternas/SwadeshNess/httpApiClient"
 	ServerMiddlewares "github.com/aeternas/SwadeshNess/serverMiddlewares"
 	Wrappers "github.com/aeternas/SwadeshNess/wrappers"
 	"log"
 	"net/http"
+	"time"
 )
 
 var (
@@ -17,16 +21,23 @@ var (
 	groupListHandler   AnyHandler
 	versionHandler     AnyHandler
 	configuration      Config.Configuration
+	apiClient          ApiClient.ApiClient
 )
 
 func init() {
 	var wrapper = Wrappers.New(new(Wrappers.OsWrapper))
 	var lReader *Config.Reader = &Config.Reader{Path: "configuration/db.json", OsWrapper: wrapper}
+
 	reader = lReader
 	lConfiguration, _ := reader.ReadConfiguration()
 	configuration = lConfiguration
+
+	clientMiddlewares := []ClientMiddlewares.ClientMiddleware{ClientMiddlewares.NewCachingDefaultClientMiddleware(&configuration), ClientMiddlewares.NewDefaultClientMiddleware(), ClientMiddlewares.NewAuthClientMiddleware(configuration.ApiKey), ClientMiddlewares.NewLoggerClientMiddleware()}
+	httpApiClient := &HTTPApiClient.HTTPApiClient{Client: &http.Client{Timeout: 10 * time.Second}, Middlewares: clientMiddlewares}
+	apiClient = httpApiClient
+
 	cm := ServerMiddlewares.NewCachingDefaultServerMiddleware(&configuration)
-	translationHandler = &TranslationHandler{Config: &configuration, Middlewares: []ServerMiddlewares.ServerMiddleware{cm}}
+	translationHandler = &TranslationHandler{Config: &configuration, ServerMiddlewares: []ServerMiddlewares.ServerMiddleware{cm}, ApiClient: apiClient}
 	groupListHandler = &GroupListHandler{Config: &configuration}
 	versionHandler = &VersionHandler{Config: &configuration}
 }

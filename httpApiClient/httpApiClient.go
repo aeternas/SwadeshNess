@@ -20,7 +20,6 @@ type HTTPApiClient struct {
 }
 
 func (c *HTTPApiClient) MakeTranslationRequest(w string, conf *Configuration, sourceLang string, targetLang Language, ch chan<- YandexTranslationResult) {
-	c.Middlewares = []ClientMiddleware{NewCachingDefaultClientMiddleware(conf), NewDefaultClientMiddleware(), NewAuthClientMiddleware(conf.ApiKey), NewLoggerClientMiddleware()}
 	res := c.getRequest(c.Middlewares, w, sourceLang, targetLang.Code)
 	ch <- res
 }
@@ -50,10 +49,6 @@ func (c *HTTPApiClient) getRequest(middlewares []ClientMiddleware, w, sourceLang
 	}
 
 	resp, err := c.Client.Do(request.NetRequest)
-
-	if resp != nil {
-		log.Println("request is actually being sent: ", resp)
-	}
 
 	if err != nil {
 		log.Println("Request execution error: ", err)

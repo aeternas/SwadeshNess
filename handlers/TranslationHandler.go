@@ -9,26 +9,16 @@ import (
 	. "github.com/aeternas/SwadeshNess/apiClient"
 	. "github.com/aeternas/SwadeshNess/configuration"
 	. "github.com/aeternas/SwadeshNess/dto"
-	. "github.com/aeternas/SwadeshNess/httpApiClient"
 	serverMiddleware "github.com/aeternas/SwadeshNess/serverMiddlewares"
 	"log"
 	"net/http"
 	"strings"
-	"time"
 )
-
-var (
-	apiClient ApiClient
-)
-
-func init() {
-	httpApiClient := &HTTPApiClient{Client: &http.Client{Timeout: 10 * time.Second}}
-	apiClient = httpApiClient
-}
 
 type TranslationHandler struct {
-	Config      *Configuration
-	Middlewares []serverMiddleware.ServerMiddleware
+	Config            *Configuration
+	ServerMiddlewares []serverMiddleware.ServerMiddleware
+	ApiClient         ApiClient
 }
 
 func (th *TranslationHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {
@@ -41,7 +31,7 @@ func (th *TranslationHandler) HandleRequest(w http.ResponseWriter, r *http.Reque
 
 	request := &Request{Data: []byte{}, Cached: false, NetRequest: r}
 
-	for _, middleware := range th.Middlewares {
+	for _, middleware := range th.ServerMiddlewares {
 		request = middleware.AdaptRequest(request)
 	}
 
@@ -72,7 +62,7 @@ func (th *TranslationHandler) HandleRequest(w http.ResponseWriter, r *http.Reque
 
 	groups := []GroupTranslation{}
 	for _, lang := range translationRequestGroupValues {
-		res, err := getTranslation(translationRequestValue, sourceLanguage, lang, th.Config)
+		res, err := th.getTranslation(translationRequestValue, sourceLanguage, lang, th.Config)
 		if err != nil {
 			log.Printf("Failed to process language group: %s", lang)
 			http.Error(w, fmt.Sprintf("Failed to process language group: %s", lang), http.StatusInternalServerError)
@@ -99,7 +89,7 @@ func (th *TranslationHandler) HandleRequest(w http.ResponseWriter, r *http.Reque
 
 func (th *TranslationHandler) adaptResponse(r *Response) *Response {
 	adaptedResponse := r
-	for _, middleware := range th.Middlewares {
+	for _, middleware := range th.ServerMiddlewares {
 		adaptedResponse = middleware.AdaptResponse(adaptedResponse)
 	}
 
@@ -113,7 +103,7 @@ func (th *TranslationHandler) writeResponse(w http.ResponseWriter, r *Response) 
 	}
 }
 
-func getTranslation(translationRequestValue, sourceLanguage, targetLanguage string, conf *Configuration) (SwadeshTranslation, error) {
+func (th *TranslationHandler) getTranslation(translationRequestValue, sourceLanguage, targetLanguage string, conf *Configuration) (SwadeshTranslation, error) {
 	var desiredGroup LanguageGroup
 
 	for i := range conf.Languages {
@@ -130,7 +120,7 @@ func getTranslation(translationRequestValue, sourceLanguage, targetLanguage stri
 	ch := make(chan YandexTranslationResult)
 
 	for _, lang := range desiredGroup.Languages {
-		go apiClient.MakeTranslationRequest(translationRequestValue, conf, sourceLanguage, lang, ch)
+		go th.ApiClient.MakeTranslationRequest(translationRequestValue, conf, sourceLanguage, lang, ch)
 	}
 
 	results := []YandexTranslationResult{}
