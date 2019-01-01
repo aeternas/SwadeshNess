@@ -1,30 +1,60 @@
 package middlewares
 
 import (
+	"fmt"
 	apiClient "github.com/aeternas/SwadeshNess/apiClient"
 	Caching "github.com/aeternas/SwadeshNess/caching"
+	Conf "github.com/aeternas/SwadeshNess/configuration"
 	"log"
 )
 
 type cachingDefaultClientMiddleware struct {
 	CachingWrapper *Caching.AnyCacheWrapper
+	Configuration  *Conf.Configuration
 }
 
 type CachingDefaultClientMiddleware interface {
 	AdaptRequest(r *apiClient.Request) *apiClient.Request
 	AdaptResponse(r *apiClient.Response) *apiClient.Response
+	GetKey(r *apiClient.Request) string
 }
 
-func NewCachingDefaultClientMiddleware() CachingDefaultClientMiddleware {
-	return &cachingDefaultClientMiddleware{}
+func NewCachingDefaultClientMiddleware(c *Conf.Configuration) CachingDefaultClientMiddleware {
+	cw := Caching.NewRedisCachingWrapper(c).(Caching.AnyCacheWrapper)
+	return &cachingDefaultClientMiddleware{CachingWrapper: &cw, Configuration: c}
 }
 
-func (cachingDefaultClientMiddleware) AdaptRequest(r *apiClient.Request) *apiClient.Request {
-	log.Println(r)
+func (c cachingDefaultClientMiddleware) AdaptRequest(r *apiClient.Request) *apiClient.Request {
+	key := c.GetKey(r)
+	cw := c.CachingWrapper
+	val, err := (*cw).GetCachedValue(key)
+	if err != nil || len(val) == 0 {
+		log.Printf("Cache miss for %s", key)
+		return r
+	}
+	bytes := []byte(val)
+	log.Printf("Cache hit with %s ", val)
+	r.Cached = true
+	r.Data = bytes
 	return r
 }
 
-func (cachingDefaultClientMiddleware) AdaptResponse(r *apiClient.Response) *apiClient.Response {
-	log.Println(r)
+func (c cachingDefaultClientMiddleware) AdaptResponse(r *apiClient.Response) *apiClient.Response {
+	if r.Request.Cached {
+		r.Data = r.Request.Data
+		return r
+	}
+	key := c.GetKey(r.Request)
+	cw := c.CachingWrapper
+	str := string(r.Data)
+	log.Printf("Trying to save data %s for key %s", str, key)
+	if err := (*cw).SaveCachedValue(key, str); err != nil {
+		log.Printf("Failed to save value to cache: %s", r.Data)
+	}
 	return r
+}
+
+func (c cachingDefaultClientMiddleware) GetKey(r *apiClient.Request) string {
+	version := fmt.Sprintf("&v=%s", c.Configuration.ConfigVersion)
+	return r.NetRequest.URL.RawQuery + version
 }

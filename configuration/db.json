@@ -165,5 +165,6 @@
       ]
     }
   ],
-  "credits": "Переведено сервисом \"Яндекс.Переводчик\" http://translate.yandex.ru/"
+  "credits": "Переведено сервисом \"Яндекс.Переводчик\" http://translate.yandex.ru/",
+  "configVersion": "1"
 }

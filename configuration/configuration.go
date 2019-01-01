@@ -16,10 +16,11 @@ const (
 )
 
 type Configuration struct {
-	Languages  []LanguageGroup
-	ApiKey     string
-	Credits    string
-	Version    string
-	EEndpoints Endpoints
-	Security   Security
+	Languages     []LanguageGroup
+	ApiKey        string
+	Credits       string
+	Version       string
+	EEndpoints    Endpoints
+	Security      Security
+	ConfigVersion string
 }
