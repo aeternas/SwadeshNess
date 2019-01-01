@@ -89,7 +89,7 @@ func (c *HTTPApiClient) getTranslationData(r *ApiClient.Response) YandexTranslat
 		return getTranslationResultErrorString("Unmarshalling error")
 	}
 
-	defer r.NetResponse.Body.Close()
+	defer (*r).NetResponse.Body.Close()
 
 	if data.Code != 200 {
 		switch data.Code {
