@@ -58,6 +58,5 @@ func (c cachingDefaultClientMiddleware) GetKey(r *apiClient.Request) string {
 	values := r.NetRequest.URL.Query()
 	values.Del("key")
 	encodedValues := values.Encode()
-	version := fmt.Sprintf("&v=%s", c.Configuration.ConfigVersion)
-	return encodedValues + version
+	return encodedValues
 }
