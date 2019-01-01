@@ -55,6 +55,9 @@ func (c cachingDefaultClientMiddleware) AdaptResponse(r *apiClient.Response) *ap
 }
 
 func (c cachingDefaultClientMiddleware) GetKey(r *apiClient.Request) string {
+	values := r.NetRequest.URL.Query()
+	values.Del("key")
+	encodedValues := values.Encode()
 	version := fmt.Sprintf("&v=%s", c.Configuration.ConfigVersion)
-	return r.NetRequest.URL.RawQuery + version
+	return encodedValues + version
 }
