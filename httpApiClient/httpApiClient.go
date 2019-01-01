@@ -20,7 +20,7 @@ type HTTPApiClient struct {
 }
 
 func (c *HTTPApiClient) MakeTranslationRequest(w string, conf *Configuration, sourceLang string, targetLang Language, ch chan<- YandexTranslationResult) {
-	c.Middlewares = []ClientMiddleware{NewDefaultClientMiddleware(), NewAuthClientMiddleware(conf.ApiKey), NewLoggerClientMiddleware()}
+	c.Middlewares = []ClientMiddleware{NewCachingDefaultClientMiddleware(conf), NewDefaultClientMiddleware(), NewAuthClientMiddleware(conf.ApiKey), NewLoggerClientMiddleware()}
 	res := c.getRequest(c.Middlewares, w, sourceLang, targetLang.Code)
 	ch <- res
 }
