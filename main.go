@@ -32,12 +32,23 @@ func init() {
 	lConfiguration, _ := reader.ReadConfiguration()
 	configuration = lConfiguration
 
-	clientMiddlewares := []ClientMiddlewares.ClientMiddleware{ClientMiddlewares.NewCachingDefaultClientMiddleware(&configuration), ClientMiddlewares.NewDefaultClientMiddleware(), ClientMiddlewares.NewAuthClientMiddleware(configuration.ApiKey), ClientMiddlewares.NewLoggerClientMiddleware()}
+	clientMiddlewares := []ClientMiddlewares.ClientMiddleware{
+		ClientMiddlewares.NewCachingDefaultClientMiddleware(&configuration),
+		ClientMiddlewares.NewDefaultClientMiddleware(),
+		ClientMiddlewares.NewAuthClientMiddleware(configuration.ApiKey),
+		ClientMiddlewares.NewLoggerClientMiddleware(),
+	}
+
 	httpApiClient := &HTTPApiClient.HTTPApiClient{Client: &http.Client{Timeout: 10 * time.Second}, Middlewares: clientMiddlewares}
 	apiClient = httpApiClient
 
 	cm := ServerMiddlewares.NewCachingDefaultServerMiddleware(&configuration)
-	translationHandler = &TranslationHandler{Config: &configuration, ServerMiddlewares: []ServerMiddlewares.ServerMiddleware{cm}, ApiClient: apiClient}
+	translationHandler = &TranslationHandler{
+		Config:            &configuration,
+		ServerMiddlewares: []ServerMiddlewares.ServerMiddleware{cm},
+		ApiClient:         apiClient,
+	}
+
 	groupListHandler = &GroupListHandler{Config: &configuration}
 	versionHandler = &VersionHandler{Config: &configuration}
 }
