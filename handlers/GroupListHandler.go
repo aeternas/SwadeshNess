@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	. "github.com/aeternas/SwadeshNess/apiClient"
 	. "github.com/aeternas/SwadeshNess/configuration"
 	serverMiddleware "github.com/aeternas/SwadeshNess/serverMiddlewares"
 	"log"
@@ -9,11 +10,17 @@ import (
 )
 
 type GroupListHandler struct {
-	Config      *Configuration
-	Middlewares []serverMiddleware.ServerMiddleware
+	Config            *Configuration
+	ServerMiddlewares []serverMiddleware.ServerMiddleware
 }
 
 func (gh *GroupListHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {
+	request := &Request{Data: []byte{}, Cached: false, NetRequest: r}
+
+	for _, middleware := range gh.ServerMiddlewares {
+		request = middleware.AdaptRequest(request)
+	}
+
 	bytes, err := json.Marshal(gh.Config.Languages)
 	if err != nil {
 		log.Println("Marshalling Error")

@@ -43,13 +43,14 @@ func init() {
 	apiClient = httpApiClient
 
 	cm := ServerMiddlewares.NewCachingDefaultServerMiddleware(&configuration)
+	slm := ServerMiddlewares.NewLoggerServerMiddleware()
 	translationHandler = &TranslationHandler{
 		Config:            &configuration,
 		ServerMiddlewares: []ServerMiddlewares.ServerMiddleware{cm},
 		ApiClient:         apiClient,
 	}
 
-	groupListHandler = &GroupListHandler{Config: &configuration}
+	groupListHandler = &GroupListHandler{Config: &configuration, ServerMiddlewares: []ServerMiddlewares.ServerMiddleware{slm}}
 	versionHandler = &VersionHandler{Config: &configuration}
 }
 
