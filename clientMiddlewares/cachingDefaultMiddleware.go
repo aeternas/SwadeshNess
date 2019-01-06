@@ -1,7 +1,6 @@
 package middlewares
 
 import (
-	"fmt"
 	apiClient "github.com/aeternas/SwadeshNess/apiClient"
 	Caching "github.com/aeternas/SwadeshNess/caching"
 	Conf "github.com/aeternas/SwadeshNess/configuration"
@@ -55,6 +54,8 @@ func (c cachingDefaultClientMiddleware) AdaptResponse(r *apiClient.Response) *ap
 }
 
 func (c cachingDefaultClientMiddleware) GetKey(r *apiClient.Request) string {
-	version := fmt.Sprintf("&v=%s", c.Configuration.ConfigVersion)
-	return r.NetRequest.URL.RawQuery + version
+	values := r.NetRequest.URL.Query()
+	values.Del("key")
+	encodedValues := values.Encode()
+	return encodedValues
 }

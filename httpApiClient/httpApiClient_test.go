@@ -2,7 +2,7 @@ package httpApiClient_test
 
 import (
 	. "github.com/aeternas/SwadeshNess-packages/language"
-	. "github.com/aeternas/SwadeshNess/apiClient"
+	ApiClient "github.com/aeternas/SwadeshNess/apiClient"
 	. "github.com/aeternas/SwadeshNess/configuration"
 	. "github.com/aeternas/SwadeshNess/dto"
 	"testing"
@@ -22,7 +22,7 @@ func TestMakeRequest(t *testing.T) {
 
 	turkishLanguage := Language{FullName: "Turkish", Code: "tr"}
 
-	var apiClient ApiClient
+	var apiClient ApiClient.ApiClient
 
 	httpApiClient := &MockHTTPApiClient{}
 
