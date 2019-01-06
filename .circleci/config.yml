@@ -53,6 +53,9 @@ aliases:
   - &run_integration_tests
     name: Run Integration Tests
     command: ./SwadeshNess-IntegrationTests
+  - &warm_cache
+    name: Warm Cache
+    command: ls
 version: 2
 jobs:
   checkout:
@@ -93,6 +96,12 @@ jobs:
     steps:
       - run: *update_envs
       - deploy: *run_integration_tests
+  warm_cache:
+    docker:
+      - image: aeternas/swadeshness-couperose-master
+    working_directory: /
+    steps:
+      - deploy: *warm_cache
 workflows:
   version: 2
   lint-test-deploy:
@@ -111,3 +120,6 @@ workflows:
       - integration_tests:
           requires:
             - deploy
+      - warm_cache:
+          requires:
+            - integration_tests
