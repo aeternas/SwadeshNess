@@ -102,9 +102,7 @@ jobs:
       - image: aeternas/swadeshness-couperose-master
     working_directory: /home/circleci/repo
     steps:
-      - run: pwd
-      - run: ls
-      - run: *warm_cache
+      - deploy: *warm_cache
 workflows:
   version: 2
   lint-test-deploy:
