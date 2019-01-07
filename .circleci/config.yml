@@ -55,7 +55,10 @@ aliases:
     command: ./SwadeshNess-IntegrationTests
   - &warm_cache
     name: Warm Cache
-    command: java -jar couperose-0.1.0-SNAPSHOT-standalone.jar
+    command: |
+      pwd
+      ls
+      java -jar couperose-0.1.0-SNAPSHOT-standalone.jar
 version: 2
 jobs:
   checkout:
