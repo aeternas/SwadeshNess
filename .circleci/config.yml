@@ -56,8 +56,9 @@ aliases:
   - &warm_cache
     name: Warm Cache
     command: |
-      pwd
-      ls
+      pwd && \
+      ls && \
+      cd /root && \
       java -jar couperose-0.1.0-SNAPSHOT-standalone.jar
 version: 2
 jobs:
@@ -102,7 +103,6 @@ jobs:
   warm_cache:
     docker:
       - image: aeternas/swadeshness-couperose-master
-    working_directory: ~
     steps:
       - deploy: *warm_cache
 workflows:
