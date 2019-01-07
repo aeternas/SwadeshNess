@@ -102,7 +102,6 @@ jobs:
   warm_cache:
     docker:
       - image: aeternas/swadeshness-couperose-master
-    working_directory: /
     steps:
       - deploy: *warm_cache
 workflows:
