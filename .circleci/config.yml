@@ -99,7 +99,7 @@ jobs:
       - deploy: *run_integration_tests
   warm_cache:
     docker:
-      - image: aeternas/swadeshness-couperose-master
+      - image: aeternas/swadeshness-couperose:$CIRCLE_BRANCH
     working_directory: /home/circleci/repo
     steps:
       - deploy: *warm_cache
