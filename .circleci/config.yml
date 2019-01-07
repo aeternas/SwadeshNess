@@ -102,7 +102,9 @@ jobs:
       - image: aeternas/swadeshness-couperose-master
     steps:
       - run: cd /root
-      - deploy: *warm_cache
+      - run: pwd
+      - run: ls
+      - run: *warm_cache
 workflows:
   version: 2
   lint-test-deploy:
