@@ -54,6 +54,8 @@ aliases:
     name: Run Integration Tests
     command: ./SwadeshNess-IntegrationTests
   - &warm_cache
+    name: Warm Cache
+    command: ls
 version: 2
 jobs:
   checkout:
