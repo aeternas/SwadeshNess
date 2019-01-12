@@ -148,6 +148,10 @@
         {
           "fullName": "Hungarian",
           "code": "hu"
+        },
+        {
+          "fullName": "Estonian",
+          "code": "et"
         }
       ]
     },
@@ -166,5 +170,5 @@
     }
   ],
   "credits": "Переведено сервисом \"Яндекс.Переводчик\" http://translate.yandex.ru/",
-  "configVersion": "1"
+  "configVersion": "2"
 }
