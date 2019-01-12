@@ -37,6 +37,10 @@
           "code": "es"
         },
         {
+          "fullName": "Català",
+          "code": "ca"
+        },
+        {
           "fullName": "Italian",
           "code": "it"
         },
@@ -170,5 +174,5 @@
     }
   ],
   "credits": "Переведено сервисом \"Яндекс.Переводчик\" http://translate.yandex.ru/",
-  "configVersion": "2"
+  "configVersion": "3"
 }
