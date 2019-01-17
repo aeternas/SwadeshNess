@@ -156,6 +156,14 @@
         {
           "fullName": "Estonian",
           "code": "et"
+        },
+        {
+          "fullName": "Mari",
+          "code": "mhr"
+        },
+        {
+          "fullName": "Hill Mari",
+          "code": "mrj"
         }
       ]
     },
@@ -174,5 +182,5 @@
     }
   ],
   "credits": "Переведено сервисом \"Яндекс.Переводчик\" http://translate.yandex.ru/",
-  "configVersion": "3"
+  "configVersion": "4"
 }
