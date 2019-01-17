@@ -2,20 +2,20 @@ package handlers
 
 import (
 	"encoding/json"
-	api "github.com/aeternas/SwadeshNess/apiClient"
-	config "github.com/aeternas/SwadeshNess/configuration"
+	. "github.com/aeternas/SwadeshNess/apiClient"
+	. "github.com/aeternas/SwadeshNess/configuration"
 	serverMiddleware "github.com/aeternas/SwadeshNess/serverMiddlewares"
 	"log"
 	"net/http"
 )
 
 type GroupListHandler struct {
-	Config            *config.Configuration
+	Config            *Configuration
 	ServerMiddlewares []serverMiddleware.ServerMiddleware
 }
 
 func (gh *GroupListHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {
-	request := &api.Request{Data: []byte{}, Cached: false, NetRequest: r}
+	request := &Request{Data: []byte{}, Cached: false, NetRequest: r}
 
 	for _, middleware := range gh.ServerMiddlewares {
 		request = middleware.AdaptRequest(request)

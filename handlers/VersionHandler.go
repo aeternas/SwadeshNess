@@ -2,25 +2,18 @@ package handlers
 
 import (
 	"encoding/json"
-	api "github.com/aeternas/SwadeshNess/apiClient"
-	config "github.com/aeternas/SwadeshNess/configuration"
+	. "github.com/aeternas/SwadeshNess/configuration"
 	serverMiddleware "github.com/aeternas/SwadeshNess/serverMiddlewares"
 	"log"
 	"net/http"
 )
 
 type VersionHandler struct {
-	Config            *config.Configuration
-	ServerMiddlewares []serverMiddleware.ServerMiddleware
+	Config      *Configuration
+	Middlewares []serverMiddleware.ServerMiddleware
 }
 
 func (gh *VersionHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {
-	request := &api.Request{Data: []byte{}, Cached: false, NetRequest: r}
-
-	for _, middleware := range gh.ServerMiddlewares {
-		request = middleware.AdaptRequest(request)
-	}
-
 	bytes, err := json.Marshal(gh.Config.Version)
 	if err != nil {
 		log.Println("Marshalling Error")
