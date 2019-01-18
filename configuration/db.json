@@ -150,12 +150,12 @@
           "code": "fi"
         },
         {
-          "fullName": "Hungarian",
-          "code": "hu"
-        },
-        {
           "fullName": "Estonian",
           "code": "et"
+        },
+        {
+          "fullName": "Hungarian",
+          "code": "hu"
         },
         {
           "fullName": "Mari",
@@ -182,5 +182,5 @@
     }
   ],
   "credits": "Переведено сервисом \"Яндекс.Переводчик\" http://translate.yandex.ru/",
-  "configVersion": "4"
+  "configVersion": "5"
 }

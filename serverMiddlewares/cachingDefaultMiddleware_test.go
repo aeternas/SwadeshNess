@@ -22,7 +22,7 @@ func TestGetKey(t *testing.T) {
 	mdlwr := m.NewCachingDefaultServerMiddleware(&config)
 	request := &Api.Request{Data: []byte{}, Cached: false, NetRequest: &http.Request{URL: &url.URL{RawQuery: "translate=translation"}}}
 	str := mdlwr.GetKey(request)
-	if str != "translate=translation&v=4" {
+	if str != "translate=translation&v=5" {
 		t.Errorf("Key is not equal to expected: %s", str)
 	}
 }
