@@ -66,6 +66,10 @@
           "code": "ja"
         },
         {
+          "fullName": "Korean",
+          "code": "ko"
+        },
+        {
           "fullName": "Vietnamese",
           "code": "vi"
         }
@@ -182,5 +186,5 @@
     }
   ],
   "credits": "Переведено сервисом \"Яндекс.Переводчик\" http://translate.yandex.ru/",
-  "configVersion": "5"
+  "configVersion": "6"
 }
