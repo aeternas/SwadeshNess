@@ -127,5 +127,9 @@ workflows:
           requires:
             - deploy
       - warm_cache:
+          filters:
+            branches:
+              only:
+                - master
           requires:
             - integration_tests
