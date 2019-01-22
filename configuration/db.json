@@ -51,6 +51,10 @@
         {
           "fullName": "Portugal",
           "code": "pt"
+        },
+        {
+          "fullName": "Galician",
+          "code": "gl"
         }
       ]
     },
@@ -186,5 +190,5 @@
     }
   ],
   "credits": "Переведено сервисом \"Яндекс.Переводчик\" http://translate.yandex.ru/",
-  "configVersion": "6"
+  "configVersion": "7"
 }
