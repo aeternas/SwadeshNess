@@ -5,6 +5,10 @@ import (
 	"net/http"
 )
 
+func NewAnyHandler() AnyHandler {
+	return &anyHandler{}
+}
+
 type AnyHandler interface {
 	HandleRequest(w http.ResponseWriter, r *http.Request)
 }
@@ -14,7 +18,3 @@ type anyHandler struct {
 }
 
 func (ah anyHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {}
-
-func NewAnyHandler() AnyHandler {
-	return &anyHandler{}
-}
