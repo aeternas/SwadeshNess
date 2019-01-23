@@ -12,6 +12,7 @@ func NewAnyHandler() AnyHandler {
 
 type AnyHandler interface {
 	HandleRequest(w http.ResponseWriter, r *http.Request)
+	WriteResponse(w http.ResponseWriter, r *apiClient.Response)
 }
 
 type anyHandler struct {
