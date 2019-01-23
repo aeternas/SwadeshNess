@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	apiClient "github.com/aeternas/SwadeshNess/apiClient"
 	serverMiddleware "github.com/aeternas/SwadeshNess/serverMiddlewares"
 	"net/http"
 )
@@ -18,3 +19,5 @@ type anyHandler struct {
 }
 
 func (ah anyHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {}
+
+func (ah anyHandler) WriteResponse(w http.ResponseWriter, r *apiClient.Response) {}
