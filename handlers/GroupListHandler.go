@@ -34,3 +34,10 @@ func (gh *GroupListHandler) HandleRequest(w http.ResponseWriter, r *http.Request
 		return
 	}
 }
+
+func (*GroupListHandler) WriteResponse(w http.ResponseWriter, r *api.Response) {
+	if _, err := w.Write(r.Data); err != nil {
+		log.Println("Response output error")
+		http.Error(w, "Response output error", http.StatusInternalServerError)
+	}
+}

@@ -14,14 +14,14 @@ type VersionHandler struct {
 	ServerMiddlewares []serverMiddleware.ServerMiddleware
 }
 
-func (gh *VersionHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {
+func (vh *VersionHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {
 	request := &api.Request{Data: []byte{}, Cached: false, NetRequest: r}
 
-	for _, middleware := range gh.ServerMiddlewares {
+	for _, middleware := range vh.ServerMiddlewares {
 		request = middleware.AdaptRequest(request)
 	}
 
-	bytes, err := json.Marshal(gh.Config.Version)
+	bytes, err := json.Marshal(vh.Config.Version)
 	if err != nil {
 		log.Println("Marshalling Error")
 		http.Error(w, "Marshalling error", http.StatusInternalServerError)
@@ -32,5 +32,12 @@ func (gh *VersionHandler) HandleRequest(w http.ResponseWriter, r *http.Request) 
 		log.Println("Write Error")
 		http.Error(w, "Response write error", http.StatusInternalServerError)
 		return
+	}
+}
+
+func (*VersionHandler) WriteResponse(w http.ResponseWriter, r *api.Response) {
+	if _, err := w.Write(r.Data); err != nil {
+		log.Println("Response output error")
+		http.Error(w, "Response output error", http.StatusInternalServerError)
 	}
 }

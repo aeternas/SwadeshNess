@@ -38,7 +38,7 @@ func (th *TranslationHandler) HandleRequest(w http.ResponseWriter, r *http.Reque
 	if request.Cached {
 		response := &Response{Data: []byte{}, NetResponse: nil, Request: request}
 		response = th.adaptResponse(response)
-		th.writeResponse(w, response)
+		th.WriteResponse(w, response)
 		return
 	}
 
@@ -84,7 +84,7 @@ func (th *TranslationHandler) HandleRequest(w http.ResponseWriter, r *http.Reque
 
 	adaptedResponse := th.adaptResponse(resp)
 
-	th.writeResponse(w, adaptedResponse)
+	th.WriteResponse(w, adaptedResponse)
 }
 
 func (th *TranslationHandler) adaptResponse(r *Response) *Response {
@@ -96,7 +96,7 @@ func (th *TranslationHandler) adaptResponse(r *Response) *Response {
 	return adaptedResponse
 }
 
-func (th *TranslationHandler) writeResponse(w http.ResponseWriter, r *Response) {
+func (*TranslationHandler) WriteResponse(w http.ResponseWriter, r *Response) {
 	if _, err := w.Write(r.Data); err != nil {
 		log.Println("Response output error")
 		http.Error(w, "Response output error", http.StatusInternalServerError)
