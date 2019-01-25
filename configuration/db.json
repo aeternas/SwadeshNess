@@ -18,6 +18,10 @@
         {
           "fullName": "Turkish",
           "code": "tr"
+        },
+        {
+          "fullName": "Kyrgyz",
+          "code": "ky"
         }
       ]
     },
@@ -190,5 +194,5 @@
     }
   ],
   "credits": "Переведено сервисом \"Яндекс.Переводчик\" http://translate.yandex.ru/",
-  "configVersion": "7"
+  "configVersion": "8"
 }
