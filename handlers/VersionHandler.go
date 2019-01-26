@@ -28,11 +28,20 @@ func (vh *VersionHandler) HandleRequest(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	if _, err := w.Write(bytes); err != nil {
-		log.Println("Write Error")
-		http.Error(w, "Response write error", http.StatusInternalServerError)
-		return
+	resp := &api.Response{Data: bytes, NetResponse: nil, Request: request}
+
+	adaptedResponse := vh.adaptResponse(resp)
+
+	vh.WriteResponse(w, adaptedResponse)
+}
+
+func (vh *VersionHandler) adaptResponse(r *api.Response) *api.Response {
+	adaptedResponse := r
+	for _, middleware := range vh.ServerMiddlewares {
+		adaptedResponse = middleware.AdaptResponse(adaptedResponse)
 	}
+
+	return adaptedResponse
 }
 
 func (*VersionHandler) WriteResponse(w http.ResponseWriter, r *api.Response) {
