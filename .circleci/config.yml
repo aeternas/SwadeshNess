@@ -34,8 +34,8 @@ aliases:
   - &lint
     name: linting
     command: go install ./vendor/github.com/golangci/golangci-lint/cmd/golangci-lint && golangci-lint run
-  - &test
-    name: tests
+  - &unit_tests
+    name: Unit tests
     command: go test -v ./...
   - &containerize_push_deploy
     name: Containerize, Push and Deploy
@@ -81,7 +81,7 @@ jobs:
     steps:
       - attach_workspace: *attach_workspace
       - run: *get_deps
-      - run: *test
+      - run: *unit_tests
   deploy:
     docker: *docker_worker
     working_directory: *work_dir
