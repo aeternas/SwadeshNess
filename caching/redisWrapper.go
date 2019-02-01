@@ -22,13 +22,12 @@ func NewRedisCachingWrapper(c *Configuration.Configuration) RedisCachingWrapper 
 
 func (rcw *redisCachingWrapper) GetCachedValue(k string) (string, error) {
 	val, err := rcw.RedisClient.Get(k).Result()
-	if err != nil {
-		return "", fmt.Errorf("Internal Redis Error: %v", err)
-	}
-
 	if err == redis.Nil {
 		errorMessage := fmt.Errorf("Key %v doesn't exist", err)
 		return "", errorMessage
+	}
+	if err != nil {
+		return "", fmt.Errorf("Internal Redis Error: %v", err)
 	}
 	return val, nil
 }
