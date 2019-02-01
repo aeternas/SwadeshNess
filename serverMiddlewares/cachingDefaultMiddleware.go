@@ -29,7 +29,7 @@ func (c cachingDefaultServerMiddleware) AdaptRequest(r *apiClient.Request) *apiC
 	cw := c.CW
 	val, err := (*cw).GetCachedValue(key)
 	if err != nil || len(val) == 0 {
-		log.Printf("Cache retrieving error: %s", err)
+		log.Printf("Cache retrieving error for key %s: %s", key, err)
 		return r
 	}
 	bytes := []byte(val)
