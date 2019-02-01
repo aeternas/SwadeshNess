@@ -1,6 +1,7 @@
 package caching
 
 import (
+	"errors"
 	"fmt"
 	Configuration "github.com/aeternas/SwadeshNess/configuration"
 	Redis "github.com/go-redis/redis"
@@ -26,7 +27,10 @@ func (rcw *redisCachingWrapper) GetCachedValue(k string) (string, error) {
 		return "", err
 	}
 
-	//if err == redis.Nil {
+	if err == redis.Nil {
+		errorMessage := fmt.Sprintf("Key %v doesn't exist", err)
+		return "", errorMessage
+	}
 	return val, nil
 }
 
