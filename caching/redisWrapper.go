@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	Configuration "github.com/aeternas/SwadeshNess/configuration"
-	Redis "github.com/go-redis/redis"
+	redis "github.com/go-redis/redis"
 )
 
 type RedisCachingWrapper interface {
@@ -13,11 +13,11 @@ type RedisCachingWrapper interface {
 }
 
 type redisCachingWrapper struct {
-	RedisClient *Redis.Client
+	RedisClient *redis.Client
 }
 
 func NewRedisCachingWrapper(c *Configuration.Configuration) RedisCachingWrapper {
-	var redisClient *Redis.Client = NewClient(c)
+	var redisClient *redis.Client = NewClient(c)
 	return &redisCachingWrapper{RedisClient: redisClient}
 }
 
@@ -28,7 +28,7 @@ func (rcw *redisCachingWrapper) GetCachedValue(k string) (string, error) {
 	}
 
 	if err == redis.Nil {
-		errorMessage := fmt.Sprintf("Key %v doesn't exist", err)
+		errorMessage := errors.New(fmt.Sprintf("Key %v doesn't exist", err))
 		return "", errorMessage
 	}
 	return val, nil
@@ -39,9 +39,9 @@ func (rcw *redisCachingWrapper) SaveCachedValue(k, v string) error {
 	return err
 }
 
-func NewClient(c *Configuration.Configuration) *Redis.Client {
+func NewClient(c *Configuration.Configuration) *redis.Client {
 	address := fmt.Sprintf("%s:6379", c.EEndpoints.RedisAddress)
-	client := Redis.NewClient(&Redis.Options{
+	client := redis.NewClient(&redis.Options{
 		Addr:     address,
 		Password: "",
 		DB:       0,
