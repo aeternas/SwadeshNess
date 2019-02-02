@@ -29,7 +29,7 @@ func (c *HTTPApiClient) getRequest(middlewares []ClientMiddleware, w, sourceLang
 
 	urlString := fmt.Sprintf("https://translate.yandex.net/api/v1.5/tr.json/translate?lang=%s-%s&text=%s", sourceLang, targetLang, queryString)
 
-	req, err := http.NewRequest("GET", urlString, nil)
+	req, err := http.NewRequest(http.MethodGet, urlString, nil)
 	if err != nil {
 		log.Println("Request initialization error: ", err)
 		return getTranslationResultErrorString("Request initialization error")
@@ -90,9 +90,9 @@ func (c *HTTPApiClient) getTranslationData(r *ApiClient.Response) YandexTranslat
 		return getTranslationResultErrorString("Unmarshalling error")
 	}
 
-	if data.Code != 200 {
+	if data.Code != http.StatusOK {
 		switch data.Code {
-		case 401:
+		case http.StatusUnauthorized:
 			log.Println("Invalid API Key")
 			return getTranslationResultErrorString("Invalid API Key")
 		default:
