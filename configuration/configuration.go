@@ -1,7 +1,7 @@
 package configuration
 
 import (
-	. "github.com/aeternas/SwadeshNess-packages/language"
+	language "github.com/aeternas/SwadeshNess-packages/language"
 )
 
 const (
@@ -16,7 +16,7 @@ const (
 )
 
 type Configuration struct {
-	Languages     []LanguageGroup
+	Languages     []language.LanguageGroup
 	ApiKey        string
 	Credits       string
 	Version       string
