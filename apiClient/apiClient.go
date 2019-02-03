@@ -1,11 +1,11 @@
 package apiClient
 
 import (
-	. "github.com/aeternas/SwadeshNess-packages/language"
-	. "github.com/aeternas/SwadeshNess/configuration"
-	. "github.com/aeternas/SwadeshNess/dto"
+	language "github.com/aeternas/SwadeshNess-packages/language"
+	configuration "github.com/aeternas/SwadeshNess/configuration"
+	dto "github.com/aeternas/SwadeshNess/dto"
 )
 
 type ApiClient interface {
-	MakeTranslationRequest(w string, conf *Configuration, sourceLang string, targetLang Language, ch chan<- YandexTranslationResult)
+	MakeTranslationRequest(w string, conf *configuration.Configuration, sourceLang string, targetLang language.Language, ch chan<- dto.YandexTranslationResult)
 }

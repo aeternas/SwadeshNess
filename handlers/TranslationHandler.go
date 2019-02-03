@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	. "github.com/aeternas/SwadeshNess-packages/dto"
+	dto "github.com/aeternas/SwadeshNess-packages/dto"
 	. "github.com/aeternas/SwadeshNess-packages/language"
 	. "github.com/aeternas/SwadeshNess/apiClient"
 	. "github.com/aeternas/SwadeshNess/configuration"
@@ -60,7 +60,7 @@ func (th *TranslationHandler) HandleRequest(w http.ResponseWriter, r *http.Reque
 		sourceLanguage = sourceLanguageValues[0]
 	}
 
-	groups := []GroupTranslation{}
+	groups := []dto.GroupTranslation{}
 	for _, lang := range translationRequestGroupValues {
 		res, err := th.getTranslation(translationRequestValue, sourceLanguage, lang, th.Config)
 		if err != nil {
@@ -72,7 +72,7 @@ func (th *TranslationHandler) HandleRequest(w http.ResponseWriter, r *http.Reque
 		}
 	}
 
-	swadeshTranslation := SwadeshTranslation{Results: groups, Credits: th.Config.Credits}
+	swadeshTranslation := dto.SwadeshTranslation{Results: groups, Credits: th.Config.Credits}
 
 	bytes, err := json.Marshal(swadeshTranslation)
 	if err != nil {
@@ -103,7 +103,7 @@ func (*TranslationHandler) WriteResponse(w http.ResponseWriter, r *Response) {
 	}
 }
 
-func (th *TranslationHandler) getTranslation(translationRequestValue, sourceLanguage, targetLanguage string, conf *Configuration) (SwadeshTranslation, error) {
+func (th *TranslationHandler) getTranslation(translationRequestValue, sourceLanguage, targetLanguage string, conf *Configuration) (dto.SwadeshTranslation, error) {
 	var desiredGroup LanguageGroup
 
 	for i := range conf.Languages {
@@ -114,7 +114,7 @@ func (th *TranslationHandler) getTranslation(translationRequestValue, sourceLang
 	}
 
 	if desiredGroup.Name == "" {
-		return SwadeshTranslation{Results: []GroupTranslation{}}, errors.New("No such language group found")
+		return dto.SwadeshTranslation{Results: []dto.GroupTranslation{}}, errors.New("No such language group found")
 	}
 
 	ch := make(chan YandexTranslationResult)
@@ -133,23 +133,23 @@ func (th *TranslationHandler) getTranslation(translationRequestValue, sourceLang
 	return swadeshResults, nil
 }
 
-func translateToSwadeshTranslation(res []YandexTranslationResult, desiredGroup LanguageGroup, credits string) SwadeshTranslation {
+func translateToSwadeshTranslation(res []YandexTranslationResult, desiredGroup LanguageGroup, credits string) dto.SwadeshTranslation {
 
-	languageTranslationResult := []LanguageTranslation{}
+	languageTranslationResult := []dto.LanguageTranslation{}
 
 	for _, desiredLang := range desiredGroup.Languages {
 		for _, yandexResult := range res {
 			resultLangCode := strings.Split(yandexResult.Lang, "-")[1]
 			if desiredLang.Code == resultLangCode && yandexResult.Code == http.StatusOK {
-				languageTranslationResult = append(languageTranslationResult, LanguageTranslation{Name: desiredLang.FullName, Translation: strings.Join(yandexResult.Text, ",")})
+				languageTranslationResult = append(languageTranslationResult, dto.LanguageTranslation{Name: desiredLang.FullName, Translation: strings.Join(yandexResult.Text, ",")})
 				continue
 			}
 
 		}
 	}
 
-	groupTranslationResult := []GroupTranslation{{Name: desiredGroup.Name, Results: languageTranslationResult}}
-	swadeshTranslation := SwadeshTranslation{Results: groupTranslationResult, Credits: credits}
+	groupTranslationResult := []dto.GroupTranslation{{Name: desiredGroup.Name, Results: languageTranslationResult}}
+	swadeshTranslation := dto.SwadeshTranslation{Results: groupTranslationResult, Credits: credits}
 
 	return swadeshTranslation
 }
