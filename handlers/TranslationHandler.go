@@ -7,7 +7,7 @@ import (
 	dto "github.com/aeternas/SwadeshNess-packages/dto"
 	. "github.com/aeternas/SwadeshNess-packages/language"
 	. "github.com/aeternas/SwadeshNess/apiClient"
-	. "github.com/aeternas/SwadeshNess/configuration"
+	configuration "github.com/aeternas/SwadeshNess/configuration"
 	. "github.com/aeternas/SwadeshNess/dto"
 	serverMiddleware "github.com/aeternas/SwadeshNess/serverMiddlewares"
 	"log"
@@ -16,7 +16,7 @@ import (
 )
 
 type TranslationHandler struct {
-	Config            *Configuration
+	Config            *configuration.Configuration
 	ServerMiddlewares []serverMiddleware.ServerMiddleware
 	ApiClient         ApiClient
 }
@@ -103,7 +103,7 @@ func (*TranslationHandler) WriteResponse(w http.ResponseWriter, r *Response) {
 	}
 }
 
-func (th *TranslationHandler) getTranslation(translationRequestValue, sourceLanguage, targetLanguage string, conf *Configuration) (dto.SwadeshTranslation, error) {
+func (th *TranslationHandler) getTranslation(translationRequestValue, sourceLanguage, targetLanguage string, conf *configuration.Configuration) (dto.SwadeshTranslation, error) {
 	var desiredGroup LanguageGroup
 
 	for i := range conf.Languages {
