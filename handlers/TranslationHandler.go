@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	dto "github.com/aeternas/SwadeshNess-packages/dto"
-	. "github.com/aeternas/SwadeshNess-packages/language"
+	language "github.com/aeternas/SwadeshNess-packages/language"
 	apiClient "github.com/aeternas/SwadeshNess/apiClient"
 	configuration "github.com/aeternas/SwadeshNess/configuration"
 	. "github.com/aeternas/SwadeshNess/dto"
@@ -104,7 +104,7 @@ func (*TranslationHandler) WriteResponse(w http.ResponseWriter, r *apiClient.Res
 }
 
 func (th *TranslationHandler) getTranslation(translationRequestValue, sourceLanguage, targetLanguage string, conf *configuration.Configuration) (dto.SwadeshTranslation, error) {
-	var desiredGroup LanguageGroup
+	var desiredGroup language.LanguageGroup
 
 	for i := range conf.Languages {
 		if strings.ToLower(conf.Languages[i].Name) == strings.ToLower(targetLanguage) {
@@ -133,7 +133,7 @@ func (th *TranslationHandler) getTranslation(translationRequestValue, sourceLang
 	return swadeshResults, nil
 }
 
-func translateToSwadeshTranslation(res []YandexTranslationResult, desiredGroup LanguageGroup, credits string) dto.SwadeshTranslation {
+func translateToSwadeshTranslation(res []YandexTranslationResult, desiredGroup language.LanguageGroup, credits string) dto.SwadeshTranslation {
 
 	languageTranslationResult := []dto.LanguageTranslation{}
 
