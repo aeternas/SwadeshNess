@@ -8,7 +8,7 @@ import (
 	language "github.com/aeternas/SwadeshNess-packages/language"
 	apiClient "github.com/aeternas/SwadeshNess/apiClient"
 	configuration "github.com/aeternas/SwadeshNess/configuration"
-	. "github.com/aeternas/SwadeshNess/dto"
+	yandexDTO "github.com/aeternas/SwadeshNess/dto"
 	serverMiddleware "github.com/aeternas/SwadeshNess/serverMiddlewares"
 	"log"
 	"net/http"
@@ -117,13 +117,13 @@ func (th *TranslationHandler) getTranslation(translationRequestValue, sourceLang
 		return dto.SwadeshTranslation{Results: []dto.GroupTranslation{}}, errors.New("No such language group found")
 	}
 
-	ch := make(chan YandexTranslationResult)
+	ch := make(chan yandexDTO.YandexTranslationResult)
 
 	for _, lang := range desiredGroup.Languages {
 		go th.ApiClient.MakeTranslationRequest(translationRequestValue, conf, sourceLanguage, lang, ch)
 	}
 
-	results := []YandexTranslationResult{}
+	results := []yandexDTO.YandexTranslationResult{}
 	for range desiredGroup.Languages {
 		results = append(results, <-ch)
 	}
@@ -133,7 +133,7 @@ func (th *TranslationHandler) getTranslation(translationRequestValue, sourceLang
 	return swadeshResults, nil
 }
 
-func translateToSwadeshTranslation(res []YandexTranslationResult, desiredGroup language.LanguageGroup, credits string) dto.SwadeshTranslation {
+func translateToSwadeshTranslation(res []yandexDTO.YandexTranslationResult, desiredGroup language.LanguageGroup, credits string) dto.SwadeshTranslation {
 
 	languageTranslationResult := []dto.LanguageTranslation{}
 
