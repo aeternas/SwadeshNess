@@ -3,7 +3,7 @@ package httpApiClient
 import (
 	"encoding/json"
 	"fmt"
-	. "github.com/aeternas/SwadeshNess-packages/language"
+	language "github.com/aeternas/SwadeshNess-packages/language"
 	ApiClient "github.com/aeternas/SwadeshNess/apiClient"
 	. "github.com/aeternas/SwadeshNess/clientMiddlewares"
 	. "github.com/aeternas/SwadeshNess/configuration"
@@ -19,7 +19,7 @@ type HTTPApiClient struct {
 	Middlewares []ClientMiddleware
 }
 
-func (c *HTTPApiClient) MakeTranslationRequest(w string, conf *Configuration, sourceLang string, targetLang Language, ch chan<- YandexTranslationResult) {
+func (c *HTTPApiClient) MakeTranslationRequest(w string, conf *Configuration, sourceLang string, targetLang language.Language, ch chan<- YandexTranslationResult) {
 	res := c.getRequest(c.Middlewares, w, sourceLang, targetLang.Code)
 	ch <- res
 }
