@@ -6,7 +6,7 @@ import (
 	language "github.com/aeternas/SwadeshNess-packages/language"
 	ApiClient "github.com/aeternas/SwadeshNess/apiClient"
 	middlewares "github.com/aeternas/SwadeshNess/clientMiddlewares"
-	. "github.com/aeternas/SwadeshNess/configuration"
+	configuration "github.com/aeternas/SwadeshNess/configuration"
 	. "github.com/aeternas/SwadeshNess/dto"
 	"io/ioutil"
 	"log"
@@ -19,7 +19,7 @@ type HTTPApiClient struct {
 	Middlewares []middlewares.ClientMiddleware
 }
 
-func (c *HTTPApiClient) MakeTranslationRequest(w string, conf *Configuration, sourceLang string, targetLang language.Language, ch chan<- YandexTranslationResult) {
+func (c *HTTPApiClient) MakeTranslationRequest(w string, conf *configuration.Configuration, sourceLang string, targetLang language.Language, ch chan<- YandexTranslationResult) {
 	res := c.getRequest(c.Middlewares, w, sourceLang, targetLang.Code)
 	ch <- res
 }
