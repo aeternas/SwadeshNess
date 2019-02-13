@@ -96,7 +96,7 @@ jobs:
     working_directory: /
     steps:
       - run: *update_envs
-      - deploy: *run_integration_tests
+      - run: *run_integration_tests
   warm_cache:
     docker:
       - image: aeternas/swadeshness-couperose:$CIRCLE_BRANCH
