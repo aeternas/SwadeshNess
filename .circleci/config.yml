@@ -104,7 +104,7 @@ jobs:
     steps:
       - deploy: *warm_cache
 workflows:
-  version: 2
+  version: 2.1
   lint-test-deploy:
     jobs:
       - checkout
