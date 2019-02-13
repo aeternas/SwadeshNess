@@ -57,7 +57,7 @@ aliases:
     name: Warm Cache
     command: |
       java -jar couperose-0.1.0-SNAPSHOT-standalone.jar
-version: 2
+version: 2.1
 jobs:
   checkout:
     docker: *docker_worker
@@ -104,7 +104,7 @@ jobs:
     steps:
       - deploy: *warm_cache
 workflows:
-  version: 2
+  version: 2.1
   lint-test-deploy:
     jobs:
       - checkout
