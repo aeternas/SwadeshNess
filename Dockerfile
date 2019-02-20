@@ -20,4 +20,6 @@ ENV VERSION $VERS
 RUN apk --no-cache add ca-certificates
 COPY --from=0 /go/src/github.com/aeternas/SwadeshNess .
 
+HEALTHCHECK --interval=10s --timeout=10s --retries=3 CMD curl -sS 127.0.0.1:8080/v1/groups || exit 1
+
 CMD ["./SwadeshNess", "--https"]
