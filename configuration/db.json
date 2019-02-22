@@ -22,6 +22,10 @@
         {
           "fullName": "Kyrgyz",
           "code": "ky"
+        },
+        {
+          "fullName": "Uzbek",
+          "code": "uz"
         }
       ]
     },
@@ -194,5 +198,5 @@
     }
   ],
   "credits": "Переведено сервисом \"Яндекс.Переводчик\" http://translate.yandex.ru/",
-  "configVersion": "8"
+  "configVersion": "9"
 }
