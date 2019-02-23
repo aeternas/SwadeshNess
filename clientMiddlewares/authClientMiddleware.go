@@ -20,15 +20,15 @@ func NewAuthClientMiddleware(apiKey string) AuthClientMiddleware {
 }
 
 func (a *authClientMiddleware) AdaptRequest(r *apiClient.Request) *apiClient.Request {
-	u, err := url.Parse(r.NetRequest.URL.String())
+	urlString, err := url.Parse(r.NetRequest.URL.String())
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	q := u.Query()
+	q := urlString.Query()
 	q.Add("key", a.apiKey)
-	u.RawQuery = q.Encode()
-	r.NetRequest.URL = u
+	urlString.RawQuery = q.Encode()
+	r.NetRequest.URL = urlString
 	return r
 }
 
