@@ -96,7 +96,7 @@ func (c *HTTPApiClient) getTranslationData(r *ApiClient.Response) YandexTranslat
 			log.Println("Unauthorized – likely Invalid API Key")
 			return getTranslationResultErrorString("Unauthorized – likely Invalid API Key")
 		default:
-			log.Printf("Error – code is %d", data.Code)
+			log.Println("Error – code is ", data.Code)
 		}
 	}
 
