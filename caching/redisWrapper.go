@@ -6,6 +6,10 @@ import (
 	redis "github.com/go-redis/redis"
 )
 
+const (
+	REDIS_PORT = "6379"
+)
+
 type RedisCachingWrapper interface {
 	GetCachedValue(k string) (string, error)
 	SaveCachedValue(k, v string) error
@@ -38,7 +42,7 @@ func (rcw *redisCachingWrapper) SaveCachedValue(k, v string) error {
 }
 
 func NewClient(c *Configuration.Configuration) *redis.Client {
-	address := fmt.Sprintf("%s:6379", c.EEndpoints.RedisAddress)
+	address := fmt.Sprintf("%s:%s", c.EEndpoints.RedisAddress, REDIS_PORT)
 	client := redis.NewClient(&redis.Options{
 		Addr:     address,
 		Password: "",
