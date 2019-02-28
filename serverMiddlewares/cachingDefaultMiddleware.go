@@ -49,7 +49,7 @@ func (c cachingDefaultServerMiddleware) AdaptResponse(r *apiClient.Response) *ap
 	str := string(r.Data)
 	log.Printf("Trying to save data %s for key %s", str, key)
 	if err := (*cw).SaveCachedValue(key, str); err != nil {
-		log.Printf("Failed to save value to cache: %s", r.Data)
+		log.Println("Failed to save value to cache: ", r.Data)
 	}
 	return r
 }
