@@ -24,7 +24,7 @@ type TranslationHandler struct {
 func (th *TranslationHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {
 	translationRequestValues, ok := r.URL.Query()["translate"]
 	if !ok || len(translationRequestValues[0]) < 1 {
-		log.Printf("Invalid Request: %s", r.URL.String())
+		log.Println("Invalid Request: ", r.URL.String())
 		http.Error(w, "Bad Request", http.StatusBadRequest)
 		return
 	}
@@ -64,8 +64,8 @@ func (th *TranslationHandler) HandleRequest(w http.ResponseWriter, r *http.Reque
 	for _, lang := range translationRequestGroupValues {
 		res, err := th.getTranslation(translationRequestValue, sourceLanguage, lang, th.Config)
 		if err != nil {
-			log.Printf("Failed to process language group: %s", lang)
-			http.Error(w, fmt.Sprintf("Failed to process language group: %s", lang), http.StatusInternalServerError)
+			log.Println("Failed to process language group: ", lang)
+			http.Error(w, fmt.Sprintln("Failed to process language group: ", lang), http.StatusInternalServerError)
 			return
 		} else {
 			groups = append(groups, res.Results[0])
