@@ -24,9 +24,13 @@ var (
 	apiClient          ApiClient.ApiClient
 )
 
+const (
+	DATABASE_CONFIG = "configuration/db.json"
+)
+
 func init() {
 	var wrapper = Wrappers.New(new(Wrappers.OsWrapper))
-	var lReader *Config.Reader = &Config.Reader{Path: "configuration/db.json", OsWrapper: wrapper}
+	var lReader *Config.Reader = &Config.Reader{Path: DATABASE_CONFIG, OsWrapper: wrapper}
 
 	reader = lReader
 	lConfiguration, _ := reader.ReadConfiguration()
