@@ -23,7 +23,7 @@ func (gh *GroupListHandler) HandleRequest(w http.ResponseWriter, r *http.Request
 
 	bytes, err := json.Marshal(gh.Config.Languages)
 	if err != nil {
-		log.Println("Marshalling Error")
+		log.Println("Marshalling Error: ", err)
 		http.Error(w, "Marshalling error", http.StatusInternalServerError)
 		return
 	}
@@ -46,7 +46,7 @@ func (gh *GroupListHandler) adaptResponse(r *api.Response) *api.Response {
 
 func (*GroupListHandler) WriteResponse(w http.ResponseWriter, r *api.Response) {
 	if _, err := w.Write(r.Data); err != nil {
-		log.Println("Response output error")
+		log.Println("Response output error: ", err)
 		http.Error(w, "Response output error", http.StatusInternalServerError)
 	}
 }
