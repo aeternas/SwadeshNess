@@ -35,13 +35,12 @@ func (gh *GroupListHandler) HandleRequest(w http.ResponseWriter, r *http.Request
 	gh.WriteResponse(w, adaptedResponse)
 }
 
-func (gh *GroupListHandler) adaptResponse(r *api.Response) *api.Response {
-	adaptedResponse := r
+func (gh *GroupListHandler) adaptResponse(resp *api.Response) *api.Response {
 	for _, middleware := range gh.ServerMiddlewares {
-		adaptedResponse = middleware.AdaptResponse(adaptedResponse)
+		resp = middleware.AdaptResponse(resp)
 	}
 
-	return adaptedResponse
+	return resp
 }
 
 func (*GroupListHandler) WriteResponse(w http.ResponseWriter, r *api.Response) {
