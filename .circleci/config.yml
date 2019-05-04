@@ -43,7 +43,7 @@ aliases:
   - &containerize_push_deploy
     name: Containerize, Push and Deploy
     command: |
-      docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD &&\
+      docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD && \
       docker build --build-arg VERS=$CIRCLE_BUILD_NUM -t aeternas/swadeshness:$CIRCLE_BRANCH . && \
       docker push aeternas/swadeshness:$CIRCLE_BRANCH
   - &update_envs
