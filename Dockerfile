@@ -20,6 +20,6 @@ ENV VERSION $VERS
 RUN apk --no-cache add ca-certificates curl
 COPY --from=0 /go/src/github.com/aeternas/SwadeshNess .
 
-HEALTHCHECK CMD curl -sSk http://localhost:8080/dev/v1/groups || exit 1
+HEALTHCHECK CMD curl -sSk http://localhost:8079/dev/v1/groups || exit 1
 
 CMD ["./SwadeshNess"]
