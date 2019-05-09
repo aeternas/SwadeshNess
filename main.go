@@ -72,6 +72,6 @@ func main() {
 	if configuration.Security.NeedsHTTPS {
 		log.Fatal(http.ListenAndServeTLS(":8080", configuration.Security.ServerCertPath, configuration.Security.ServerKeyPath, nil))
 	} else {
-		log.Fatal(http.ListenAndServe(":8080", nil))
+		log.Fatal(http.ListenAndServe(":8079", nil))
 	}
 }
