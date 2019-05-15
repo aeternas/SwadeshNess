@@ -49,8 +49,8 @@ aliases:
   - &update_envs
     name: Update PATH and Define Environment Variable at Runtime
     command: |
-      echo 'export PROD_HOST="https://vpered.su"' >> $BASH_ENV
-      echo 'export DEV_HOST="https://vpered.su:8080/dev"' >> $BASH_ENV
+      echo 'export PROD_HOST="https://$SW_PROD_BASE_URL"' >> $BASH_ENV
+      echo 'export DEV_HOST="https://$SW_BASE_URL"' >> $BASH_ENV
       echo 'export BRANCH="$CIRCLE_BRANCH"' >> $BASH_ENV
       echo 'export VERSION="$CIRCLE_PREVIOUS_BUILD_NUM"' >> $BASH_ENV
   - &run_integration_tests
