@@ -17,13 +17,11 @@ func NewLoggerClientMiddleware() LoggerClientMiddleware {
 }
 
 func (loggerClientMiddleware) AdaptRequest(r *apiClient.Request) *apiClient.Request {
-	log.Println("LoggerClientMiddleware Request:\n")
 	log.Println(r.NetRequest)
 	return r
 }
 
 func (loggerClientMiddleware) AdaptResponse(r *apiClient.Response) *apiClient.Response {
-	log.Println("LoggerClientMiddleware Response:\n")
 	log.Println(r.NetResponse)
 	return r
 }
