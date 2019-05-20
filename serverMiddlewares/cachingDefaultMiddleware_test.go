@@ -17,7 +17,7 @@ func TestNoop(t *testing.T) {
 
 func TestGetKey(t *testing.T) {
 	var wrapper = Wrappers.New(new(Wrappers.OsWrapper))
-	var reader *Conf.Reader = &Conf.Reader{Path: "../db/db.json", OsWrapper: wrapper}
+	var reader *Conf.Reader = &Conf.Reader{Path: "../configuration/db/db.json", OsWrapper: wrapper}
 	config, _ := reader.ReadConfiguration()
 	mdlwr := m.NewCachingDefaultServerMiddleware(&config)
 	request := &Api.Request{Data: []byte{}, Cached: false, NetRequest: &http.Request{URL: &url.URL{RawQuery: "translate=translation"}}}

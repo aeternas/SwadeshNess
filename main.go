@@ -25,7 +25,7 @@ var (
 )
 
 const (
-	DATABASE_CONFIG = "db/db.json"
+	DATABASE_CONFIG = "configuration/db/db.json"
 )
 
 func init() {
