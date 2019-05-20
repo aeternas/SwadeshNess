@@ -1,3 +1,6 @@
 [submodule "db"]
 	path = db
 	url = https://github.com/aeternas/SwadeshNess-languages.git
+[submodule "configuration/db"]
+	path = configuration/db
+	url = https://github.com/aeternas/SwadeshNess-languages.git
