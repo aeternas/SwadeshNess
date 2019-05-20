@@ -9,6 +9,11 @@ aliases:
       mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
       git clone --depth=50 -b $CIRCLE_BRANCH $CIRCLE_REPOSITORY_URL ./ && \
       git checkout $CIRCLE_SHA1
+  - &update_submodules
+    name: Update submodules
+    command: |
+      git submodule init && \
+      git submodule update
   - &attach_workspace
     at: /go/src/github.com/aeternas/SwadeshNess
   - &save_cache
@@ -67,6 +72,7 @@ jobs:
     working_directory: *work_dir
     steps:
       - run: *git_checkout
+      - run: *update_submodules
       - restore_cache: *restore_cache
       - run: *get_deps
       - save_cache: *save_cache
