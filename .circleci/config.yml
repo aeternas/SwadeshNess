@@ -51,7 +51,8 @@ aliases:
       docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD && \
       docker build --build-arg VERS=$CIRCLE_BUILD_NUM -t aeternas/swadeshness:$CIRCLE_BRANCH . && \
       docker push aeternas/swadeshness:$CIRCLE_BRANCH && \
-      if [ $CIRCLE_BRANCH == "master" ]; then docker push aeternas/swadeshness; fi
+      if [ $CIRCLE_BRANCH == "master" ]; then docker tag aeternas/swadeshness:master aeternas/swadeshness:latest; fi && \
+      if [ $CIRCLE_BRANCH == "master" ]; then docker push aeternas/swadeshness:latest; fi
   - &update_envs
     name: Update PATH and Define Environment Variable at Runtime
     command: |
