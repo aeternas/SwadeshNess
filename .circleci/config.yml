@@ -50,7 +50,7 @@ aliases:
     command: |
       docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD && \
       docker build --build-arg VERS=$CIRCLE_BUILD_NUM -t aeternas/swadeshness:$CIRCLE_BRANCH . && \
-      if [ $CIRCLE_BRANCH == "development" ]; then docker tag aeternas/swadeshness aeternas/swadeshness:testtag; fi && \
+      if [ $CIRCLE_BRANCH == "development" ]; then docker tag aeternas/swadeshness:development aeternas/swadeshness:testtag; fi && \
       docker push aeternas/swadeshness:$CIRCLE_BRANCH && \
       if [ $CIRCLE_BRANCH == "development" ]; then docker push aeternas/swadeshness:testtag; fi
   - &update_envs
