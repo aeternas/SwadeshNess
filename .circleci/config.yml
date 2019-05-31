@@ -48,7 +48,8 @@ aliases:
   - &containerize_push_deploy
     name: Containerize, Push and Deploy
     command: |
-      docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD && \
+      echo $DOCKER_PASSWORD > docker_passwd && \
+      docker login -u $DOCKER_USERNAME --password-stdin < docker_passwd && rm docker_passwd && \
       docker build --build-arg VERS=$CIRCLE_BUILD_NUM -t aeternas/swadeshness:$CIRCLE_BRANCH . && \
       docker push aeternas/swadeshness:$CIRCLE_BRANCH && \
       if [[ $CIRCLE_BRANCH == "master" ]]; then docker tag aeternas/swadeshness:master aeternas/swadeshness:latest; fi && \
