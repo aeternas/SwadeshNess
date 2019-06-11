@@ -24,7 +24,7 @@ func (c *HTTPApiClient) MakeTranslationRequest(w string, conf *configuration.Con
 	ch <- res
 }
 
-func (c *HTTPApiClient) getRequest(middlewares []middlewares.ClientMiddleware, w, sourceLang, targetLang string) YandexTranslationResult {
+func (cli *HTTPApiClient) getRequest(middlewares []middlewares.ClientMiddleware, w, sourceLang, targetLang string) YandexTranslationResult {
 	queryString := url.QueryEscape(w)
 
 	urlString := fmt.Sprintf("https://translate.yandex.net/api/v1.5/tr.json/translate?lang=%s-%s&text=%s", sourceLang, targetLang, queryString)
@@ -44,11 +44,11 @@ func (c *HTTPApiClient) getRequest(middlewares []middlewares.ClientMiddleware, w
 	response := &ApiClient.Response{Data: []byte{}, NetResponse: nil, Request: request}
 
 	if request.Cached {
-		response = c.adaptResponse(response)
-		return c.getTranslationData(response)
+		response = cli.adaptResponse(response)
+		return cli.getTranslationData(response)
 	}
 
-	resp, err := c.Client.Do(request.NetRequest)
+	resp, err := cli.Client.Do(request.NetRequest)
 
 	if err != nil {
 		log.Println("Request execution error: ", err)
@@ -66,11 +66,11 @@ func (c *HTTPApiClient) getRequest(middlewares []middlewares.ClientMiddleware, w
 
 	response.Data = body
 
-	response = c.adaptResponse(response)
+	response = cli.adaptResponse(response)
 
 	defer response.NetResponse.Body.Close()
 
-	return c.getTranslationData(response)
+	return cli.getTranslationData(response)
 }
 
 func (c *HTTPApiClient) adaptResponse(r *ApiClient.Response) *ApiClient.Response {
