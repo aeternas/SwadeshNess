@@ -12,7 +12,7 @@ export YANDEX_API_KEY=<your key>
 Example queries:
 
 ```
-$ curl "https://vpered.su:8080/dev/v1/?translate=Hello+World&group=Romanic" | jq .
+$ curl "https://vpered.su/v1/?translate=Hello+World&group=Romanic" | jq .
 
 {
   "results": [
@@ -51,7 +51,7 @@ $ curl "https://vpered.su:8080/dev/v1/?translate=Hello+World&group=Romanic" | jq
 or process several language groups simultaneously:
 
 ```
-$ curl "https://vpered.su:8080/dev/v1/?translate=Hello+World&group=Romanic&group=Turkic" | jq .
+$ curl "https://vpered.su/v1/?translate=Hello+World&group=Romanic&group=Turkic" | jq .
 
 {
   "results": [
