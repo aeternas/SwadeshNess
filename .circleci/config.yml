@@ -38,7 +38,9 @@ aliases:
       - .
   - &lint
     name: linting
-    command: go install ./vendor/github.com/golangci/golangci-lint/cmd/golangci-lint && golangci-lint run
+    command: |
+        go install ./vendor/github.com/golangci/golangci-lint/cmd/golangci-lint && \
+        golangci-lint run
   - &unit_tests
     name: Unit tests
     command: go test -v ./...
