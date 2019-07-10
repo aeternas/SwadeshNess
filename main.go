@@ -48,6 +48,8 @@ func init() {
 
 	csm := ServerMiddlewares.NewCachingDefaultServerMiddleware(&configuration)
 	lsm := ServerMiddlewares.NewLoggerServerMiddleware()
+	log.Println(csm)
+	log.Println(lsm)
 	translationHandler = &TranslationHandler{
 		Config:            &configuration,
 		ServerMiddlewares: []ServerMiddlewares.ServerMiddleware{csm},
