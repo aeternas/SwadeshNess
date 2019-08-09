@@ -145,5 +145,6 @@ workflows:
             branches:
               only:
                 - master
+                - development
           requires:
             - integration_tests
