@@ -3,7 +3,7 @@ package caching
 import (
 	"fmt"
 	Configuration "github.com/aeternas/SwadeshNess/configuration"
-	redis "github.com/go-redis/redis/v7"
+	redis "github.com/go-redis/redis"
 )
 
 const (
