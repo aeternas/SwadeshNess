@@ -139,7 +139,7 @@ func translateToSwadeshTranslation(res []yandexDTO.YandexTranslationResult, desi
 
 	for _, desiredLang := range desiredGroup.Languages {
 		for _, yandexResult := range res {
-			resultLangCodePair := strings.Split(yandexResult.Lang, "-")[1]
+			resultLangCodePair := strings.Split(yandexResult.Lang, "-")
 			log.Println("Result lang code pair: ", resultLangCodePair)
 			resultLangCode := resultLangCodePair[1]
 			if desiredLang.Code == resultLangCode && yandexResult.Code == http.StatusOK {
