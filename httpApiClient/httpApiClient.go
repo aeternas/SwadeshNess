@@ -91,13 +91,15 @@ func (c *HTTPApiClient) getTranslationData(r *ApiClient.Response) YandexTranslat
 	}
 
 	if data.Code != http.StatusOK {
+		var errString string
 		switch data.Code {
 		case http.StatusUnauthorized:
-			log.Println("Unauthorized – likely Invalid API Key")
-			return getTranslationResultErrorString("Unauthorized – likely Invalid API Key")
+			errString = "Unauthorized – likely Invalid API Key"
 		default:
-			log.Println("Error – code is ", data.Code)
+			errString = fmt.Sprintf("Error – code is %v", data.Code)
 		}
+		log.Println(errString)
+		return getTranslationResultErrorString(errString)
 	}
 
 	return data
