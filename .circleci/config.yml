@@ -25,7 +25,6 @@ aliases:
     - ~/.ivy2
     - ~/.bundle
     - ~/.go_workspace
-    - ~/.gradle
     - ~/.cache/bower
   - &restore_cache
     keys:
