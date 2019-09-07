@@ -1,7 +1,7 @@
 aliases:
   - &get_deps go get -v -t -d ./...
   - &docker_worker
-    - image: circleci/golang
+    - image: circleci/golang:1.11
   - &work_dir /go/src/github.com/aeternas/SwadeshNess
   - &git_checkout
     name: Checkout
@@ -38,7 +38,7 @@ aliases:
   - &lint
     name: Install & Execute linter
     command: |
-        curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin latest
+        curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin latest && \
         golangci-lint run
   - &unit_tests
     name: Unit tests
