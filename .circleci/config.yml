@@ -1,7 +1,7 @@
 aliases:
   - &get_deps go get -v -t -d ./...
   - &docker_worker
-    - image: circleci/golang:1.11
+    - image: circleci/golang:$GOLANG_VERSION
   - &work_dir /go/src/github.com/aeternas/SwadeshNess
   - &git_checkout
     name: Checkout
@@ -51,7 +51,7 @@ aliases:
     command: |
       echo $DOCKER_PASSWORD > docker_passwd && \
       docker login -u $DOCKER_USERNAME --password-stdin < docker_passwd && rm docker_passwd && \
-      docker build --build-arg VERS=$CIRCLE_BUILD_NUM -t aeternas/swadeshness:$CIRCLE_BRANCH . && \
+      docker build --build-arg VERS=$CIRCLE_BUILD_NUM --build-arg GOLANG_VERSION=$GOLANG_VERSION -t aeternas/swadeshness:$CIRCLE_BRANCH . && \
       docker push aeternas/swadeshness:$CIRCLE_BRANCH && \
       if [[ $CIRCLE_BRANCH == "master" ]]; then \
                                       docker tag aeternas/swadeshness:master aeternas/swadeshness:latest && \
