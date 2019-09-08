@@ -1,7 +1,7 @@
 aliases:
   - &get_deps go get -v -t -d ./...
   - &docker_worker
-  - image: circleci/golang:$GOLANG_VERSION
+    - image: circleci/golang:$GOLANG_VERSION
   - &work_dir /go/src/github.com/aeternas/SwadeshNess
   - &git_checkout
     name: Checkout
