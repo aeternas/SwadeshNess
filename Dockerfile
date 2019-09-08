@@ -1,9 +1,7 @@
 ARG GOLANG_VERSION
-
 FROM golang:${GOLANG_VERSION}
 
 ARG VERS
-
 ENV VER $VERS
 
 WORKDIR /go/src/github.com/aeternas/SwadeshNess
