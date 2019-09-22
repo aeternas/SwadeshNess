@@ -4,6 +4,7 @@ import (
 	"fmt"
 	Configuration "github.com/aeternas/SwadeshNess/configuration"
 	redis "github.com/go-redis/redis"
+	"log"
 )
 
 const (
@@ -49,7 +50,11 @@ func NewClient(c *Configuration.Configuration) *redis.Client {
 		DB:       0,
 	})
 
-	pong, err := client.Ping().Result()
-	fmt.Println(pong, err)
+	ping, err := client.Ping().Result()
+	if err != nil {
+		log.Println("Caching client initialization error: ", err)
+	} else {
+		log.Println("Caching client initialized: ", ping)
+	}
 	return client
 }
