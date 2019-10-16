@@ -107,7 +107,7 @@ func (th *TranslationHandler) getTranslation(translationRequestValue, sourceLang
 	var desiredGroup language.LanguageGroup
 
 	for i := range conf.Languages {
-		if strings.ToLower(conf.Languages[i].Name) == strings.ToLower(targetLanguage) {
+		if strings.EqualFold(conf.Languages[i].Name, targetLanguage) {
 			desiredGroup = conf.Languages[i]
 			break
 		}

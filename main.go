@@ -1,7 +1,6 @@
 package main
 
 import (
-	. "github.com/aeternas/SwadeshNess-packages/language"
 	ApiClient "github.com/aeternas/SwadeshNess/apiClient"
 	ClientMiddlewares "github.com/aeternas/SwadeshNess/clientMiddlewares"
 	Config "github.com/aeternas/SwadeshNess/configuration"
@@ -15,7 +14,6 @@ import (
 )
 
 var (
-	languageGroups     []LanguageGroup
 	reader             Config.AnyReader
 	translationHandler AnyHandler
 	groupListHandler   AnyHandler
@@ -61,7 +59,6 @@ func init() {
 }
 
 func main() {
-	languageGroups = configuration.Languages
 	http.HandleFunc(configuration.EEndpoints.GroupsEndpoint, func(w http.ResponseWriter, r *http.Request) {
 		groupListHandler.HandleRequest(w, r)
 	})
