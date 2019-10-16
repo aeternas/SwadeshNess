@@ -6,8 +6,8 @@ Build Status
 
 Branch | Status
 | ------------- |:-------------:|
-Master | [![Build Status]()]()
-Build | [![Build Status]()]()
+Master      | [![Build Status]()]()
+Development | [![Build Status](https://circleci.com/gh/aeternas/SwadeshNess/tree/development.svg?style=svg)]
 
 # SwadeshNess
 Backend for Swadesh-like lists creation. More information about Swadesh lists on [Wikipedia](https://en.wikipedia.org/wiki/Swadesh_list?oldformat=true)
