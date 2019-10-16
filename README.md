@@ -6,7 +6,7 @@ Build Status
 
 Branch | Status
 | ------------- |:-------------:|
-Master      | [![Build Status]()]()
+Master      | [![Build Status](https://circleci.com/gh/aeternas/SwadeshNess/tree/master.svg?style=svg)](https://circleci.com/gh/aeternas/SwadeshNess/tree/master)
 Development | [![Build Status](https://circleci.com/gh/aeternas/SwadeshNess/tree/development.svg?style=svg)](https://circleci.com/gh/aeternas/SwadeshNess/tree/development)
 
 # SwadeshNess
