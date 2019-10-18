@@ -52,7 +52,7 @@ func NewClient(c *Configuration.Configuration) *redis.Client {
 
 	ping, err := client.Ping().Result()
 	if err != nil {
-		log.Println("Caching client initialization error: ", err)
+		log.Printf("Caching client initialization error: %s. Will proceed without cache further", err)
 	} else {
 		log.Println("Caching client initialized: ", ping)
 	}
