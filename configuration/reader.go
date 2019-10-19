@@ -27,9 +27,9 @@ func (r *Reader) ReadConfiguration() (Configuration, error) {
 	configuration := Configuration{}
 	err := decoder.Decode(&configuration)
 	apiKey := lReader.OsWrapper.GetEnv(API_KEY)
-	var translationEndpoint string = lReader.OsWrapper.GetEnvFallback(TRANSLATION_ENDPOINT, "/")
-	var groupEndpoint string = lReader.OsWrapper.GetEnvFallback(GROUP_ENDPOINT, "/groups")
-	var versionEndpoint string = lReader.OsWrapper.GetEnvFallback(VERSION_ENDPOINT, "/version")
+	var translationEndpoint string = lReader.OsWrapper.GetEnvFallback(TRANSLATION_ENDPOINT, "/v1")
+	var groupEndpoint string = lReader.OsWrapper.GetEnvFallback(GROUP_ENDPOINT, "/v1/groups")
+	var versionEndpoint string = lReader.OsWrapper.GetEnvFallback(VERSION_ENDPOINT, "/v1/version")
 	var version string = lReader.OsWrapper.GetEnvFallback(VERSION, "0")
 	var serverKeyPath string = lReader.OsWrapper.GetEnvFallback(SERVER_KEY, "certs/server.key")
 	var serverCertPath string = lReader.OsWrapper.GetEnvFallback(SERVER_CERT, "certs/server.crt")
