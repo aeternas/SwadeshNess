@@ -114,8 +114,7 @@ jobs:
       - run: *update_envs
       - deploy: *run_integration_tests
   warm_cache:
-    docker:
-      - image: *docker_worker_warm_cache
+    docker: *docker_worker_warm_cache
     working_directory: /home/circleci/repo
     steps:
       - deploy: *warm_cache
