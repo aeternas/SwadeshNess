@@ -4,6 +4,8 @@ aliases:
     - image: circleci/golang:$GOLANG_VERSION
   - &docker_worker_warm_cache
     - image: aeternas/swadeshness-couperose:$CIRCLE_BRANCH
+  - &docker_worker_integration_tests
+    - image: aeternas/swadeshness-tests:$CIRCLE_BRANCH
   - &work_dir /go/src/github.com/aeternas/SwadeshNess
   - &git_checkout
     name: Checkout
@@ -107,8 +109,7 @@ jobs:
       - *setup_remote_docker
       - deploy: *containerize_push_deploy
   integration_tests:
-    docker:
-      - image: aeternas/swadeshness-tests:$CIRCLE_BRANCH
+    docker: *docker_worker_integration_tests
     working_directory: /
     steps:
       - run: *update_envs
