@@ -50,6 +50,8 @@ aliases:
   - &setup_remote_docker
     setup_remote_docker:
       docker_layer_caching: false
+  - &working_directory
+    working_directory: /home/circleci/repo
   - &containerize_push_deploy
     name: Containerize, Push and Deploy
     command: |
@@ -116,7 +118,7 @@ jobs:
       - deploy: *run_integration_tests
   warm_cache:
     docker: *docker_worker_warm_cache
-    working_directory: /home/circleci/repo
+    *working_directory
     steps:
       - deploy: *warm_cache
 workflows:
