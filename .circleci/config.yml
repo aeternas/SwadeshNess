@@ -51,7 +51,7 @@ aliases:
     setup_remote_docker:
       docker_layer_caching: false
   - &working_directory
-    working_directory: /home/circleci/repo
+      working_directory: /home/circleci/repo
   - &containerize_push_deploy
     name: Containerize, Push and Deploy
     command: |
