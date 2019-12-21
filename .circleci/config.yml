@@ -1,5 +1,5 @@
 aliases:
-  - &get_deps go get -vtd ./...
+  - &get_deps go get -v -t -d ./...
   - &docker_worker
     - image: circleci/golang:$GOLANG_VERSION
   - &docker_worker_warm_cache
