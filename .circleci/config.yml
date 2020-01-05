@@ -119,6 +119,10 @@ jobs:
     working_directory: /home/circleci/repo
     steps:
       - deploy: *warm_cache
+
+# -------------------------
+#        WORK FLOWS
+# -------------------------
 workflows:
   version: 2.1
   lint-test-deploy:
