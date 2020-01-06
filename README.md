@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/aeternas/SwadeshNess.svg?branch=development)](https://travis-ci.org/aeternas/SwadeshNess)
-[![CircleCI](https://circleci.com/gh/aeternas/SwadeshNess/tree/development.svg?style=svg)](https://circleci.com/gh/aeternas/SwadeshNess/tree/development)
 
 Build Status
 ------------
@@ -8,6 +6,8 @@ Branch | Status
 | ------------- |:-------------:|
 Master      | [![Build Status](https://circleci.com/gh/aeternas/SwadeshNess/tree/master.svg?style=svg)](https://circleci.com/gh/aeternas/SwadeshNess/tree/master)
 Development | [![Build Status](https://circleci.com/gh/aeternas/SwadeshNess/tree/development.svg?style=svg)](https://circleci.com/gh/aeternas/SwadeshNess/tree/development)
+
+[![Build Status](https://travis-ci.org/aeternas/SwadeshNess.svg?branch=development)](https://travis-ci.org/aeternas/SwadeshNess)
 
 # SwadeshNess
 Backend for Swadesh-like lists creation. More information about Swadesh lists on [Wikipedia](https://en.wikipedia.org/wiki/Swadesh_list?oldformat=true)
