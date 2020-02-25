@@ -10,7 +10,8 @@ aliases:
   - &git_checkout
     name: Checkout
     command: |
-      mkdir -p ~/.ssh && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+      mkdir -p ~/.ssh && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config && \
+      git config --global gc.auto 0 || true && \
       git clone --depth 1 -b $CIRCLE_BRANCH $CIRCLE_REPOSITORY_URL ./ && \
       git reset --hard $CIRCLE_SHA1
   - &update_submodules
