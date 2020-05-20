@@ -77,6 +77,9 @@ aliases:
     name: Warm Cache
     command: |
       java -jar couperose-0.1.0-SNAPSHOT-standalone.jar
+# -------------------------
+#        JOBS
+# -------------------------
 version: 2.1
 jobs:
   checkout:
