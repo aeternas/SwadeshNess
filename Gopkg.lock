@@ -10,6 +10,17 @@
   revision = "a69c782687b207067fa0e371408bb18f38e1355f"
 
 [[projects]]
+  branch = "master"
+  digest = "1:113e612ba7aabddedfd80de0d00c1d589b8a9fdb1c16e8d152d10339fda2653a"
+  name = "github.com/aeternas/SwadeshNess-packages"
+  packages = [
+    "dto",
+    "language",
+  ]
+  pruneopts = "UT"
+  revision = "cded7532237d58f915036f418fcb687f415403ff"
+
+[[projects]]
   digest = "1:865079840386857c809b72ce300be7580cb50d3d3129ce11bf9aa6ca2bc1934a"
   name = "github.com/fatih/color"
   packages = ["."]
@@ -24,6 +35,22 @@
   pruneopts = "UT"
   revision = "c2828203cd70a50dcccfb2761f8b1f8ceef9a8e9"
   version = "v1.4.7"
+
+[[projects]]
+  digest = "1:b46f222214baaffab9a1f9620134e0b8fed44e5a6ad5e028fbd21f45d89095b6"
+  name = "github.com/go-redis/redis"
+  packages = [
+    ".",
+    "internal",
+    "internal/consistenthash",
+    "internal/hashtag",
+    "internal/pool",
+    "internal/proto",
+    "internal/util",
+  ]
+  pruneopts = "UT"
+  revision = "2aca83490d09584301390a787777fbe5a0fc4a96"
+  version = "v6.15.8"
 
 [[projects]]
   digest = "1:9ae31ce33b4bab257668963e844d98765b44160be4ee98cafc44637a213e530d"
@@ -545,6 +572,11 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  input-imports = ["github.com/golangci/golangci-lint/cmd/golangci-lint"]
+  input-imports = [
+    "github.com/aeternas/SwadeshNess-packages/dto",
+    "github.com/aeternas/SwadeshNess-packages/language",
+    "github.com/go-redis/redis",
+    "github.com/golangci/golangci-lint/cmd/golangci-lint",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
