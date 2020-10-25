@@ -20,7 +20,7 @@ export YANDEX_API_KEY=<your key>
 Example queries:
 
 ```
-$ curl "https://vpered.su/v1/?translate=Hello+World&group=Romanic" -k | jq .
+$ curl "https://vpered.su/v1/?translate=Hello+World&group=Romanic" | jq .
 
 {
   "results": [
