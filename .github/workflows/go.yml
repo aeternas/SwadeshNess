@@ -2,6 +2,7 @@ name: Go
 
 aliases:
   - &src_dir go/src
+  - &cd_src cd *src_dir
 
 on:
   push:
