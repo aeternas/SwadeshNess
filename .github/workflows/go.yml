@@ -2,7 +2,6 @@ name: Go
 
 aliases:
   - &src_dir go/src
-  - &cd_src cd *src_dir
 
 on:
   push:
@@ -33,7 +32,7 @@ jobs:
         export GOBIN=$(go env GOPATH)/bin
         export PATH=$PATH:$GOPATH
         export PATH=$PATH:$GOBIN
-        cd go/src
+        *src_dir
 
     - name: Get dependencies
       run: |
