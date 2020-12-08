@@ -1,8 +1,5 @@
 name: Go
 
-aliases:
-  - &src_dir go/src
-
 on:
   push:
     branches: [ master, development ]
@@ -24,7 +21,7 @@ jobs:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
       with:
-        path: *src_dir
+        path: go/src
 
     - name: Change working directory
       run: |
@@ -32,7 +29,7 @@ jobs:
         export GOBIN=$(go env GOPATH)/bin
         export PATH=$PATH:$GOPATH
         export PATH=$PATH:$GOBIN
-        *src_dir
+        cd go/src
 
     - name: Get dependencies
       run: |
