@@ -8,7 +8,7 @@ import (
 
 var (
 	expectedGetEnvArgs         = []string{"YANDEX_API_KEY"}
-	expectedGetEnvFallbackArgs = []string{"TRANSLATION_ENDPOINT", "/v1", "GROUP_ENDPOINT", "/v1/groups", "VERSION_ENDPOINT", "/v1/version", "VERSION", "0", "SERVER_KEY", "certs/server.key", "SERVER_CERT", "certs/server.crt", "REDIS_ADDRESS", "localhost"}
+	expectedGetEnvFallbackArgs = []string{"TRANSLATION_ENDPOINT", "/v1/", "GROUP_ENDPOINT", "/v1/groups", "VERSION_ENDPOINT", "/v1/version", "VERSION", "0", "SERVER_KEY", "certs/server.key", "SERVER_CERT", "certs/server.crt", "REDIS_ADDRESS", "localhost"}
 	osWrapper                  Wrappers.AnyOsWrapper
 	mockWrapper                = new(Wrappers.MockOsWrapper)
 )
