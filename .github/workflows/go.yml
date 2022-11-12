@@ -8,11 +8,11 @@ on:
 
 jobs:
   build:
-    name: Build
     runs-on: ubuntu-latest
     strategy:
       matrix:
         go: [ '1.14', '1.13' ]
+    name: Go ${{ matrix.go }} sample
     steps:
     - uses: actions/checkout@v3
       - name: Setup go
