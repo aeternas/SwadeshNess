@@ -1,0 +1,60 @@
+module SwadeshNess
+
+go 1.18
+
+require (
+	github.com/OpenPeeDeeP/depguard v0.0.0-20180806142446-a69c782687b2
+	github.com/aeternas/SwadeshNess-packages v0.0.0-20200524111007-cded7532237d
+	github.com/fatih/color v1.7.0
+	github.com/fsnotify/fsnotify v1.4.7
+	github.com/go-redis/redis v6.15.8+incompatible
+	github.com/gobwas/glob v0.2.3
+	github.com/gogo/protobuf v1.1.1
+	github.com/golang/mock v1.1.1
+	github.com/golangci/check v0.0.0-20180506172741-cfe4005ccda2
+	github.com/golangci/dupl v0.0.0-20180902072040-3e9179ac440a
+	github.com/golangci/errcheck v0.0.0-20180902071612-f726ab79eeeb
+	github.com/golangci/go-misc v0.0.0-20180628070357-927a3d87b613
+	github.com/golangci/go-tools v0.0.0-20180902103155-93eecd106a0b
+	github.com/golangci/goconst v0.0.0-20180610141641-041c5f2b40f3
+	github.com/golangci/gocyclo v0.0.0-20180528144436-0a533e8fa43d
+	github.com/golangci/gofmt v0.0.0-20180506063654-2076e05ced53
+	github.com/golangci/golangci-lint v1.10.2
+	github.com/golangci/gosec v0.0.0-20180901114220-8afd9cbb6cfb
+	github.com/golangci/govet v0.0.0-20180818181408-44ddbe260190
+	github.com/golangci/ineffassign v0.0.0-20180808204949-2ee8f2867dde
+	github.com/golangci/interfacer v0.0.0-20180902080945-01958817a6ec
+	github.com/golangci/lint v0.0.0-20180902080404-c2187e7932b5
+	github.com/golangci/lint-1 v0.0.0-20180610141402-4bf9709227d1
+	github.com/golangci/maligned v0.0.0-20180506175553-b1d89398deca
+	github.com/golangci/misspell v0.3.4
+	github.com/golangci/prealloc v0.0.0-20180630174525-215b22d4de21
+	github.com/golangci/revgrep v0.0.0-20180812185044-276a5c0a1039
+	github.com/golangci/unconvert v0.0.0-20180507085042-28b1c447d1f4
+	github.com/golangci/unparam v0.0.0-20180902115109-7ad9dbcccc16
+	github.com/hashicorp/hcl v1.0.0
+	github.com/inconshreveable/mousetrap v1.0.0
+	github.com/kisielk/gotool v1.0.0
+	github.com/magiconair/properties v1.8.0
+	github.com/mattn/go-colorable v0.0.9
+	github.com/mattn/go-isatty v0.0.4
+	github.com/mitchellh/mapstructure v1.0.0
+	github.com/nbutton23/zxcvbn-go v0.0.0-20171102151520-eafdab6b0663
+	github.com/pelletier/go-toml v1.2.0
+	github.com/pkg/errors v0.8.0
+	github.com/sirupsen/logrus v1.0.6
+	github.com/spf13/afero v1.1.2
+	github.com/spf13/cast v1.2.0
+	github.com/spf13/cobra v0.0.3
+	github.com/spf13/jwalterweatherman v1.0.0
+	github.com/spf13/pflag v1.0.2
+	github.com/spf13/viper v1.2.0
+	golang.org/x/crypto v0.0.0-20180904163835-0709b304e793
+	golang.org/x/net v0.0.0-20180906233101-161cd47e91fd
+	golang.org/x/sys v0.0.0-20180907202204-917fdcba135d
+	golang.org/x/text v0.3.0
+	golang.org/x/tools v0.0.0-20180904205237-0aa4b8830f48
+	gopkg.in/yaml.v2 v2.2.1
+	sourcegraph.com/sourcegraph/go-diff v0.0.0-20171119081133-3f415a150aec
+	sourcegraph.com/sqs/pbtypes v0.0.0-20180604144634-d3ebe8f20ae4
+)
