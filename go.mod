@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/OpenPeeDeeP/depguard v0.0.0-20180806142446-a69c782687b2
+	github.com/aeternas/SwadeshNess v0.0.0-20220112202108-b026950ed7f0
 	github.com/aeternas/SwadeshNess-packages v0.0.0-20200524111007-cded7532237d
 	github.com/fatih/color v1.7.0
 	github.com/fsnotify/fsnotify v1.4.7
@@ -11,27 +12,6 @@ require (
 	github.com/gobwas/glob v0.2.3
 	github.com/gogo/protobuf v1.1.1
 	github.com/golang/mock v1.1.1
-	github.com/golangci/check v0.0.0-20180506172741-cfe4005ccda2
-	github.com/golangci/dupl v0.0.0-20180902072040-3e9179ac440a
-	github.com/golangci/errcheck v0.0.0-20180902071612-f726ab79eeeb
-	github.com/golangci/go-misc v0.0.0-20180628070357-927a3d87b613
-	github.com/golangci/go-tools v0.0.0-20180902103155-93eecd106a0b
-	github.com/golangci/goconst v0.0.0-20180610141641-041c5f2b40f3
-	github.com/golangci/gocyclo v0.0.0-20180528144436-0a533e8fa43d
-	github.com/golangci/gofmt v0.0.0-20180506063654-2076e05ced53
-	github.com/golangci/golangci-lint v1.10.2
-	github.com/golangci/gosec v0.0.0-20180901114220-8afd9cbb6cfb
-	github.com/golangci/govet v0.0.0-20180818181408-44ddbe260190
-	github.com/golangci/ineffassign v0.0.0-20180808204949-2ee8f2867dde
-	github.com/golangci/interfacer v0.0.0-20180902080945-01958817a6ec
-	github.com/golangci/lint v0.0.0-20180902080404-c2187e7932b5
-	github.com/golangci/lint-1 v0.0.0-20180610141402-4bf9709227d1
-	github.com/golangci/maligned v0.0.0-20180506175553-b1d89398deca
-	github.com/golangci/misspell v0.3.4
-	github.com/golangci/prealloc v0.0.0-20180630174525-215b22d4de21
-	github.com/golangci/revgrep v0.0.0-20180812185044-276a5c0a1039
-	github.com/golangci/unconvert v0.0.0-20180507085042-28b1c447d1f4
-	github.com/golangci/unparam v0.0.0-20180902115109-7ad9dbcccc16
 	github.com/hashicorp/hcl v1.0.0
 	github.com/inconshreveable/mousetrap v1.0.0
 	github.com/kisielk/gotool v1.0.0
