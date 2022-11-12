@@ -26,7 +26,7 @@ func (r *Reader) ReadConfiguration() (Configuration, error) {
 	decoder := json.NewDecoder(file)
 	configuration := Configuration{}
 	err := decoder.Decode(&configuration)
-	apiKey := lReader.OsWrapper.GetEnvFallback(API_KEY, "")
+	apiKey := lReader.OsWrapper.GetEnv(API_KEY)
 	var translationEndpoint string = lReader.OsWrapper.GetEnvFallback(TRANSLATION_ENDPOINT, "/v1/")
 	var groupEndpoint string = lReader.OsWrapper.GetEnvFallback(GROUP_ENDPOINT, "/v1/groups")
 	var versionEndpoint string = lReader.OsWrapper.GetEnvFallback(VERSION_ENDPOINT, "/v1/version")
