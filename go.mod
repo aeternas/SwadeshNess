@@ -3,38 +3,12 @@ module SwadeshNess
 go 1.18
 
 require (
-	github.com/OpenPeeDeeP/depguard v0.0.0-20180806142446-a69c782687b2
 	github.com/aeternas/SwadeshNess v0.0.0-20220112202108-b026950ed7f0
 	github.com/aeternas/SwadeshNess-packages v0.0.0-20200524111007-cded7532237d
-	github.com/fatih/color v1.7.0
-	github.com/fsnotify/fsnotify v1.4.7
 	github.com/go-redis/redis v6.15.8+incompatible
-	github.com/gobwas/glob v0.2.3
-	github.com/gogo/protobuf v1.1.1
-	github.com/golang/mock v1.1.1
-	github.com/hashicorp/hcl v1.0.0
-	github.com/inconshreveable/mousetrap v1.0.0
-	github.com/kisielk/gotool v1.0.0
-	github.com/magiconair/properties v1.8.0
-	github.com/mattn/go-colorable v0.0.9
-	github.com/mattn/go-isatty v0.0.4
-	github.com/mitchellh/mapstructure v1.0.0
-	github.com/nbutton23/zxcvbn-go v0.0.0-20171102151520-eafdab6b0663
-	github.com/pelletier/go-toml v1.2.0
-	github.com/pkg/errors v0.8.0
-	github.com/sirupsen/logrus v1.0.6
-	github.com/spf13/afero v1.1.2
-	github.com/spf13/cast v1.2.0
-	github.com/spf13/cobra v0.0.3
-	github.com/spf13/jwalterweatherman v1.0.0
-	github.com/spf13/pflag v1.0.2
-	github.com/spf13/viper v1.2.0
-	golang.org/x/crypto v0.0.0-20180904163835-0709b304e793
-	golang.org/x/net v0.0.0-20180906233101-161cd47e91fd
-	golang.org/x/sys v0.0.0-20180907202204-917fdcba135d
-	golang.org/x/text v0.3.0
-	golang.org/x/tools v0.0.0-20180904205237-0aa4b8830f48
-	gopkg.in/yaml.v2 v2.2.1
-	sourcegraph.com/sourcegraph/go-diff v0.0.0-20171119081133-3f415a150aec
-	sourcegraph.com/sqs/pbtypes v0.0.0-20180604144634-d3ebe8f20ae4
+)
+
+require (
+	github.com/onsi/ginkgo v1.16.5 // indirect
+	github.com/onsi/gomega v1.27.1 // indirect
 )
